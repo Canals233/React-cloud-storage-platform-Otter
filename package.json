@@ -1,0 +1,40 @@
+{
+    "name": "react-electron",
+    "private": true,
+    "version": "0.0.1",
+    "main": "main.js",
+    "author": {
+        "name": "Canals",
+        "email": "1552043941@qq.com",
+        "github": "https://github.com/Canals233"
+    },
+    "description": "A React Electron App For C4 Competition",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "start": "electron-forge start",
+        "package": "electron-forge package",
+        "make": "electron-forge make"
+    },
+    "dependencies": {
+        "electron-squirrel-startup": "^1.0.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@electron-forge/cli": "^6.0.5",
+        "@electron-forge/maker-deb": "^6.0.5",
+        "@electron-forge/maker-rpm": "^6.0.5",
+        "@electron-forge/maker-squirrel": "^6.0.5",
+        "@electron-forge/maker-zip": "^6.0.5",
+        "@types/react": "^18.0.27",
+        "@types/react-dom": "^18.0.10",
+        "@vitejs/plugin-react": "^3.1.0",
+        "electron": "^23.1.2",
+        "vite": "^4.1.0"
+    },
+    "build":{
+        "asar":true
+    }
+}
