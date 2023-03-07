@@ -1,0 +1,81 @@
+/* 自定义 antd 暗黑模式样式 */
+/* 需要自定义覆盖的样式 */
+body {
+  background-color: #141414 !important;
+}
+body #driver-highlighted-element-stage {
+  background-color: #525457 !important;
+}
+/* login container（先固定样式） */
+.login-container {
+  background-color: #141414 !important;
+}
+.login-container .login-box {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+.login-container .login-box .login-form {
+  background-color: #141414 !important;
+  box-shadow: 5px 5px 15px rgba(255, 255, 255, 0.2) !important;
+}
+.login-container .login-box .login-form .login-logo .logo-text {
+  color: #d9d9d9 !important;
+}
+.login-container .login-box .login-form .login-btn .ant-btn-default {
+  color: #d9d9d9 !important;
+}
+/* container */
+.container {
+  /* sider */
+  /* layout */
+}
+.container .ant-layout-sider {
+  border-right: 1px solid #414243 !important;
+}
+.container .ant-layout-sider .ant-menu::-webkit-scrollbar {
+  background-color: #1f1f1f !important;
+}
+.container .ant-layout-sider .ant-menu::-webkit-scrollbar-thumb {
+  background-color: #686868 !important;
+}
+.container .ant-layout-sider .logo-box {
+  border-bottom: 1px solid #414243 !important;
+}
+.container .ant-layout {
+  background-color: #141414 !important;
+}
+.container .ant-layout .ant-layout-header,
+.container .ant-layout .tabs,
+.container .ant-layout .footer,
+.container .ant-layout .card {
+  background-color: #1f1f1f !important;
+  border-color: #414243 !important;
+}
+.container .ant-layout .ant-layout-header .text,
+.container .ant-layout .tabs .text,
+.container .ant-layout .footer .text,
+.container .ant-layout .card .text {
+  color: #d9d9d9 !important;
+}
+.container .ant-layout .ant-layout-header {
+  height: 55px;
+  padding: 0 40px 0 20px;
+}
+.container .ant-layout .ant-layout-header .icon-style,
+.container .ant-layout .ant-layout-header .username {
+  color: #d9d9d9 !important;
+}
+.container .ant-layout .footer a {
+  color: #d9d9d9 !important;
+}
+.container .ant-layout .ant-layout-content::-webkit-scrollbar {
+  background-color: #141414 !important;
+}
+.container .ant-layout .ant-layout-content::-webkit-scrollbar-thumb {
+  background-color: #686868 !important;
+}
+.container .ant-layout .ant-layout-content .card::-webkit-scrollbar {
+  background-color: #1f1f1f !important;
+}
+.container .ant-layout .ant-layout-content .card::-webkit-scrollbar-thumb {
+  background-color: #686868 !important;
+}
