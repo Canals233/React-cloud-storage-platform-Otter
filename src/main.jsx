@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import "@/styles/reset.less";
 import "@/assets/iconfont/iconfont.less";
 import "@/assets/fonts/font.less";
-// import "antd/dist/reset.css";
+// import "antd/dist/reset.css"; 
 import "@/styles/common.less";
 import "@/language/index";
 import "virtual:svg-icons-register";

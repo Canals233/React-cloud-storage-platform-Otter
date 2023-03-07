@@ -17,15 +17,6 @@ const dashboardRouter = [
                     title: "数据可视化",
                     key: "dataVisualize"
                 }
-            },
-            {
-                path: "/dashboard/embedded",
-                element: lazyLoad(React.lazy(() => import("@/views/dashboard/embedded/index"))),
-                meta: {
-                    requiresAuth: true,
-                    title: "内嵌页面",
-                    key: "embedded"
-                }
             }
         ]
     }

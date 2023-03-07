@@ -13,7 +13,7 @@ const Login = () => {
 				<div className="login-form">
 					<div className="login-logo">
 						<img className="login-icon" src={logo} alt="logo"/>
-						<span className="logo-text">Hooks-Admin</span>
+						<span className="logo-text">小水濑云科技</span>
 					</div>
 					<LoginForm />
 				</div>

@@ -32,7 +32,7 @@ const Theme = (props) => {
 					全局主题
 				</Divider>
 				<div className="theme-item">
-					<span>暗黑模式</span>
+					<span>夜晚模式</span>
 					<SwitchDark />
 				</div>
 				<div className="theme-item">
