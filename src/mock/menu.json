@@ -1,8 +1,13 @@
 [
     {
         "icon": "HomeOutlined",
-        "title": "首页",
-        "path": "/home/index"
+        "title": "概览",
+        "path": "/home"
+    },
+    {
+        "icon": "DatabaseOutlined",
+        "title": "存储桶列表",
+        "path": "/bucket"
     },
     {
         "icon": "TableOutlined",
@@ -119,7 +124,6 @@
             }
         ]
     },
-    
     {
         "icon": "ExclamationCircleOutlined",
         "title": "错误页面",
