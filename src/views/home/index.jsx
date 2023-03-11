@@ -14,7 +14,7 @@ const Home = () => {
 				<NestedCard children={mainChildren}></NestedCard>
 			</Card>
             
-            <Card title='基本使用统计' style={{marginTop:'1.5rem'}}>
+            <Card title='基本使用统计' style={{paddingTop:'1.5rem'}}>
             <NestedCard children={bucketChildren}></NestedCard>
             </Card>
             </>

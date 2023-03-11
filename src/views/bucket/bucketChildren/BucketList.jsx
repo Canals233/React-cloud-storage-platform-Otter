@@ -1,24 +1,57 @@
-import { Button, Card, Col, Row, Space } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import BucketlistCard from "../bucketListCard/BucketListCard";
+import BucketlistNav from "../bucketListNav/BucketListNav";
+
+const TableData = [
+	{
+		key: "1",
+		name: "John",
+		visiable: "私有读写",
+		time: "2023-03-09 16:19:02",
+	},
+	{
+		key: "2",
+		name: "Jim",
+		visiable: "公开读写",
+		time: "2023-03-09 16:17:54",
+	},
+	{
+		key: "3",
+		name: "Joe",
+		visiable: "公开读，私有写",
+		time: "2023-03-07 16:28:21",
+	},
+	{
+		key: "4",
+		name: "Canals",
+		visiable: "公开读，私有写",
+		time: "2023-03-08 16:28:21",
+	},
+];
 
 const Bucketlist = () => {
+	const [data, setData] = useState([]);
+	const [value, setValue] = useState();
+	const handleSearch = (newValue) => {
+		if (newValue) {
+			setData(["i am test data", "yeaaa"]);
+			// fetch(newValue, setData);
+		} else {
+			setData([]);
+		}
+	};
+	const handleChange = (newValue) => {
+		setValue(newValue);
+	};
 	return (
 		<>
-			<Row>
-				<Col span={8}>
-					<Space size={8}>
-						<Button type="primary">创建存储桶</Button>
-						<Button type="default">存储权限管理</Button>
-					</Space>
-				</Col>
-                {/* <Col span={8}>
-					<Space size={8}>
-						<Button type="primary">创建存储桶</Button>
-						<Button type="default">存储权限管理</Button>
-					</Space>
-				</Col> */}
-			</Row>
-			<Card>Hello 222l1</Card>
+			<BucketlistNav
+				value={value}
+				handleChange={handleChange}
+				handleSearch={handleSearch}
+			/>
+			<p style={{ height: ".25rem" }} />
+			<BucketlistCard TableData={TableData} />
 		</>
 	);
 };
