@@ -1,6 +1,6 @@
 import { Dropdown, Menu } from "antd";
 import { connect } from "react-redux";
-import { setLanguage } from "@/redux/modules/global/action";
+import { setLanguage } from "@/redux/modules/globalSlice";
 const Language = (props) => {
     const { language, setLanguage } = props;
     const menu = (<Menu items={[

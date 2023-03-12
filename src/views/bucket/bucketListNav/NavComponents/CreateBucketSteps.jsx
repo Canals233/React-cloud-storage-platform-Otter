@@ -2,6 +2,7 @@ import { Button, Divider, Steps } from "antd";
 import CreateStep1 from "./CreateStep1";
 
 const CreateBucketSteps = ({ handleCancel, current, setCurrent }) => {
+    //从上层传来的取消函数，以及当前进度和设置函数
 	const steps = [
 		{
 			title: "First",

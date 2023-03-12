@@ -14,6 +14,7 @@ const selectOptions = [
 ];
 
 const BucketlistNav = ({ value, handleChange, handleSearch }) => {
+    //这三个参数现在只是防止报错加上去的，暂时没有任何作用
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const showModal = () => {
 		setIsModalOpen(true);

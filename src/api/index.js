@@ -4,7 +4,7 @@ import { showFullScreenLoading, tryHideFullScreenLoading } from "@/config/servic
 import { ResultEnum } from "@/enums/httpEnum";
 import { checkStatus } from "./helper/checkStatus";
 import { AxiosCanceler } from "./helper/axiosCancel";
-import { setToken } from "@/redux/modules/global/action";
+import { setToken } from "@/redux/modules/globalSlice";
 import { message } from "antd";
 import { store } from "@/redux";
 const axiosCanceler = new AxiosCanceler();
@@ -49,7 +49,7 @@ class RequestHttp {
             tryHideFullScreenLoading();
             // * 登录失效（code == 599）
             if (data.code == ResultEnum.OVERDUE) {
-                store.dispatch(setToken(""));
+                setToken("");
                 message.error(data.msg);
                 window.location.hash = "/login";
                 return Promise.reject(data);

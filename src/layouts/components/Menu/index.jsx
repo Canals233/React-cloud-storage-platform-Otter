@@ -7,9 +7,9 @@ import {
 	handleRouter,
 	searchRoute,
 } from "@/utils/util";
-import { setMenuList } from "@/redux/modules/menu/action";
-import { setBreadcrumbList } from "@/redux/modules/breadcrumb/action";
-import { setAuthRouter } from "@/redux/modules/auth/action";
+import { setMenuList } from "@/redux/modules/menuSlice";
+import { setBreadcrumbList } from "@/redux/modules/breadcrumbSlice";
+import { setAuthRouter } from "@/redux/modules/authSlice";
 import { getMenuList } from "@/api/modules/login";
 import { connect } from "react-redux";
 import * as Icons from "@ant-design/icons";

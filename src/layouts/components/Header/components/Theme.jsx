@@ -2,8 +2,8 @@ import { Drawer, Divider, Switch } from "antd";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { FireOutlined, SettingOutlined } from "@ant-design/icons";
-import { setThemeConfig } from "@/redux/modules/global/action";
-import { updateCollapse } from "@/redux/modules/menu/action";
+import { setThemeConfig } from "@/redux/modules/globalSlice";
+import { updateCollapse } from "@/redux/modules/menuSlice";
 import SwitchDark from "@/components/SwitchDark";
 const Theme = (props) => {
     const [visible, setVisible] = useState(false);

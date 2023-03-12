@@ -2,6 +2,7 @@ import { Form, Input, Radio } from "antd";
 import { useState } from "react";
 
 const CreateStep1 = ({ userID }) => {
+    
 	// 定义校验规则
 	const [inputValue, setInputValue] = useState("");
 	const [inputError, setInputError] = useState("");

@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { loginApi } from "@/api/modules/login";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
-import { setToken } from "@/redux/modules/global/action";
+import { setToken } from "@/redux/modules/globalSlice";
 import { useTranslation } from "react-i18next";
-import { setTabsList } from "@/redux/modules/tabs/action";
+import { setTabsList } from "@/redux/modules/tabsSlice";
 import {
 	UserOutlined,
 	LockOutlined,
