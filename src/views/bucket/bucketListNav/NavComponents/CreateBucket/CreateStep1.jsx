@@ -1,9 +1,21 @@
 import { Form, Input, Radio } from "antd";
 import { useContext, useState } from "react";
+import { useSelector } from "react-redux";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 
 const CreateStep1 = ({ userID }) => {
 	const [bucket, setBucket] = useContext(CreateBucketContext);
+    const currentBucketlist=useSelector((state)=>state.bucket.bucketList)
+
+    const hasSameName=(name)=>{
+        for(let i=0;i<currentBucketlist.length;i++){
+            if(currentBucketlist[i].name===name){
+                return true
+            }
+        }
+        return false
+    }
+
 	// 定义校验规则
 	const [inputError, setInputError] = useState("");
 	const [radioText, setRadioText] = useState(
@@ -20,7 +32,10 @@ const CreateStep1 = ({ userID }) => {
 			setInputError("输入内容不能为空");
 		} else if (!regex.test(value)) {
 			setInputError("存储桶名称必须由数字、小写字母和 - 组成");
-		} else {
+		}else if  (hasSameName(value)){
+            setInputError("存储桶名称已存在，请重新输入")
+        }
+        else {
 			// console.log('can  ')
 			setInputError("");
 			createDisabled = false;
@@ -70,8 +85,8 @@ const CreateStep1 = ({ userID }) => {
 					onChange={handleRadioChange}
 				>
 					<Radio value="600"> 私有读写 </Radio>
-					<Radio value="644"> 公有读，私有写 </Radio>
-					<Radio value="666"> 公有读写 </Radio>
+					<Radio value="644"> 公开读，私有写 </Radio>
+					<Radio value="666"> 公开读写 </Radio>
 				</Radio.Group>
 
 				<p style={{ fontSize: "12px" }}>

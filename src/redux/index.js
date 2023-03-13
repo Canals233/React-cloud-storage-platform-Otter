@@ -23,6 +23,8 @@ const rootReducer = combineReducers({
 const persistConfig = {
 	key: "redux-state",
 	storage,//配置模式为storage模式
+    // debug:true
+    blacklist: ["bucket"],
 };
 
 

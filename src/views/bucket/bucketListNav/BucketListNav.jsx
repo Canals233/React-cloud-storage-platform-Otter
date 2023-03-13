@@ -20,12 +20,12 @@ const CreateWithProvider = () => {
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
-	const handleCancel = () => {
+	const handleModalClose = () => {
 		setIsModalOpen(false);
 	};
 	return (
 		<CreateBucketProvider>
-			<CreateBucketModal open={isModalOpen} handleCancel={handleCancel} />
+			<CreateBucketModal open={isModalOpen} handleModalClose={handleModalClose} />
 			<Space size={8}>
 				<Button type="primary" onClick={showModal}>
 					创建存储桶

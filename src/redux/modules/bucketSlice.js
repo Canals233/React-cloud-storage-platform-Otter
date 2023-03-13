@@ -1,17 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
 const bucketSlice = createSlice({
 	name: "bucket",
 	initialState: {
-		bucketList: [],
+		bucketList:[],
 	},
 	reducers: {
 		setBucketList(state, action) {
 			state.bucketList = action.payload;
 		},
+        addBucketList(state, action) {
+            state.bucketList.unshift(action.payload);
+        },
 	},
 });
 
-export const { setBucketList } = bucketSlice.actions;
+export const { setBucketList,addBucketList } = bucketSlice.actions;
 
 export default bucketSlice.reducer;

@@ -1,24 +1,37 @@
 import { Card, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import BucketlistCardActions from "./CardComponents/BucketListCardActions";
-const visiableFilterArray=[
-    {
-        text: "公开读写",
-        value: "公开读写",
-    },
-    {
-        text: "公开读，私有写",
-        value: "公开读，私有写",
-    },
-    {
-        text: "私有读写",
-        value: "私有读写",
-    },
-]
+const visiableFilterArray = [
+	{
+		text: "公开读写",
+		value: "666",
+	},
+	{
+		text: "公开读，私有写",
+		value: "644",
+	},
+	{
+		text: "私有读写",
+		value: "600",
+	},
+];
+
+const visiableRenderMap = (code) => {
+	let visiableStr = "";
+	if (code === "600") {
+		visiableStr = "私有读写";
+	} else if (code === "644") {
+		visiableStr = "公开读，私有写";
+	} else if (code === "666") {
+		visiableStr = "公开读写";
+	}
+	return <>{visiableStr}</>;
+};
+
 //这个组件是存储桶列表的卡片组件，包含了表格，表格的数据是从父组件传递过来的
 const BucketlistCard = ({ TableData }) => {
 	// 排序时候要注意，antd4的排序的参数是整行的数据对象，而不是单个数据，要访问属性后排序
-    
+
 	return (
 		<>
 			<Card>
@@ -33,13 +46,14 @@ const BucketlistCard = ({ TableData }) => {
 						}}
 					></Column>
 					<Column
-						title="访问"
+						title="访问权限"
 						dataIndex="visiable"
 						key="visiable"
 						filters={visiableFilterArray}
 						onFilter={(value, record) =>
 							record.visiable.indexOf(value) === 0
 						}
+						render={visiableRenderMap}
 					/>
 					<Column
 						title="创建时间"
