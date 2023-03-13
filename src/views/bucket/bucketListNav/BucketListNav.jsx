@@ -1,6 +1,7 @@
 import { Button, Col, Row, Select, Space } from "antd";
-import { useState } from "react";
-import CreateBucketModal from "./NavComponents/CreateBucketModal";
+import { PureComponent, useState } from "react";
+import CreateBucketModal from "./NavComponents/CreateBucket/CreateBucketModal";
+import {CreateBucketProvider} from "./provider/CreateBucketProvider";
 
 const selectOptions = [
 	{
@@ -13,8 +14,8 @@ const selectOptions = [
 	},
 ];
 
-const BucketlistNav = ({ value, handleChange, handleSearch }) => {
-    //这三个参数现在只是防止报错加上去的，暂时没有任何作用
+//用了provider，需要尽量保证数据不变
+const CreateWithProvider = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -23,16 +24,26 @@ const BucketlistNav = ({ value, handleChange, handleSearch }) => {
 		setIsModalOpen(false);
 	};
 	return (
-		<>
+		<CreateBucketProvider>
 			<CreateBucketModal open={isModalOpen} handleCancel={handleCancel} />
+			<Space size={8}>
+				<Button type="primary" onClick={showModal}>
+					创建存储桶
+				</Button>
+			</Space>
+		</CreateBucketProvider>
+	);
+}
+
+//这个是列表之前的按钮们
+const BucketlistNav = ({ value, handleChange, handleSearch }) => {
+	//这三个参数现在只是防止报错加上去的，暂时没有任何作用
+	return (
+		<>
 			<Row justify={"space-between"}>
 				<Col>
-					<Space size={8}>
-						<Button type="primary" onClick={showModal}>
-							创建存储桶
-						</Button>
-						<Button type="default">存储权限管理</Button>
-					</Space>
+					<CreateWithProvider />
+					<Button type="default">存储权限管理</Button>
 				</Col>
 				<Col>
 					<Space size={8}>

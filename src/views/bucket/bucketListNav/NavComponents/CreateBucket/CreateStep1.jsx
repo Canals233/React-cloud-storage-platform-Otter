@@ -1,8 +1,19 @@
 import { Form, Input, Radio } from "antd";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CreateBucketContext } from "../../provider/CreateBucketProvider";
+
+const visiableMap=(visiable)=>{
+    if (visiable === "私有读写") {
+        return 600;
+    } else if (visiable === "公有读，私有写") {
+        return 644;
+    } else if (visiable === "公有读写") {
+        return 666
+    }
+}
 
 const CreateStep1 = ({ userID }) => {
-    
+    const [bucket,setBucket]=useContext(CreateBucketContext)
 	// 定义校验规则
 	const [inputValue, setInputValue] = useState("");
 	const [inputError, setInputError] = useState("");
@@ -25,7 +36,9 @@ const CreateStep1 = ({ userID }) => {
 		} else {
 			setInputValue(value);
 			setInputError("");
+            setBucket({...bucket,name:value})
 		}
+        
 	};
 	const handleRadioChange = (event) => {
 		const value = event.target.value;
@@ -38,8 +51,8 @@ const CreateStep1 = ({ userID }) => {
 		} else if (value === "公有读写") {
 			newText = "所有人都可以读取和写入";
 		}
-
 		setRadioText(newText);
+        setBucket({...bucket,visiable:visiableMap(value)})
 		console.log(value, newText);
 	};
 

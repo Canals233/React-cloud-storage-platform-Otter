@@ -1,22 +1,34 @@
 import { Button, Divider, Steps } from "antd";
+import { useContext, useEffect, useState } from "react";
+import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 import CreateStep1 from "./CreateStep1";
+const steps = [
+    {
+        title: "First",
+        content: <CreateStep1 userID={"-testID123"} />,
+    },
+    {
+        title: "Second",
+        content: "Second-content",
+    },
+    {
+        title: "Last",
+        content: "Last-content",
+    },
+];
+
 
 const CreateBucketSteps = ({ handleCancel, current, setCurrent }) => {
     //从上层传来的取消函数，以及当前进度和设置函数
-	const steps = [
-		{
-			title: "First",
-			content: <CreateStep1 userID={"-testID123"} />,
-		},
-		{
-			title: "Second",
-			content: "Second-content",
-		},
-		{
-			title: "Last",
-			content: "Last-content",
-		},
-	];
+	const [bucket,setBucket]=useContext(CreateBucketContext)
+    const [disable,setDisable]=useState(true)
+    useEffect(()=>{
+        if(bucket.name){
+            setDisable(false)
+        }else{
+            setDisable(true)
+        }
+    },[bucket.name])
 	const next = () => {
 		setCurrent(current + 1);
 	};
@@ -58,7 +70,7 @@ const CreateBucketSteps = ({ handleCancel, current, setCurrent }) => {
 					</Button>
 				)}
 				{current < steps.length - 1 && (
-					<Button type="primary" onClick={() => next()}>
+					<Button type="primary" onClick={() => next()} disabled={disable}>
 						下一步
 					</Button>
 				)}
