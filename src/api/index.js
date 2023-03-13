@@ -49,7 +49,7 @@ class RequestHttp {
             tryHideFullScreenLoading();
             // * 登录失效（code == 599）
             if (data.code == ResultEnum.OVERDUE) {
-                setToken("");
+                store.dispatch(setToken(""));
                 message.error(data.msg);
                 window.location.hash = "/login";
                 return Promise.reject(data);

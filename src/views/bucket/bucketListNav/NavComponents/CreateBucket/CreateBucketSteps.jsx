@@ -3,32 +3,28 @@ import { useContext, useEffect, useState } from "react";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 import CreateStep1 from "./CreateStep1";
 const steps = [
-    {
-        title: "First",
-        content: <CreateStep1 userID={"-testID123"} />,
-    },
-    {
-        title: "Second",
-        content: "Second-content",
-    },
-    {
-        title: "Last",
-        content: "Last-content",
-    },
+	{
+		title: "First",
+		content: <CreateStep1 userID={"-testID123"} />,
+	},
+	{
+		title: "Second",
+		content: "Second-content",
+	},
+	{
+		title: "Last",
+		content: "Last-content",
+	},
 ];
 
-
-const CreateBucketSteps = ({ handleCancel, current, setCurrent }) => {
-    //从上层传来的取消函数，以及当前进度和设置函数
-	const [bucket,setBucket]=useContext(CreateBucketContext)
-    const [disable,setDisable]=useState(true)
-    useEffect(()=>{
-        if(bucket.name){
-            setDisable(false)
-        }else{
-            setDisable(true)
-        }
-    },[bucket.name])
+const CreateBucketSteps = ({ restartCreate, current, setCurrent }) => {
+	//从上层传来的取消函数，以及当前进度和设置函数
+	const [bucket, setBucket] = useContext(CreateBucketContext);
+	const [disabled, setDisabled] = useState(true);
+	useEffect(() => {
+		setDisabled(bucket.createDisabled);
+		// console.log(bucket)
+	}, [bucket.createDisabled]);
 	const next = () => {
 		setCurrent(current + 1);
 	};
@@ -54,7 +50,7 @@ const CreateBucketSteps = ({ handleCancel, current, setCurrent }) => {
 							margin: "0 8px",
 						}}
 						type="default"
-						onClick={handleCancel}
+						onClick={restartCreate}
 					>
 						取消
 					</Button>
@@ -70,12 +66,16 @@ const CreateBucketSteps = ({ handleCancel, current, setCurrent }) => {
 					</Button>
 				)}
 				{current < steps.length - 1 && (
-					<Button type="primary" onClick={() => next()} disabled={disable}>
+					<Button
+						type="primary"
+						onClick={() => next()}
+						disabled={disabled}
+					>
 						下一步
 					</Button>
 				)}
 				{current === steps.length - 1 && (
-					<Button type="primary" onClick={handleCancel}>
+					<Button type="primary" onClick={restartCreate}>
 						创建
 					</Button>
 				)}

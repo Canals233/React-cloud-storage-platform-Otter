@@ -7,6 +7,7 @@ import menuReducer from "./modules/menuSlice";
 import tabsReducer from "./modules/tabsSlice";
 import authReducer from "./modules/authSlice";
 import breadcrumbReducer from "./modules/breadcrumbSlice";
+import bucketReducer from "./modules/bucketSlice";
 
 // 创建reducer(合并reducer)
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
 	tabs: tabsReducer,
 	auth: authReducer,
 	breadcrumb: breadcrumbReducer,
+    bucket: bucketReducer,
 });
 
 // redux 持久化配置
