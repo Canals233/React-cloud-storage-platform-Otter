@@ -28,9 +28,9 @@ const styles = {
 	},
 };
 
-const ChangeAuthContent = ({selectedRowKeys,setSelectedRowKeys,onCancel}) => {
+const ChangeAuthContent = ({selectedRowKeys,setSelectedRowKeys,selectedBuckets,setSelectedBuckets,onCancel}) => {
 	const tableData = useSelector(selectAllBucketList);
-	const [selectedBuckets, setSelectedBuckets] = useState([]); //快速展示选中的桶
+	
 	
 	// rowSelection object indicates the need for row selection
     
