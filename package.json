@@ -34,6 +34,7 @@
         "nanoid": "^4.0.1",
         "nprogress": "^0.2.0",
         "qs": "^6.11.0",
+        "rc-virtual-list": "^3.4.13",
         "react": "^18.2.0",
         "react-activation": "^0.12.2",
         "react-dom": "^18.2.0",

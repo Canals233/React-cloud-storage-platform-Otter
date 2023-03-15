@@ -11,7 +11,7 @@ import Bucketlist from "./bucketChildren/BucketList/BucketList";
 
 const Bucket = () => {
 	const dispatch = useDispatch();
-    //这一段是比较糟糕的代码，注意后面优化，不应该通过引入较大的已有数据来实现
+	//这一段是比较糟糕的代码，注意后面优化，不应该通过引入较大的已有数据来实现
 	const bucketList = useSelector((state) => {
 		// console.log(state)
 		return state.bucket.bucketList;

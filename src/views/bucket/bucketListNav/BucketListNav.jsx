@@ -1,7 +1,8 @@
 import { Button, Col, Row, Select, Space } from "antd";
 import { PureComponent, useState } from "react";
+import ChangeAuthModal from "./NavComponents/ChangeAuth/ChangeAuthModal";
 import CreateBucketModal from "./NavComponents/CreateBucket/CreateBucketModal";
-import {CreateBucketProvider} from "./provider/CreateBucketProvider";
+import { CreateBucketProvider } from "./provider/CreateBucketProvider";
 
 const selectOptions = [
 	{
@@ -16,24 +17,48 @@ const selectOptions = [
 
 //用了provider，需要尽量保证数据不变
 const CreateWithProvider = () => {
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const showModal = () => {
-		setIsModalOpen(true);
+	const [isCreateOpen, setIsCreateOpen] = useState(false);
+	const showCreate = () => {
+		setIsCreateOpen(true);
 	};
-	const handleModalClose = () => {
-		setIsModalOpen(false);
+	const handleCreateClose = () => {
+		setIsCreateOpen(false);
 	};
 	return (
 		<CreateBucketProvider>
-			<CreateBucketModal open={isModalOpen} handleModalClose={handleModalClose} />
+			<CreateBucketModal
+				open={isCreateOpen}
+				handleModalClose={handleCreateClose}
+			/>
 			<Space size={8}>
-				<Button type="primary" onClick={showModal}>
+				<Button type="primary" onClick={showCreate}>
 					创建存储桶
 				</Button>
 			</Space>
 		</CreateBucketProvider>
 	);
-}
+};
+
+const ChangeAuthbutton = () => {
+	const [isChangeAuthOpen, setIsChangeAuthOpen] = useState(false);
+	const showChangeAuth = () => {
+		setIsChangeAuthOpen(true);
+	};
+	const handleChangeAuthClose = () => {
+		setIsChangeAuthOpen(false);
+	};
+	return (
+		<>
+			<ChangeAuthModal
+				open={isChangeAuthOpen}
+				handleModalClose={handleChangeAuthClose}
+			/>
+			<Button type="default" onClick={showChangeAuth}>
+				访问权限管理
+			</Button>
+		</>
+	);
+};
 
 //这个是列表之前的按钮们
 const BucketlistNav = ({ value, handleChange, handleSearch }) => {
@@ -42,8 +67,10 @@ const BucketlistNav = ({ value, handleChange, handleSearch }) => {
 		<>
 			<Row justify={"space-between"}>
 				<Col>
-					<CreateWithProvider />
-					<Button type="default">存储权限管理</Button>
+					<Space size={8}>
+						<CreateWithProvider />
+						<ChangeAuthbutton />
+					</Space>
 				</Col>
 				<Col>
 					<Space size={8}>
