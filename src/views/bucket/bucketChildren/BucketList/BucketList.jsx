@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectAllBucketList } from "../../../../redux/modules/bucketSlice";
 import BucketlistCard from "../../bucketListCard/BucketListCard";
 import BucketlistNav from "../../bucketListNav/BucketListNav";
 
@@ -7,10 +8,7 @@ import BucketlistNav from "../../bucketListNav/BucketListNav";
 
 const Bucketlist = () => {
     
-    const bucketList=useSelector((state)=>{
-        // console.log(state)
-        return  state.bucket.bucketList
-    })
+    const bucketList=useSelector(selectAllBucketList)
 	const [data, setData] = useState([]);
 	const [value, setValue] = useState();
 	const handleSearch = (newValue) => {

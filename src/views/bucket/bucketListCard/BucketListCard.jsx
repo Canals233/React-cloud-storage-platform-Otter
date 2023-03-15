@@ -16,17 +16,7 @@ const visiableFilterArray = [
 	},
 ];
 
-const visiableRenderMap = (code) => {
-	let visiableStr = "";
-	if (code === "600") {
-		visiableStr = "私有读写";
-	} else if (code === "644") {
-		visiableStr = "公开读，私有写";
-	} else if (code === "666") {
-		visiableStr = "公开读写";
-	}
-	return <>{visiableStr}</>;
-};
+import { visiableRenderMap } from "@/views/bucket/api/bucketApi.jsx";
 
 //这个组件是存储桶列表的卡片组件，包含了表格，表格的数据是从父组件传递过来的
 const BucketlistCard = ({ TableData }) => {
@@ -34,7 +24,7 @@ const BucketlistCard = ({ TableData }) => {
 
 	return (
 		<>
-			<Card>
+			
 				<Table dataSource={TableData}>
 					<Column
 						title="存储桶名称"
@@ -68,12 +58,12 @@ const BucketlistCard = ({ TableData }) => {
 					<Column
 						title="操作"
 						key="action"
-						render={(_, record) => {
+						render={() => {
 							return <BucketlistCardActions />;
 						}}
 					/>
 				</Table>
-			</Card>
+			
 		</>
 	);
 };

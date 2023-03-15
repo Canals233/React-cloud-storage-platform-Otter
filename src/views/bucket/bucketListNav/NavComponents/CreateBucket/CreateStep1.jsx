@@ -1,29 +1,28 @@
 import { Form, Input, Radio } from "antd";
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
+import { selectAllBucketList } from "../../../../../redux/modules/bucketSlice";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 
 const CreateStep1 = ({ userID }) => {
 	const [bucket, setBucket] = useContext(CreateBucketContext);
-    const currentBucketlist=useSelector((state)=>state.bucket.bucketList)
+	const currentBucketlist = useSelector(selectAllBucketList);
 
-    const hasSameName=(name)=>{
-        for(let i=0;i<currentBucketlist.length;i++){
-            if(currentBucketlist[i].name===name){
-                return true
-            }
-        }
-        return false
-    }
+	const hasSameName = (name) => {
+		for (let i = 0; i < currentBucketlist.length; i++) {
+			if (currentBucketlist[i].name === name) {
+				return true;
+			}
+		}
+		return false;
+	};
 
 	// 定义校验规则
 	const [inputError, setInputError] = useState("");
 	const [radioText, setRadioText] = useState(
 		"只有创建者和授权用户才能对进行读写操作。"
 	);
-	//下面的代码还没写已经同名的情况
-	//下面的代码还没写已经同名的情况
-	//下面的代码还没写已经同名的情况
+
 	const handleInputChange = (event) => {
 		const value = event.target.value;
 		const regex = /^[a-z0-9-]{0,21}$/;
@@ -32,11 +31,9 @@ const CreateStep1 = ({ userID }) => {
 			setInputError("输入内容不能为空");
 		} else if (!regex.test(value)) {
 			setInputError("存储桶名称必须由数字、小写字母和 - 组成");
-		}else if  (hasSameName(value)){
-            setInputError("存储桶名称已存在，请重新输入")
-        }
-        else {
-			// console.log('can  ')
+		} else if (hasSameName(value + "-" + userID)) {
+			setInputError("存储桶名称已存在，请重新输入");
+		} else {
 			setInputError("");
 			createDisabled = false;
 		}
@@ -71,7 +68,7 @@ const CreateStep1 = ({ userID }) => {
 					onChange={handleInputChange}
 					maxLength={21}
 					placeholder="请输入存储桶名称"
-					addonAfter={"" + userID}
+					addonAfter={"-" + userID}
 				/>
 				<p style={{ fontSize: "12px", color: "gray" }}>
 					还能输入 {21 - bucket.name.length}{" "}

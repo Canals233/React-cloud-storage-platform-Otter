@@ -17,6 +17,8 @@ const bucketSlice = createSlice({
 	},
 });
 
+export const selectAllBucketList = (state) => state.bucket.bucketList;
+
 export const { setBucketList,addBucketList } = bucketSlice.actions;
 
 export default bucketSlice.reducer;

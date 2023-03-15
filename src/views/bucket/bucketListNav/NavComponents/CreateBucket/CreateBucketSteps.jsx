@@ -6,11 +6,11 @@ import CreateStep1 from "./CreateStep1";
 import {addBucketList} from '@/redux/modules/bucketSlice'
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
-
+const testUserID = "testID123";
 const steps = [
 	{
 		title: "基本信息",
-		content: <CreateStep1 userID={"-testID123"} />,
+		content: <CreateStep1 userID={testUserID} />,
 	},
 
 	{
@@ -42,6 +42,7 @@ const CreateBucketSteps = ({ restartCreate, current, setCurrent }) => {
         const formattedDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
         dispatch(addBucketList({
             ...bucket,
+            name:bucket.name+'-'+testUserID,
             time:formattedDate,
             key:nanoid()
         }))
