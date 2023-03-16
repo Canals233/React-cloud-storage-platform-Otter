@@ -1,12 +1,21 @@
 import { Form, Input, Radio } from "antd";
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectAllBucketList } from "../../../../../redux/modules/bucketSlice";
+import { selectAllBucketList } from "@/redux/modules/bucketSlice";
+import { radioTextMap } from "@/views/bucket/api/bucketApi";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
+
+
 
 const CreateStep1 = ({ userID }) => {
 	const [bucket, setBucket] = useContext(CreateBucketContext);
 	const currentBucketlist = useSelector(selectAllBucketList);
+
+	// 定义校验规则
+	const [inputError, setInputError] = useState("");
+	const [radioText, setRadioText] = useState(
+		"只有创建者和授权用户才能对进行读写操作。"
+	);
 
 	const hasSameName = (name) => {
 		for (let i = 0; i < currentBucketlist.length; i++) {
@@ -16,12 +25,6 @@ const CreateStep1 = ({ userID }) => {
 		}
 		return false;
 	};
-
-	// 定义校验规则
-	const [inputError, setInputError] = useState("");
-	const [radioText, setRadioText] = useState(
-		"只有创建者和授权用户才能对进行读写操作。"
-	);
 
 	const handleInputChange = (event) => {
 		const value = event.target.value;
@@ -41,18 +44,9 @@ const CreateStep1 = ({ userID }) => {
 	};
 	const handleRadioChange = (event) => {
 		const value = event.target.value;
-		let newText = "";
-		//和linux的读写权限一样
-		if (value === "600") {
-			newText = "只有创建者和授权用户才能对进行读写操作。";
-		} else if (value === "644") {
-			newText = "所有人都可以读取，但只有创建者和授权用户才能写入";
-		} else if (value === "666") {
-			newText = "所有人都可以读取和写入";
-		}
-		setRadioText(newText);
+		setRadioText(radioTextMap(value));
 		setBucket({ ...bucket, visiable: value });
-		console.log(value, newText);
+		// console.log(value, newText);
 	};
 
 	return (

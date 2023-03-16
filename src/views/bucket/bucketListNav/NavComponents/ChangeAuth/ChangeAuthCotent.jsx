@@ -1,4 +1,4 @@
-import { Divider, Radio, Space, Table } from "antd";
+import { Divider, Form, Radio, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllBucketList } from "../../../../../redux/modules/bucketSlice";
@@ -28,12 +28,17 @@ const styles = {
 	},
 };
 
-const ChangeAuthContent = ({selectedRowKeys,setSelectedRowKeys,selectedBuckets,setSelectedBuckets,onCancel}) => {
+const ChangeAuthContent = ({
+	selectedRowKeys,
+	setSelectedRowKeys,
+	selectedBuckets,
+	setSelectedBuckets,
+	onCancel,
+}) => {
 	const tableData = useSelector(selectAllBucketList);
-	
-	
+
 	// rowSelection object indicates the need for row selection
-    
+
 	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(
@@ -76,33 +81,64 @@ const ChangeAuthContent = ({selectedRowKeys,setSelectedRowKeys,selectedBuckets,s
 	];
 
 	return (
-		<>
-        <Space direction="horizontal" size={32}>
-			<div>
-				<Table
-					rowSelection={{
-						...rowSelection,
-						selectedRowKeys: selectedRowKeys,
+		<Space size={16} direction="vertical">
+			<Space direction="horizontal" size={32}>
+				<div>
+					<p
+						style={{
+							fontWeight: 600,
+						}}
+					>
+						选择存储桶 (共{tableData.length}个)
+					</p>
+					<Table
+						rowSelection={{
+							...rowSelection,
+							selectedRowKeys: selectedRowKeys,
+						}}
+						columns={columns}
+						dataSource={tableData}
+						bordered
+						pagination={false}
+						scroll={{ y: 426 }}
+						style={styles.tableWrapper}
+					/>
+				</div>
+				<div>
+					<p
+						style={{
+							fontWeight: 600,
+						}}
+					>
+						已选择({selectedBuckets.length}个)
+					</p>
+					<Table
+						columns={resultColumns}
+						dataSource={selectedBuckets}
+						bordered
+						pagination={false}
+						scroll={{ y: 426 }}
+						style={styles.tableWrapper}
+					/>
+				</div>
+			</Space>
+			<Form>
+				<Form.Item
+					label="访问权限"
+					style={{
+						fontWeight: 600,
 					}}
-					columns={columns}
-					dataSource={tableData}
-					bordered
-					pagination={false}
-					scroll={{ y: 426 }}
-					style={styles.tableWrapper}
-				/>
-			</div>
-			<Table
-				columns={resultColumns}
-				dataSource={selectedBuckets}
-				bordered
-				pagination={false}
-				scroll={{ y: 426 }}
-				style={styles.tableWrapper}
-			/>
+				>
+					<Radio.Group style={{
+                        fontWeight:500
+                    }}>
+						<Radio value="600"> 私有读写 </Radio>
+						<Radio value="644"> 公开读，私有写 </Radio>
+						<Radio value="666"> 公开读写 </Radio>
+					</Radio.Group>
+				</Form.Item>
+			</Form>
 		</Space>
-        </>
-
 	);
 };
 
