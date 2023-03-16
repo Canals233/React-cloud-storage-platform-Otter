@@ -1,19 +1,11 @@
-import { Button, Col, Row, Select, Space } from "antd";
-import { PureComponent, useState } from "react";
+import { Button, Col, Row,  Space } from "antd";
+import { useState } from "react";
 import ChangeAuthModal from "./NavComponents/ChangeAuth/ChangeAuthModal";
 import CreateBucketModal from "./NavComponents/CreateBucket/CreateBucketModal";
+import SearchBucket from "../components/SearchBucket";
 import { CreateBucketProvider } from "./provider/CreateBucketProvider";
 
-const selectOptions = [
-	{
-		value: "name",
-		label: "按名称搜索",
-	},
-	{
-		value: "tag",
-		label: "按标签搜索",
-	},
-];
+
 
 //用了provider，需要尽量保证数据不变
 const CreateWithProvider = () => {
@@ -61,8 +53,8 @@ const ChangeAuthbutton = () => {
 };
 
 //这个是列表之前的按钮们
-const BucketlistNav = ({ value, handleChange, handleSearch }) => {
-	//这三个参数现在只是防止报错加上去的，暂时没有任何作用
+const BucketlistNav = ({ setResult}) => {
+
 	return (
 		<>
 			<Row justify={"space-between"}>
@@ -74,28 +66,9 @@ const BucketlistNav = ({ value, handleChange, handleSearch }) => {
 				</Col>
 				<Col>
 					<Space size={8}>
-						<Select
-							defaultValue="name"
-							style={{
-								width: 120,
-							}}
-							// onChange={handleChange}
-							options={selectOptions}
-						/>
-						<Select
-							showSearch
-							value={value}
-							placeholder={"请输入搜索内容"}
-							defaultActiveFirstOption={false}
-							showArrow={false}
-							filterOption={false}
-							onSearch={handleSearch}
-							onChange={handleChange}
-							notFoundContent={null}
-							style={{
-								width: "15rem",
-							}}
-						/>
+						<SearchBucket
+                        setResult={setResult}
+                        />
 					</Space>
 				</Col>
 			</Row>

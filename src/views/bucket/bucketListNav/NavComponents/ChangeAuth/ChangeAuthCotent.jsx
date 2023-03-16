@@ -1,10 +1,11 @@
-import { Button, Form, Space, Table,message } from "antd";
+import { Button, Form, Space, Table, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap, visiableRenderMap } from "@/views/bucket/api/bucketApi";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import { changeBucketsAuth } from "@/redux/modules/bucketSlice";
+import SearchBucket from "../../../components/SearchBucket";
 const columns = [
 	{
 		title: "存储桶名称",
@@ -28,19 +29,37 @@ const styles = {
 		border: "1px solid #e8e8e8", // 调整 Table 组件的 border 样式
 	},
 };
-
+const warning = () => {
+	Modal.warning({
+		title: "提示",
+		content: (
+			<div>
+				注意：公有读权限可以通过匿名身份直接读取您存储桶中的数据，存在一定的安全风险，为确保您的数据安全，不推荐此配置，建议您选择私有。
+			</div>
+		),
+		onOk() {},
+		zIndex: 10001,
+		width: 600,
+	});
+};
 const ChangeAuthContent = ({
 	selectedRowKeys,
 	setSelectedRowKeys,
 	selectedBuckets,
 	setSelectedBuckets,
-    radioValue,
-    setRadioValue,
+	radioValue,
+	setRadioValue,
 	onCancel,
 }) => {
 	const dispath = useDispatch();
-	const tableData = useSelector(selectAllBucketList);
+    const  [tableData,setTableData]=useState([])
+    let newBucketData=useSelector(selectAllBucketList)
+    useEffect(()=>{
+        setTableData([...newBucketData].sort((a,b)=> a.name.localeCompare(b.name)))
+    },[newBucketData])
 	
+      
+
 	const [radioText, setRadioText] = useState(
 		"只有创建者和授权用户才能对进行读写操作。"
 	);
@@ -88,11 +107,16 @@ const ChangeAuthContent = ({
 	};
 	const handleComfirm = () => {
 		dispath(changeBucketsAuth([selectedRowKeys, radioValue]));
-        message.info(`更改了${selectedRowKeys.length}个存储桶的访问权限`);
+		message.info(`更改了${selectedRowKeys.length}个存储桶的访问权限`);
 		onCancel();
 	};
+
 	const handleRadioChange = (event) => {
 		const value = event.target.value;
+
+		if (value === "644" || value === "666") {
+			warning();
+		}
 		setRadioValue(value);
 		setRadioText(radioTextMap(value));
 		// console.log(value, newText);
@@ -109,6 +133,16 @@ const ChangeAuthContent = ({
 					>
 						选择存储桶 (共{tableData.length}个)
 					</p>
+					<SearchBucket
+						
+						showSearchMode={false}
+                        searchBarStyle={{
+                            width: 400,
+                            marginBottom: 10,
+                        }}
+                        setResult={setTableData}
+					/>
+
 					<Table
 						size="small"
 						rowSelection={{
@@ -119,8 +153,12 @@ const ChangeAuthContent = ({
 						dataSource={tableData}
 						bordered
 						pagination={false}
-						scroll={{ y: 310 }}
-						style={styles.tableWrapper}
+						scroll={{ y: 310-42 }}
+						style={{
+                            ...styles.tableWrapper,
+                            height:350-42
+                        }}
+
 					/>
 				</div>
 				<div>
@@ -139,6 +177,7 @@ const ChangeAuthContent = ({
 						pagination={false}
 						scroll={{ y: 310 }}
 						style={styles.tableWrapper}
+                    
 					/>
 				</div>
 			</Space>
@@ -163,7 +202,11 @@ const ChangeAuthContent = ({
 				}}
 			>
 				<Space size={8}>
-					<Button type="primary" onClick={handleComfirm}>
+					<Button
+						type="primary"
+						onClick={handleComfirm}
+						disabled={selectedBuckets.length === 0}
+					>
 						确定
 					</Button>
 					<Button onClick={onCancel}>取消</Button>

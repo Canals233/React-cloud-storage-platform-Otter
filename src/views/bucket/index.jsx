@@ -1,8 +1,11 @@
 import { PageHeader, Tabs } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { mockBucketlist } from "../../mock/mockBucketlist";
-import { selectAllBucketList, setBucketList } from "../../redux/modules/bucketSlice";
+import { mockBucketlist } from "@/mock/mockBucketlist";
+import {
+	selectAllBucketList,
+	setBucketList,
+} from "@/redux/modules/bucketSlice";
 import Bucketlist from "./bucketChildren/BucketList/BucketList";
 
 //下面的代码记得放在BucketList里面，现在是因为Tabs的渲染问题在另一个文件写热更新不了才这样写

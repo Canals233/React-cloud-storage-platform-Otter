@@ -7,27 +7,20 @@ import BucketlistNav from "../../bucketListNav/BucketListNav";
 
 
 const Bucketlist = () => {
+    const [bucketList,setBucketList]=useState([])
+    let  newBucketData=useSelector(selectAllBucketList)
+    useEffect(()=>{
+        console.log('hi change')
+        setBucketList([...newBucketData].sort((a,b)=> a.name.localeCompare(b.name)))
+    },[newBucketData])
     
-    const bucketList=useSelector(selectAllBucketList)
-	const [data, setData] = useState([]);
-	const [value, setValue] = useState();
-	const handleSearch = (newValue) => {
-		if (newValue) {
-			setData(["i am test data", "yeaaa"]);
-			// fetch(newValue, setData);
-		} else {
-			setData([]);
-		}
-	};
-	const handleChange = (newValue) => {
-		setValue(newValue);
-	};
+    
+
 	return (
 		<>
 			<BucketlistNav
-				value={value}
-				handleChange={handleChange}
-				handleSearch={handleSearch}
+				
+				setResult={setBucketList}
 			/>
 			<p style={{ height: ".25rem" }} />
 			<BucketlistCard TableData={bucketList} />
