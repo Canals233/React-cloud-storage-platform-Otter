@@ -1,11 +1,10 @@
-import { Form, Input, Radio } from "antd";
+import { Form, Input } from "antd";
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap } from "@/views/bucket/api/bucketApi";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
-
-
+import AuthRadio from "@/views/bucket/components/AuthRadio";
 
 const CreateStep1 = ({ userID }) => {
 	const [bucket, setBucket] = useContext(CreateBucketContext);
@@ -71,26 +70,11 @@ const CreateStep1 = ({ userID }) => {
 				</p>
 			</Form.Item>
 			<Form.Item label="访问权限" style={{ marginLeft: ".75rem" }}>
-				<Radio.Group
-					value={bucket.visiable}
-					onChange={handleRadioChange}
-				>
-					<Radio value="600"> 私有读写 </Radio>
-					<Radio value="644"> 公开读，私有写 </Radio>
-					<Radio value="666"> 公开读写 </Radio>
-				</Radio.Group>
-
-				<p style={{ fontSize: "12px" }}>
-					<span
-						style={
-							bucket.visiable === "600"
-								? { color: "gray" }
-								: { color: "red" }
-						}
-					>
-						{radioText}
-					</span>
-				</p>
+				<AuthRadio
+					authValue={bucket.visiable}
+					radioText={radioText}
+					handleRadioChange={handleRadioChange}
+				/>
 			</Form.Item>
 		</Form>
 	);

@@ -53,7 +53,7 @@ const BucketlistCard = ({ TableData }) => {
 							if (a.time === b.time) return 0;
 							return a.time > b.time ? 1 : -1;
 						}}
-						defaultSortOrder={"descend"}
+			
 					/>
 					<Column
 						title="操作"
