@@ -19,11 +19,11 @@ const steps = [
 	},
 ];
 
-const CreateBucketSteps = ({ restartCreate, current, setCurrent }) => {
+const CreateBucketSteps = () => {
 	//从上层传来的取消函数，以及当前进度和设置函数
     const dispatch=useDispatch()
 
-	const [bucket, setBucket] = useContext(CreateBucketContext);
+	const {bucket,current,setCurrent,restartCreate} = useContext(CreateBucketContext);
 	const [disabled, setDisabled] = useState(true);
 	useEffect(() => {
 		setDisabled(bucket.createDisabled);

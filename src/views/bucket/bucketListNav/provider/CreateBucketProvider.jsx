@@ -7,6 +7,8 @@ const CreateBucketProvider = ({ children }) => {
         name:'',
         createDisabled:true,
 	});
+    const [current, setCurrent] = React.useState(0);
+    const [modalOpen, setModalOpen] = React.useState(false);
     const cleanCreate=()=>{
         setBucket({
             visiable: '600',
@@ -14,9 +16,20 @@ const CreateBucketProvider = ({ children }) => {
             createDisabled:true,
         })
     }
+    const restartCreate=()=>{
+        setModalOpen(false);
+		setCurrent(0);
+		cleanCreate();
+    }
 	//用provider 这样就可以在外面存数据了
 	return (
-		<CreateBucketContext.Provider value={[ bucket, setBucket,cleanCreate ]}>
+		<CreateBucketContext.Provider value={{ bucket, setBucket,current,
+        setCurrent,
+        modalOpen,
+        setModalOpen,
+        cleanCreate,
+        restartCreate
+        }}>
 			{children}
 		</CreateBucketContext.Provider>
 	);

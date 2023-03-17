@@ -1,33 +1,15 @@
 import { Button, Col, Row, Space } from "antd";
-import { useState } from "react";
+import {  useState } from "react";
 import ChangeAuthModal from "./NavComponents/ChangeAuth/ChangeAuthModal";
-import CreateBucketModal from "./NavComponents/CreateBucket/CreateBucketModal";
+
 import SearchBucket from "../components/SearchBucket";
-import { CreateBucketProvider } from "./provider/CreateBucketProvider";
+import {
+	
+	CreateBucketProvider,
+} from "./provider/CreateBucketProvider";
+import CreateBucketContent from "./NavComponents/CreateBucket/CreateBucketContent";
 
 //用了provider，需要尽量保证数据不变
-const CreateWithProvider = () => {
-	const [isCreateOpen, setIsCreateOpen] = useState(false);
-	const showCreate = () => {
-		setIsCreateOpen(true);
-	};
-	const handleCreateClose = () => {
-		setIsCreateOpen(false);
-	};
-	return (
-		<CreateBucketProvider>
-			<CreateBucketModal
-				open={isCreateOpen}
-				handleModalClose={handleCreateClose}
-			/>
-			<Space size={8}>
-				<Button type="primary" onClick={showCreate}>
-					创建存储桶
-				</Button>
-			</Space>
-		</CreateBucketProvider>
-	);
-};
 
 const ChangeAuthbutton = () => {
 	const [isChangeAuthOpen, setIsChangeAuthOpen] = useState(false);
@@ -57,7 +39,9 @@ const BucketlistNav = ({ setResult }) => {
 			<Row justify={"space-between"}>
 				<Col>
 					<Space size={8}>
-						<CreateWithProvider />
+						<CreateBucketProvider>
+							<CreateBucketContent />
+						</CreateBucketProvider>
 						<ChangeAuthbutton />
 					</Space>
 				</Col>
