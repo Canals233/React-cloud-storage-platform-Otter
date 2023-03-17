@@ -6,6 +6,7 @@ import { radioTextMap } from "@/views/bucket/api/bucketApi";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import { showWarning } from "../../../api/bucketApi";
+import CreateBucketTags from "./CreateBucketTags";
 
 const CreateStep1 = ({ userID }) => {
 	const { bucket, setBucket } = useContext(CreateBucketContext);
@@ -83,6 +84,9 @@ const CreateStep1 = ({ userID }) => {
 					radioText={radioText}
 					handleRadioChange={handleRadioChange}
 				/>
+			</Form.Item>
+            <Form.Item label="存储桶标签" style={{ marginLeft: ".75rem" }}>
+				<CreateBucketTags/>
 			</Form.Item>
 		</Form>
 	);
