@@ -5,6 +5,7 @@ import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap } from "@/views/bucket/api/bucketApi";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
+import { showWarning } from "../../../api/bucketApi";
 
 const CreateStep1 = ({ userID }) => {
 	const [bucket, setBucket] = useContext(CreateBucketContext);
@@ -43,7 +44,14 @@ const CreateStep1 = ({ userID }) => {
 	};
 	const handleRadioChange = (event) => {
 		const value = event.target.value;
+        if (value === "644" || value === "666") {
+			showWarning(
+				"提示",
+				"注意：公有读权限可以通过匿名身份直接读取您存储桶中的数据，存在一定的安全风险，为确保您的数据安全，不推荐此配置，建议您选择私有。"
+			);
+		}
 		setRadioText(radioTextMap(value));
+        
 		setBucket({ ...bucket, visiable: value });
 		// console.log(value, newText);
 	};

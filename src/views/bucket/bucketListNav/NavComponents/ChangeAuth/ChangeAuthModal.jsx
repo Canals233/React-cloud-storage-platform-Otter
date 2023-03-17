@@ -20,9 +20,9 @@ const ChangeAuthModal = ({ open, handleModalClose }) => {
 			open={open}
 			onCancel={handleCancel}
 			footer={[]}
-			width={900} // 设置宽度为 800px
-			height={600} // 设置高度为 600px
-			zIndex={10001}
+			width={900} 
+			height={600} 
+			zIndex={999}//低于1005，不然搜索框的下拉框会被遮挡
 			style={{
 				top: 20,
 			}}

@@ -4,24 +4,19 @@ import { selectAllBucketList } from "../../../../redux/modules/bucketSlice";
 import BucketlistCard from "../../bucketListCard/BucketListCard";
 import BucketlistNav from "../../bucketListNav/BucketListNav";
 
-
-
 const Bucketlist = () => {
-    const [bucketList,setBucketList]=useState([])
-    let  newBucketData=useSelector(selectAllBucketList)
-    useEffect(()=>{
-        console.log('hi change')
-        setBucketList([...newBucketData].sort((a,b)=> a.name.localeCompare(b.name)))
-    },[newBucketData])
-    
-    
+	const [bucketList, setBucketList] = useState([]);
+	let newBucketData = useSelector(selectAllBucketList);
+	useEffect(() => {
+		console.log("hi change");
+		setBucketList(
+			[...newBucketData].sort((a, b) => a.name.localeCompare(b.name))
+		);
+	}, [newBucketData]);
 
 	return (
 		<>
-			<BucketlistNav
-				
-				setResult={setBucketList}
-			/>
+			<BucketlistNav setResult={setBucketList} />
 			<p style={{ height: ".25rem" }} />
 			<BucketlistCard TableData={bucketList} />
 		</>

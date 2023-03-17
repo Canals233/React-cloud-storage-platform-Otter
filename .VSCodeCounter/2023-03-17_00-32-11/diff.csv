@@ -1,0 +1,14 @@
+"filename", "language", "JavaScript JSX", "JavaScript", "comment", "blank", "total"
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\redux\modules\bucketSlice.js", "JavaScript", 0, 11, 1, 2, 14
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\api\bucketApi.jsx", "JavaScript JSX", 22, 0, 1, 1, 24
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\bucketChildren\BucketList\BucketList.jsx", "JavaScript JSX", -10, 0, -2, 3, -9
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\bucketListCard\BucketListCard.jsx", "JavaScript JSX", -13, 0, 0, 3, -10
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\bucketListNav\BucketListNav.jsx", "JavaScript JSX", -1, 0, -2, 3, 0
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\bucketListNav\NavComponents\ChangeAuth\ChangeAuthCotent.jsx", "JavaScript JSX", 198, 0, 5, 17, 220
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\bucketListNav\NavComponents\ChangeAuth\ChangeAuthModal.jsx", "JavaScript JSX", 39, 0, 2, 3, 44
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\bucketListNav\NavComponents\CreateBucket\CreateBucketSteps.jsx", "JavaScript JSX", 2, 0, 0, -1, 1
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\bucketListNav\NavComponents\CreateBucket\CreateStep1.jsx", "JavaScript JSX", -21, 0, -4, 0, -25
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\components\AuthRadio.jsx", "JavaScript JSX", 25, 0, 0, 4, 29
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\components\SearchBucket.jsx", "JavaScript JSX", 64, 0, 3, 13, 80
+"d:\front-end\pro_projects\C4-Cloud-storage\react-electron copy\src\views\bucket\index.jsx", "JavaScript JSX", 1, 0, -1, 0, 0
+"Total", "-", 306, 11, 3, 48, 368

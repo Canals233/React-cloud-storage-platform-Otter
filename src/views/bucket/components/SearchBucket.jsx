@@ -2,7 +2,7 @@ import { Select } from "antd";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
-const selectOptions = [
+const selectModes = [
 	{
 		value: "name",
 		label: "按名称搜索",
@@ -13,12 +13,13 @@ const selectOptions = [
 	},
 ];
 
-
-
-const SearchBucket = ({ costomSearchFunction,showSearchMode=true,searchBarStyle={},setResult }) => {
-	
-    
-    const currentBuckets = useSelector(selectAllBucketList);
+const SearchBucket = ({
+	costomSearchFunction,
+	showSearchMode = true,
+	searchBarStyle = {},
+	setResult,
+}) => {
+	const currentBuckets = useSelector(selectAllBucketList);
 	const options = currentBuckets.map((item) => ({
 		value: item.name,
 		label: item.name,
@@ -29,16 +30,17 @@ const SearchBucket = ({ costomSearchFunction,showSearchMode=true,searchBarStyle=
 	const handleSearchChange = (value) => {
 		setSearchValue(value);
 	};
-    
 
-    let handleSearchResult=(searchValue)=>{
-        console.log(searchValue)
-        let newBucketList=currentBuckets.filter(item=>item.name.includes(searchValue))
-        setResult(newBucketList)
-    }
-    if(typeof(costomSearchFunction)==='function'){
-        handleSearchResult=costomSearchFunction
-    }
+	let handleSearchResult = (searchValue) => {
+		console.log(searchValue);
+		let newBucketList = currentBuckets.filter((item) =>
+			item.name.includes(searchValue)
+		);
+		setResult(newBucketList);
+	};
+	if (typeof costomSearchFunction === "function") {
+		handleSearchResult = costomSearchFunction;
+	}
 
 	return (
 		<>
@@ -46,10 +48,10 @@ const SearchBucket = ({ costomSearchFunction,showSearchMode=true,searchBarStyle=
 				defaultValue="name"
 				style={{
 					width: 120,
-                    display:showSearchMode?'inline-block':'none'
+					display: showSearchMode ? "inline-block" : "none",
 				}}
 				// onChange={handleChange}
-				options={selectOptions}
+				options={selectModes}
 			/>
 
 			<Select
@@ -62,15 +64,13 @@ const SearchBucket = ({ costomSearchFunction,showSearchMode=true,searchBarStyle=
 				notFoundContent={null}
 				style={{
 					width: "15rem",
-                    zIndex:1003,
-                    ...searchBarStyle,
-                   
+					
+					...searchBarStyle,
 				}}
-                value={searchValue}
+				value={searchValue}
 				onSelect={(e) => handleSearchResult(e)}
 				onClear={() => handleSearchResult("")}
-                onChange={handleSearchChange}
-                
+				onChange={handleSearchChange}
 			/>
 		</>
 	);

@@ -1,11 +1,9 @@
-import { Button, Col, Row,  Space } from "antd";
+import { Button, Col, Row, Space } from "antd";
 import { useState } from "react";
 import ChangeAuthModal from "./NavComponents/ChangeAuth/ChangeAuthModal";
 import CreateBucketModal from "./NavComponents/CreateBucket/CreateBucketModal";
 import SearchBucket from "../components/SearchBucket";
 import { CreateBucketProvider } from "./provider/CreateBucketProvider";
-
-
 
 //用了provider，需要尽量保证数据不变
 const CreateWithProvider = () => {
@@ -53,8 +51,7 @@ const ChangeAuthbutton = () => {
 };
 
 //这个是列表之前的按钮们
-const BucketlistNav = ({ setResult}) => {
-
+const BucketlistNav = ({ setResult }) => {
 	return (
 		<>
 			<Row justify={"space-between"}>
@@ -66,9 +63,7 @@ const BucketlistNav = ({ setResult}) => {
 				</Col>
 				<Col>
 					<Space size={8}>
-						<SearchBucket
-                        setResult={setResult}
-                        />
+						<SearchBucket setResult={setResult} />
 					</Space>
 				</Col>
 			</Row>
