@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+
 
 export const visiableRenderMap = (code) => {
 	let visiableStr = "";
@@ -22,15 +22,4 @@ export const radioTextMap = (value) => {
 	} else if (value === "666") {
 		newText = "所有人都可以读取和写入";
 	}
-	return newText;
-};
-export const showWarning = (title, content) => {
-	Modal.warning({
-		title: title,
-		content: <div>{content}</div>,
-		onOk() {},
-		zIndex: 2000,
-		width: 600,
-		centered: true,
-	});
-};
+	return newText;}

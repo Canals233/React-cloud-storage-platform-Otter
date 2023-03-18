@@ -64,7 +64,7 @@ const SearchBucket = ({
 				notFoundContent={null}
 				style={{
 					width: "15rem",
-					
+
 					...searchBarStyle,
 				}}
 				value={searchValue}

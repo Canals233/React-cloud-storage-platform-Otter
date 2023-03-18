@@ -1,17 +1,23 @@
-import { Form, Input } from "antd";
+import { Form, Input, Radio } from "antd";
+
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap } from "@/views/bucket/api/bucketApi";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
-import { showWarning } from "../../../api/bucketApi";
-import CreateBucketTags from "./CreateBucketTags";
+import showWarningModal from "@/views/bucket/components/ShowWaringModal";
+import { PopHover } from "../../../components/PopInfo";
+
+const popContent = (
+    <div>
+      属性基加密是小水濑云科技的特色功能
+    </div>
+  );
 
 const CreateStep1 = ({ userID }) => {
 	const { bucket, setBucket } = useContext(CreateBucketContext);
 	const currentBucketlist = useSelector(selectAllBucketList);
-
 	// 定义校验规则
 	const [inputError, setInputError] = useState("");
 	const [radioText, setRadioText] = useState(
@@ -46,7 +52,7 @@ const CreateStep1 = ({ userID }) => {
 	const handleRadioChange = (event) => {
 		const value = event.target.value;
 		if (value === "644" || value === "666") {
-			showWarning(
+			showWarningModal(
 				"提示",
 				"注意：公有读权限可以通过匿名身份直接读取您存储桶中的数据，存在一定的安全风险，为确保您的数据安全，不推荐此配置，建议您选择私有。"
 			);
@@ -85,8 +91,15 @@ const CreateStep1 = ({ userID }) => {
 					handleRadioChange={handleRadioChange}
 				/>
 			</Form.Item>
-            <Form.Item label="存储桶标签" style={{ marginLeft: ".75rem" }}>
-				<CreateBucketTags/>
+			<Form.Item label="存储桶标签" style={{ marginLeft: ".75rem" }}>
+				实现难度较大，暂时没做
+				{/* <CreateBucketTags/> */}
+			</Form.Item>
+			<Form.Item label="服务端加密" style={{ marginLeft: ".75rem" }}>
+				<Radio checked={true}>
+					属性基加密
+					<PopHover content={popContent} />
+				</Radio>
 			</Form.Item>
 		</Form>
 	);

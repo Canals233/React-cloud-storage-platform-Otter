@@ -5,8 +5,9 @@ import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap, visiableRenderMap } from "@/views/bucket/api/bucketApi";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import { changeBucketsAuth } from "@/redux/modules/bucketSlice";
-import SearchBucket from "../../../components/SearchBucket";
-import { showWarning } from "../../../api/bucketApi";
+import SearchBucket from "@/views/bucket/components/SearchBucket";
+import showWarningModal from "@/views/bucket/components/ShowWaringModal";
+
 const columns = [
 	{
 		title: "存储桶名称",
@@ -104,7 +105,7 @@ const ChangeAuthContent = ({
 		const value = event.target.value;
 
 		if (value === "644" || value === "666") {
-			showWarning(
+			showWarningModal(
 				"提示",
 				"注意：公有读权限可以通过匿名身份直接读取您存储桶中的数据，存在一定的安全风险，为确保您的数据安全，不推荐此配置，建议您选择私有。"
 			);

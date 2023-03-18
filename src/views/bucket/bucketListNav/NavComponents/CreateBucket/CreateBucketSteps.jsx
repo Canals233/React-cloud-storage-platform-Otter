@@ -6,6 +6,7 @@ import CreateStep1 from "./CreateStep1";
 import {addBucketList} from '@/redux/modules/bucketSlice'
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
+import CreateStepFin from "./CreateStepFin";
 const testUserID = "testID123";
 const steps = [
 	{
@@ -15,7 +16,7 @@ const steps = [
 
 	{
 		title: "确认配置",
-		content: "Last-content",
+		content: <CreateStepFin/>,
 	},
 ];
 

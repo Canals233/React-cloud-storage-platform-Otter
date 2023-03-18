@@ -3,9 +3,10 @@ const CreateBucketContext = React.createContext();
 
 const CreateBucketProvider = ({ children }) => {
 	const [bucket, setBucket] = React.useState({
+        name: "",
 		visiable: "600",
-		name: "",
 		createDisabled: true,
+        encrypt:true,
 	});
 	const [current, setCurrent] = React.useState(0);
 	const [modalOpen, setModalOpen] = React.useState(false);
@@ -14,6 +15,7 @@ const CreateBucketProvider = ({ children }) => {
 			visiable: "600",
 			name: "",
 			createDisabled: true,
+            encrypt:true,
 		});
 	};
 	const restartCreate = () => {
