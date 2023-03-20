@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 import CreateStep1 from "./CreateStep1";
-import {addBucketList} from '@/redux/modules/bucketSlice'
+import { addBucketList } from "@/redux/modules/bucketSlice";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import CreateStepFin from "./CreateStepFin";
@@ -16,22 +16,21 @@ const steps = [
 
 	{
 		title: "确认配置",
-		content: <CreateStepFin/>,
+		content: <CreateStepFin />,
 	},
 ];
 
 const CreateBucketSteps = () => {
 	//从上层传来的取消函数，以及当前进度和设置函数
-    const dispatch=useDispatch()
+	const dispatch = useDispatch();
 
-	const {bucket,current,setCurrent,restartCreate} = useContext(CreateBucketContext);
-	const [disabled, setDisabled] = useState(true);
-	useEffect(() => {
-		setDisabled(bucket.createDisabled);
-		// console.log(bucket)
-	}, [bucket.createDisabled]);
-
-
+	const {
+		bucket,
+		current,
+		createDisabled,
+		setCurrent,
+		restartCreate,
+	} = useContext(CreateBucketContext);
 
 	const next = () => {
 		setCurrent(current + 1);
@@ -39,16 +38,18 @@ const CreateBucketSteps = () => {
 	const prev = () => {
 		setCurrent(current - 1);
 	};
-    const finish=()=>{
-        const formattedDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
-        dispatch(addBucketList({
-            ...bucket,
-            name:bucket.name+'-'+testUserID,
-            time:formattedDate,
-            key:nanoid()
-        }))
-        restartCreate()
-    }
+	const finish = () => {
+		const formattedDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
+		dispatch(
+			addBucketList({
+				...bucket,
+				name: bucket.name + "-" + testUserID,
+				time: formattedDate,
+				key: nanoid(),
+			})
+		);
+		restartCreate();
+	};
 	const items = steps.map((item) => ({
 		key: item.title,
 		title: item.title,
@@ -87,7 +88,7 @@ const CreateBucketSteps = () => {
 					<Button
 						type="primary"
 						onClick={() => next()}
-						disabled={disabled}
+						disabled={createDisabled}
 					>
 						下一步
 					</Button>

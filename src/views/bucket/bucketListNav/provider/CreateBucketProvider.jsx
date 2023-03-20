@@ -5,22 +5,26 @@ const CreateBucketProvider = ({ children }) => {
 	const [bucket, setBucket] = React.useState({
         name: "",
 		visiable: "600",
-		createDisabled: true,
+		
         encrypt:true,
+        tags:[]
 	});
 	const [current, setCurrent] = React.useState(0);
 	const [modalOpen, setModalOpen] = React.useState(false);
+    const [createDisabled, setCreateDisabled] = React.useState(true);
 	const cleanCreate = () => {
 		setBucket({
 			visiable: "600",
 			name: "",
-			createDisabled: true,
+			
             encrypt:true,
+            tags:[]
 		});
 	};
 	const restartCreate = () => {
 		setModalOpen(false);
 		setCurrent(0);
+        setCreateDisabled(true);
 		cleanCreate();
 	};
 	//用provider 这样就可以在外面存数据了
@@ -33,8 +37,11 @@ const CreateBucketProvider = ({ children }) => {
 				setCurrent,
 				modalOpen,
 				setModalOpen,
+                createDisabled,
+                setCreateDisabled,
 				cleanCreate,
 				restartCreate,
+
 			}}
 		>
 			{children}

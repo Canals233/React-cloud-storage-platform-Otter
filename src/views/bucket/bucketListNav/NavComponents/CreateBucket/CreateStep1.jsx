@@ -1,4 +1,4 @@
-import { Form, Input, Radio } from "antd";
+import { Form, Input, Radio, Select } from "antd";
 
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
@@ -7,16 +7,13 @@ import { radioTextMap } from "@/views/bucket/api/bucketApi";
 import { CreateBucketContext } from "../../provider/CreateBucketProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import showWarningModal from "@/views/bucket/components/ShowWaringModal";
-import { PopHover } from "../../../components/PopInfo";
+import { PopHover } from "@/views/bucket/components/PopInfo";
 
-const popContent = (
-    <div>
-      属性基加密是小水濑云科技的特色功能
-    </div>
-  );
+const popContent = <div>属性基加密是小水濑云科技的特色功能</div>;
 
 const CreateStep1 = ({ userID }) => {
-	const { bucket, setBucket } = useContext(CreateBucketContext);
+	const { bucket, setBucket, setCreateDisabled } =
+		useContext(CreateBucketContext);
 	const currentBucketlist = useSelector(selectAllBucketList);
 	// 定义校验规则
 	const [inputError, setInputError] = useState("");
@@ -47,7 +44,8 @@ const CreateStep1 = ({ userID }) => {
 			setInputError("");
 			createDisabled = false;
 		}
-		setBucket({ ...bucket, name: value, createDisabled });
+		setBucket({ ...bucket, name: value });
+		setCreateDisabled(createDisabled);
 	};
 	const handleRadioChange = (event) => {
 		const value = event.target.value;
@@ -61,6 +59,9 @@ const CreateStep1 = ({ userID }) => {
 
 		setBucket({ ...bucket, visiable: value });
 		// console.log(value, newText);
+	};
+	const handleTagsChange = (value) => {
+		setBucket({ ...bucket, tags: value });
 	};
 
 	return (
@@ -92,13 +93,25 @@ const CreateStep1 = ({ userID }) => {
 				/>
 			</Form.Item>
 			<Form.Item label="存储桶标签" style={{ marginLeft: ".75rem" }}>
-				实现难度较大，暂时没做
-				{/* <CreateBucketTags/> */}
+				<Select
+					mode="tags"
+					style={{
+						width: "100%",
+					}}
+					placeholder="Tags Mode"
+					onChange={handleTagsChange}
+					value={bucket.tags}
+				/>
 			</Form.Item>
 			<Form.Item label="服务端加密" style={{ marginLeft: ".75rem" }}>
 				<Radio checked={true}>
-					属性基加密
-					<PopHover content={popContent} />
+					属性基加密{" "}
+					<PopHover
+						content={popContent}
+						style={{
+							paddingTop: "0.25rem",
+						}}
+					/>
 				</Radio>
 			</Form.Item>
 		</Form>
