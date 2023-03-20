@@ -1,7 +1,7 @@
 import { Button, Divider, Steps } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { CreateBucketContext } from "../../provider/CreateBucketProvider";
+import { CreateBucketContext } from "../../provider/BucketProvider";
 import CreateStep1 from "./CreateStep1";
 import { addBucketList } from "@/redux/modules/bucketSlice";
 import dayjs from "dayjs";
@@ -16,7 +16,7 @@ const steps = [
 
 	{
 		title: "确认配置",
-		content: <CreateStepFin />,
+		content: <CreateStepFin userID={testUserID} />,
 	},
 ];
 

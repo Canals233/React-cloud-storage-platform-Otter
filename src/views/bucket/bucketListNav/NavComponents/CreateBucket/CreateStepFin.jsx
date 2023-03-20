@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { CreateBucketContext } from "../../provider/CreateBucketProvider";
+import { CreateBucketContext } from "../../provider/BucketProvider";
 import { visiableRenderMap } from "@/views/bucket/api/bucketApi";
 import { PopHover } from "@/views/bucket/components/PopInfo";
 const listStyle = {
@@ -11,7 +11,7 @@ const listStyle = {
 	},
 };
 const popContent = <div>存储桶名称由[自定义名称]-[开发商 APPID]构成</div>;
-const bucketKVMapFunction = (item, index) => {
+const bucketKVMapFunction = (item, index, userID) => {
 	switch (item[0]) {
 		case "visiable":
 			return (
@@ -36,31 +36,43 @@ const bucketKVMapFunction = (item, index) => {
 					<span>{item[1] + "-" + "staticUser"}</span>
 				</div>
 			);
-        case "tags":
-            return (
-                <div key={index}>
-                    <span style={listStyle.key}>{"标签"}</span>
-                    <span>{item[1].map((value,index)=>{
-                        return <span key={index}
-                        style={{
-                            backgroundColor:'#eee',
-                            marginRight:'0.5rem', 
-                        
-                        }}
-                        >{value}</span> 
-                    })}</span>
-                </div>
-            );
+		case "tags":
+			return (
+				<div key={index}>
+					<span style={listStyle.key}>{"标签"}</span>
+					<span>
+						{item[1].map((value, index) => {
+							return (
+								<span
+									key={index}
+									style={{
+										backgroundColor: "#eee",
+										marginRight: "0.5rem",
+									}}
+								>
+									{value}
+								</span>
+							);
+						})}
+					</span>
+				</div>
+			);
 		default:
 			return null;
 	}
 };
 
-const CreateStepFin = () => {
+const CreateStepFin = ({ userID }) => {
 	const { bucket: currentBucket } = useContext(CreateBucketContext);
 	const currentBucketKV = Object.entries(currentBucket);
-	console.log(currentBucketKV);
-	return <>{currentBucketKV.map(bucketKVMapFunction)}</>;
+	// console.log(currentBucketKV);
+	return (
+		<>
+			{currentBucketKV.map((item, index) =>
+				bucketKVMapFunction(item, index, userID)
+			)}
+		</>
+	);
 };
 
 export default CreateStepFin;

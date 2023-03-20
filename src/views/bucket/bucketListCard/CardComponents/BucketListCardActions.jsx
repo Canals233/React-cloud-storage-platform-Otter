@@ -2,8 +2,13 @@ import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 //这个是最后一列的操作
 const BucketlistCardActions = () => {
+
+    const onTagsClick = () => {
+        
+    }
+
 	const items = [
-		{ label: <a href="https://www.antgroup.com">标签</a>, key: "item-1" }, // 菜单项务必填写 key
+		{ label: <a onClick={onTagsClick}>标签</a>, key: "item-1" }, // 菜单项务必填写 key
 		{
 			label: <a href="https://www.antgroup.com">清空数据</a>,
 			key: "item-2",

@@ -5,7 +5,6 @@ const CreateBucketProvider = ({ children }) => {
 	const [bucket, setBucket] = React.useState({
         name: "",
 		visiable: "600",
-		
         encrypt:true,
         tags:[]
 	});
@@ -16,7 +15,6 @@ const CreateBucketProvider = ({ children }) => {
 		setBucket({
 			visiable: "600",
 			name: "",
-			
             encrypt:true,
             tags:[]
 		});

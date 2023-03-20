@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap } from "@/views/bucket/api/bucketApi";
-import { CreateBucketContext } from "../../provider/CreateBucketProvider";
+import { CreateBucketContext } from "../../provider/BucketProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import showWarningModal from "@/views/bucket/components/ShowWaringModal";
 import { PopHover } from "@/views/bucket/components/PopInfo";
