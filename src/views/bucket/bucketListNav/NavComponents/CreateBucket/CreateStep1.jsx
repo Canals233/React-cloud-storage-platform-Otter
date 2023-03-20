@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap } from "@/views/bucket/api/bucketApi";
-import { CreateBucketContext } from "../../provider/BucketProvider";
+import { BucketContext } from "../../provider/BucketProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import showWarningModal from "@/views/bucket/components/ShowWaringModal";
 import { PopHover } from "@/views/bucket/components/PopInfo";
@@ -12,8 +12,7 @@ import { PopHover } from "@/views/bucket/components/PopInfo";
 const popContent = <div>属性基加密是小水濑云科技的特色功能</div>;
 
 const CreateStep1 = ({ userID }) => {
-	const { bucket, setBucket, setCreateDisabled } =
-		useContext(CreateBucketContext);
+	const { bucket, setBucket, setCreateDisabled } = useContext(BucketContext);
 	const currentBucketlist = useSelector(selectAllBucketList);
 	// 定义校验规则
 	const [inputError, setInputError] = useState("");
@@ -63,9 +62,8 @@ const CreateStep1 = ({ userID }) => {
 	const handleTagsChange = (value) => {
 		setBucket({ ...bucket, tags: value });
 	};
-
 	return (
-		<Form>
+		<Form  >
 			<Form.Item
 				label="存储桶名"
 				required
@@ -98,14 +96,14 @@ const CreateStep1 = ({ userID }) => {
 					style={{
 						width: "100%",
 					}}
-					placeholder="Tags Mode"
+					placeholder="请输入标签，重复输入或点击选择将取消"
 					onChange={handleTagsChange}
 					value={bucket.tags}
 				/>
 			</Form.Item>
 			<Form.Item label="服务端加密" style={{ marginLeft: ".75rem" }}>
 				<Radio checked={true}>
-					属性基加密{" "}
+					属性基加密
 					<PopHover
 						content={popContent}
 						style={{

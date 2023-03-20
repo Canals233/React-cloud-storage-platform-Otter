@@ -67,8 +67,8 @@ const BucketlistCard = ({ TableData }) => {
 				<Column
 					title="操作"
 					key="action"
-					render={() => {
-						return <BucketlistCardActions />;
+					render={(_,record) => {
+						return <BucketlistCardActions bucketKey={record.key}/>;
 					}}
 				/>
 			</Table>

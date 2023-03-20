@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { CreateBucketContext } from "../../provider/BucketProvider";
+import { BucketContext } from "../../provider/BucketProvider";
 import { visiableRenderMap } from "@/views/bucket/api/bucketApi";
 import { PopHover } from "@/views/bucket/components/PopInfo";
 const listStyle = {
@@ -63,7 +63,7 @@ const bucketKVMapFunction = (item, index, userID) => {
 };
 
 const CreateStepFin = ({ userID }) => {
-	const { bucket: currentBucket } = useContext(CreateBucketContext);
+	const { bucket: currentBucket } = useContext(BucketContext);
 	const currentBucketKV = Object.entries(currentBucket);
 	// console.log(currentBucketKV);
 	return (

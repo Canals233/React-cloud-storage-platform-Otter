@@ -1,10 +1,10 @@
 import { Modal } from "antd";
 import { useContext } from "react";
 import CreateBucketSteps from "./CreateBucketSteps";
-import { CreateBucketContext } from "../../provider/CreateBucketProvider";
+import { BucketContext } from "../../provider/BucketProvider";
 const CreateBucketModal = () => {
 	
-	const {modalOpen,restartCreate} = useContext(CreateBucketContext);
+	const {modalOpen,restartCreate} = useContext(BucketContext);
 	
 
 	return (
