@@ -23,23 +23,29 @@ const bucketSlice = createSlice({
 				return bucket;
 			});
 		},
-        updateBucketTagsByKey(state, action) {
-            const { key, tags } = action.payload;
-            state.bucketList = state.bucketList.map((bucket) => {
-                if (bucket.key === key) {
-                    return { ...bucket, tags };
-                }
-                return bucket;
-            });
-        }
+		updateBucketTagsByKey(state, action) {
+			const { key, tags } = action.payload;
+			state.bucketList = state.bucketList.map((bucket) => {
+				if (bucket.key === key) {
+					return { ...bucket, tags };
+				}
+				return bucket;
+			});
+		},
 	},
 });
 
 export const selectAllBucketList = (state) => state.bucket.bucketList;
+export const selectBucketListByName = (bucketName) => (state) =>
+	state.bucket.bucketList.filter((bucket) => bucket.name === bucketName)[0];
 export const selectBucketByKey = (bucketKey) => (state) =>
 	state.bucket.bucketList.filter((bucket) => bucket.key === bucketKey)[0];
 
-export const { setBucketList, addBucketList, changeBucketsAuth,updateBucketTagsByKey } =
-	bucketSlice.actions;
+export const {
+	setBucketList,
+	addBucketList,
+	changeBucketsAuth,
+	updateBucketTagsByKey,
+} = bucketSlice.actions;
 
 export default bucketSlice.reducer;
