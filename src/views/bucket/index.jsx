@@ -4,9 +4,10 @@ import BucketListPage from "./BucketListPage";
 
 const Bucket = () => {
 	const location = useLocation();
-	const params = new URLSearchParams(location.search);
-	const bucketName = params.get("name");
-	console.log(bucketName);
+    // console.log(location,'location')
+	
+	const bucketName = location.state?.name;
+	// console.log(bucketName);
 	return (
 		<>
 			{bucketName ? (

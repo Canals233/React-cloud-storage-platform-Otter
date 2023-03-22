@@ -1,4 +1,4 @@
-import { PageHeader, Tabs } from "antd";
+import { Layout, PageHeader, Tabs } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { mockBucketlist } from "@/mock/mockBucketlist";
@@ -27,10 +27,15 @@ const BucketListPage = () => {
 	];
 
 	return (
-		<div>
+		<>
 			<PageHeader title={"存储桶列表"} ghost={false} />
-			<Tabs items={items} />
-		</div>
+			<div>
+				<Tabs
+					items={items}
+					tabBarStyle={{ marginBottom: 24 }}
+				/>
+			</div>
+		</>
 	);
 };
 

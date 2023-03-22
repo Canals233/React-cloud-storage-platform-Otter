@@ -43,9 +43,9 @@ const LayoutIndex = (props) => {
 			<Layout>
 				<LayoutHeader></LayoutHeader>
 				<LayoutTabs></LayoutTabs>
-				<Content>
+				
 					<Outlet></Outlet>
-				</Content>
+				
 				<LayoutFooter></LayoutFooter>
 			</Layout>
 		</section>);
