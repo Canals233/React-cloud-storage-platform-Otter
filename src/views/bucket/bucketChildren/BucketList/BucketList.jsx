@@ -15,15 +15,22 @@ const Bucketlist = () => {
 	}, [newBucketData]);
 
 	return (
-		<div style={{
-            maxWidth:'1368px',
-            margin:'0 auto'
-        }}>
-			<BucketlistNav setResult={setBucketList} />
-			<p style={{ height: ".25rem" }} />
-			
-            <BucketlistCard TableData={bucketList}  />
-            
+		<div
+			style={{
+				maxWidth: "1368px",
+				margin: "0 auto",
+				padding: "0 0.75rem",
+			}}
+		>
+			<div
+				style={{
+					marginBottom: "1.25rem",
+				}}
+			>
+				<BucketlistNav setResult={setBucketList} />
+			</div>
+
+			<BucketlistCard TableData={bucketList} />
 		</div>
 	);
 };

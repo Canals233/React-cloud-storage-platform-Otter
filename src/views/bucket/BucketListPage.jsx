@@ -28,12 +28,13 @@ const BucketListPage = () => {
 
 	return (
 		<>
-			<PageHeader title={"存储桶列表"} ghost={false} />
+			<PageHeader
+				title={"存储桶列表"}
+				ghost={false}
+				style={{ padding:'2px 12px'}}
+			/>
 			<div>
-				<Tabs
-					items={items}
-					tabBarStyle={{ marginBottom: 24 }}
-				/>
+				<Tabs items={items} tabBarStyle={{ marginBottom: 24 }} />
 			</div>
 		</>
 	);

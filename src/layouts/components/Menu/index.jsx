@@ -10,12 +10,12 @@ import {
 import { setMenuList } from "@/redux/modules/menuSlice";
 import { setBreadcrumbList } from "@/redux/modules/breadcrumbSlice";
 import { setAuthRouter } from "@/redux/modules/authSlice";
-import { getMenuList } from "@/api/modules/login";
+
 import { connect } from "react-redux";
 import * as Icons from "@ant-design/icons";
 import Logo from "./components/Logo";
 import "./index.less";
-import menuData  from '@/mock/menu.json'
+import menuData from "@/mock/menu.json";
 const LayoutMenu = (props) => {
 	const { pathname } = useLocation();
 	const {
@@ -78,8 +78,8 @@ const LayoutMenu = (props) => {
 	const getMenuData = async () => {
 		setLoading(true);
 		try {
-            //使用了静态数据其实没有try的必要，
-            // console.log(menuData,'menumenuDataRaw')
+			//使用了静态数据其实没有try的必要，
+			// console.log(menuData,'menumenuDataRaw')
 			if (!menuData) return;
 			setMenuList(deepLoopFloat(menuData));
 			// 存储处理过后的所有面包屑导航栏到 redux 中
