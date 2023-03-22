@@ -11,30 +11,29 @@ import LayoutFooter from "./components/Footer";
 
 import "./index.less";
 import { useDispatch } from "react-redux";
+import { Content } from "antd/lib/layout/layout";
 const LayoutIndex = () => {
 	const { Sider } = Layout;
-	const dispatch=useDispatch()
-    
+	const dispatch = useDispatch();
+
 	// 获取按钮权限列表
 	const getAuthButtonsList = async () => {
 		const { data } = await getAuthorButtons();
 		setAuthButtons(data);
 	};
 	// 监听窗口大小变化
-	
+
 	useEffect(() => {
-		
 		getAuthButtonsList();
 	}, []);
 	return (
 		// 这里不用 Layout 组件原因是切换页面时样式会先错乱然后在正常显示，造成页面闪屏效果
-		<section className="container">
+		<Layout className="container">
 			<Sider
 				trigger={null}
 				// collapsed={props.isCollapse}
 				onBreakpoint={(broken) => {
-                
-					dispatch(updateCollapse(broken))
+					dispatch(updateCollapse(broken));
 				}}
 				theme="dark"
 				breakpoint="lg"
@@ -45,10 +44,12 @@ const LayoutIndex = () => {
 			<Layout>
 				<LayoutHeader></LayoutHeader>
 				<LayoutTabs></LayoutTabs>
-				<Outlet></Outlet>
+				<Content>
+                <Outlet></Outlet>
+                </Content>
 				<LayoutFooter></LayoutFooter>
 			</Layout>
-		</section>
+		</Layout>
 	);
 };
 // const mapStateToProps = (state) => state.menu;

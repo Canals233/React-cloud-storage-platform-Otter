@@ -1,4 +1,4 @@
-import { Menu } from "antd";
+import { Layout, Menu } from "antd";
 import {
 	AppstoreOutlined,
 	MailOutlined,
@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectBucketListByName } from "../../../redux/modules/bucketSlice";
+import { selectBucketListByName } from "@/redux/modules/bucketSlice";
 import Sider from "antd/lib/layout/Sider";
 
 function getItem(label, key, icon, children, type) {
@@ -56,19 +56,22 @@ const BucketDetail = ({ bucketName }) => {
 	console.log(currentBucket);
 	return (
 		<>
-			<Sider >
-				<div className="menu">
-                <Menu
-					
-					defaultSelectedKeys={["1"]}
-					defaultOpenKeys={["sub1"]}
-					mode="inline"
-					items={items}
-                   
-				/>
-                </div>
-			</Sider>
-			
+			< >
+				<div style={{
+                    width:200,
+                    height:'100%',
+                    backgroundColor:'white'
+                    
+                }}>
+					<Menu
+						defaultSelectedKeys={["1"]}
+						defaultOpenKeys={["sub1"]}
+						mode="inline"
+						items={items}
+					/>
+				</div>
+                
+			</>
 		</>
 	);
 };
