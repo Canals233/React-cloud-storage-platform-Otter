@@ -5,8 +5,8 @@ import ChangeAuthModal from "./NavComponents/ChangeAuth/ChangeAuthModal";
 import SearchBucket from "../components/SearchBucket";
 import {
 	
-	BucketProvider,
-} from "./provider/BucketProvider";
+	BucketCreateProvider,
+} from "./provider/BucketCreateProvider";
 import CreateBucketContent from "./NavComponents/CreateBucket/CreateBucketContent";
 
 //用了provider，需要尽量保证数据不变
@@ -39,9 +39,9 @@ const BucketlistNav = ({ setResult }) => {
 			<Row justify={"space-between"}>
 				<Col>
 					<Space size={8}>
-						<BucketProvider>
+						<BucketCreateProvider>
 							<CreateBucketContent />
-						</BucketProvider>
+						</BucketCreateProvider>
 						<ChangeAuthbutton />
 					</Space>
 				</Col>

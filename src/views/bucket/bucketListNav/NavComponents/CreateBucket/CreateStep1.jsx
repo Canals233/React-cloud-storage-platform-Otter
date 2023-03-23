@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap } from "@/views/bucket/api/bucketApi";
-import { BucketContext } from "../../provider/BucketProvider";
+import { BucketCreateContext } from "../../provider/BucketCreateProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import showWarningModal from "@/views/bucket/components/ShowWaringModal";
 import { PopHover } from "@/views/bucket/components/PopInfo";
@@ -12,7 +12,7 @@ import { PopHover } from "@/views/bucket/components/PopInfo";
 const popContent = <div>属性基加密是小水濑云科技的特色功能</div>;
 
 const CreateStep1 = ({ userID }) => {
-	const { bucket, setBucket, setCreateDisabled } = useContext(BucketContext);
+	const { bucket, setBucket, setCreateDisabled } = useContext(BucketCreateContext);
 	const currentBucketlist = useSelector(selectAllBucketList);
 	// 定义校验规则
 	const [inputError, setInputError] = useState("");

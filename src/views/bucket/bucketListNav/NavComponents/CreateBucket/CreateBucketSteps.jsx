@@ -1,7 +1,7 @@
 import { Button, Divider, Steps } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { BucketContext } from "../../provider/BucketProvider";
+import { BucketCreateContext } from "../../provider/BucketCreateProvider";
 import CreateStep1 from "./CreateStep1";
 import { addBucketList } from "@/redux/modules/bucketSlice";
 import dayjs from "dayjs";
@@ -30,7 +30,7 @@ const CreateBucketSteps = () => {
 		createDisabled,
 		setCurrent,
 		restartCreate,
-	} = useContext(BucketContext);
+	} = useContext(BucketCreateContext);
 
 	const next = () => {
 		setCurrent(current + 1);

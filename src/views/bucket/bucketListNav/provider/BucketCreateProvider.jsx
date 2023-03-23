@@ -1,7 +1,7 @@
 import React from "react";
-const BucketContext = React.createContext();
+const BucketCreateContext = React.createContext();
 
-const BucketProvider = ({ children }) => {
+const BucketCreateProvider = ({ children }) => {
 	const [bucket, setBucket] = React.useState({
 		name: "",
 		visiable: "600",
@@ -27,7 +27,7 @@ const BucketProvider = ({ children }) => {
 	};
 	//用provider 这样就可以在外面存数据了
 	return (
-		<BucketContext.Provider
+		<BucketCreateContext.Provider
 			value={{
 				bucket,
 				setBucket,
@@ -42,8 +42,8 @@ const BucketProvider = ({ children }) => {
 			}}
 		>
 			{children}
-		</BucketContext.Provider>
+		</BucketCreateContext.Provider>
 	);
 };
 
-export { BucketContext, BucketProvider };
+export { BucketCreateContext, BucketCreateProvider };

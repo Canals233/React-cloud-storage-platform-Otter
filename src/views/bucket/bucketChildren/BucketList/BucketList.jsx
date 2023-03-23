@@ -29,7 +29,7 @@ const Bucketlist = () => {
 			>
 				<BucketlistNav setResult={setBucketList} />
 			</div>
-
+            
 			<BucketlistCard TableData={bucketList} />
 		</div>
 	);
