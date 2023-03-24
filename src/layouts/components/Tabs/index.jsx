@@ -27,9 +27,11 @@ const LayoutTabs = (props) => {
     // add tabs
     const addTabs = () => {
         const route = searchRoute(pathname, routerArray);
+        
         let newTabsList = JSON.parse(JSON.stringify(tabsList));
+        
         if (tabsList.every((item) => item.path !== route.path)) {
-            newTabsList.push({ title: route.meta.title, path: route.path });
+            newTabsList.push({ title: route.meta?.title, path: route.path });
         }
         setTabsList(newTabsList);
         setActiveValue(pathname);

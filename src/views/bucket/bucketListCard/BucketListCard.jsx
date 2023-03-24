@@ -25,9 +25,7 @@ import { useNavigate } from "react-router-dom";
 const BucketlistCard = ({ TableData }) => {
 	const navigate = useNavigate();
 	const handleBucketClick = (name) => {
-		navigate(`/bucket?name=${name}`, {
-			state: {name},
-		});
+		navigate(`/bucket/${name}?anchorType=file`);
 	};
 	// 排序时候要注意，antd4的排序的参数是整行的数据对象，而不是单个数据，要访问属性后排序
 

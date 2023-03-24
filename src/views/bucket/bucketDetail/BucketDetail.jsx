@@ -4,12 +4,12 @@ import {
 	MailOutlined,
 	ArrowLeftOutlined,
 } from "@ant-design/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { selectBucketListByName } from "@/redux/modules/bucketSlice";
 import "./BucketDetail.less";
-import { useNavigate } from "react-router-dom";
-import { BucketDetailContext } from "./provider/BucketDetailProvider";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+
 function getItem(label, key, icon, children, type) {
 	return {
 		key,
@@ -33,33 +33,27 @@ const styles = {
 	},
 };
 
-const BucketDetail = ({ bucketName, anchorType }) => {
-	const {
-		currentOpenKeys,
-		setCurrentOpenKeys,
-		currentSelectedKeys,
-		setCurrentSelectedKeys,
-	} = useContext(BucketDetailContext);
+const BucketDetail = () => {
+	const location = useLocation();
 	const navigate = useNavigate();
+	const URLParams = useParams(); //如果有多级会有多个参数
+	const bucketName = URLParams.name;
+	const searchParams = new URLSearchParams(location.search);
 	const currentBucket = useSelector(selectBucketListByName(bucketName));
-	// console.log(currentBucket);
+	const anchorType = searchParams.get("anchorType");
+
 	const onMenuChange = (e) => {
 		// console.log("click ", e);
-		if (e.key === "file") {
-			return;
-		}
-		setCurrentSelectedKeys([e.key]);
-		//没开多选，所以只有一个
-		navigate(`/bucket?name=${bucketName}&anchorType=${e.key}`);
+
+		//没开多选，所以e.key只有一个
+		navigate(`/bucket/${bucketName}&anchorType=${e.key}`);
+		//菜单子选项太多，不如传参条件渲染
 	};
-	const onSubMenuOpenChange = (openKeys) => {
-		setCurrentOpenKeys(openKeys);
-	};
+
 	const onBackClick = () => {
 		navigate(`/bucket`);
 	};
 
-    console.log(anchorType,currentSelectedKeys)
 	return (
 		<>
 			<div
@@ -74,12 +68,10 @@ const BucketDetail = ({ bucketName, anchorType }) => {
 					<span className="back-text">返回列表</span>
 				</div>
 				<Menu
-					defaultSelectedKeys={[anchorType]}
-					defaultOpenKeys={currentOpenKeys}
+					defaultSelectedKeys={"file"}
 					mode="inline"
 					items={items}
 					onClick={onMenuChange}
-					onOpenChange={onSubMenuOpenChange}
 				/>
 			</div>
 		</>
