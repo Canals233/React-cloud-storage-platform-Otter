@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectBucketListByName } from "@/redux/modules/bucketSlice";
 import "./BucketDetail.less";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
 
 
 function getItem(label, key, icon, children, type) {
@@ -54,6 +55,12 @@ const BucketDetail = () => {
 
 	const onBackClick = () => {
 		navigate(`/bucket`);
+        dispatch(
+			setCurrentBreadcrumb({
+				title: [`存储桶列表`],
+                path:['/bucket']
+			})
+		);
 	};
 
 	return (

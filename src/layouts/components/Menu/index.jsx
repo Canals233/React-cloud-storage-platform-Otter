@@ -103,7 +103,7 @@ const LayoutMenu = (props) => {
 	const navigate = useNavigate();
 	const clickMenu = ({ key }) => {
 		const route = searchRoute(key, props.menuList);
-		console.log(route, "route");
+		// console.log(route, "route");
 		dispatch(
 			setCurrentBreadcrumb({
 				path: [route.path],

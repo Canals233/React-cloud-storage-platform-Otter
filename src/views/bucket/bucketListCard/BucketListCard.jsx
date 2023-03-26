@@ -32,7 +32,7 @@ const BucketlistCard = ({ TableData }) => {
 		dispatch(
 			setCurrentBreadcrumb({
 				title: [`存储桶列表`,`${name}`],
-                herf:['/bucket',`/bucket/${name}`]
+                path:['/bucket',`/bucket/${name}`]
 			})
 		);
 	};

@@ -1,23 +1,45 @@
 import { Breadcrumb } from "antd";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { HOME_URL } from "@/config/config";
-import { connect } from "react-redux";
-const BreadcrumbNav = (props) => {
-	const { pathname } = useLocation();
-	const { themeConfig } = props.global;
-	const breadcrumbList = props.breadcrumb.breadcrumbList[pathname] || [];
-    // console.log(pathname, breadcrumbList,'breadcrumbList')
+import { useDispatch, useSelector } from "react-redux";
+import {
+	getCurrentBreadcrumb,
+	backToOneBreadcrumb,
+} from "@/redux/modules/breadcrumbSlice";
+const BreadcrumbNav = () => {
+	const navigate = useNavigate();
+    const  dispatch=useDispatch()
+	const { themeConfig } = useSelector((state) => state.global);
+
+	const currentBreadcrumb = useSelector(getCurrentBreadcrumb);
+	console.log(currentBreadcrumb);
+	const onBreadClick = (endpath) => {
+		navigate(endpath);
+        console.log(endpath)
+		// dispatch(backToOneBreadcrumb(endpath))
+	};
 	return (
 		<>
 			{!themeConfig.breadcrumb && (
 				<Breadcrumb>
-					<Breadcrumb.Item href={`#${HOME_URL}`}>
+					<Breadcrumb.Item
+						onClick={() => {
+							onBreadClick(HOME_URL);
+						}}
+						href
+					>
 						首页
 					</Breadcrumb.Item>
-					{breadcrumbList.map((item) => {
+					{currentBreadcrumb.title.map((item, index) => {
 						return (
-							<Breadcrumb.Item key={item}>
-								{item !== "首页" ? item : null}
+							<Breadcrumb.Item
+								key={item}
+								href
+								onClick={() => {
+									onBreadClick(currentBreadcrumb.path[index]);
+								}}
+							>
+								{item}
 							</Breadcrumb.Item>
 						);
 					})}
@@ -26,5 +48,5 @@ const BreadcrumbNav = (props) => {
 		</>
 	);
 };
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(BreadcrumbNav);
+
+export default BreadcrumbNav;
