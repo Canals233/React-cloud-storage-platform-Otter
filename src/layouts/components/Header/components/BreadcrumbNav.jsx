@@ -3,17 +3,28 @@ import { useLocation } from "react-router-dom";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 const BreadcrumbNav = (props) => {
-    const { pathname } = useLocation();
-    const { themeConfig } = props.global;
-    const breadcrumbList = props.breadcrumb.breadcrumbList[pathname] || [];
-    return (<>
-			{!themeConfig.breadcrumb && (<Breadcrumb>
-					<Breadcrumb.Item href={`#${HOME_URL}`}>首页</Breadcrumb.Item>
+	const { pathname } = useLocation();
+	const { themeConfig } = props.global;
+	const breadcrumbList = props.breadcrumb.breadcrumbList[pathname] || [];
+    // console.log(pathname, breadcrumbList,'breadcrumbList')
+	return (
+		<>
+			{!themeConfig.breadcrumb && (
+				<Breadcrumb>
+					<Breadcrumb.Item href={`#${HOME_URL}`}>
+						首页
+					</Breadcrumb.Item>
 					{breadcrumbList.map((item) => {
-                return <Breadcrumb.Item key={item}>{item !== "首页" ? item : null}</Breadcrumb.Item>;
-            })}
-				</Breadcrumb>)}
-		</>);
+						return (
+							<Breadcrumb.Item key={item}>
+								{item !== "首页" ? item : null}
+							</Breadcrumb.Item>
+						);
+					})}
+				</Breadcrumb>
+			)}
+		</>
+	);
 };
 const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(BreadcrumbNav);

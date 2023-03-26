@@ -20,12 +20,21 @@ const visiableFilterArray = [
 const popContent = <div>存储桶名称由[自定义名称]-[开发商 APPID]构成</div>;
 import { visiableRenderMap } from "@/views/bucket/api/bucketApi.jsx";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
 
 //这个组件是存储桶列表的卡片组件，包含了表格，表格的数据是从父组件传递过来的
 const BucketlistCard = ({ TableData }) => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const handleBucketClick = (name) => {
 		navigate(`/bucket/${name}?anchorType=file`);
+		dispatch(
+			setCurrentBreadcrumb({
+				title: [`存储桶列表`,`${name}`],
+                herf:['/bucket',`/bucket/${name}`]
+			})
+		);
 	};
 	// 排序时候要注意，antd4的排序的参数是整行的数据对象，而不是单个数据，要访问属性后排序
 

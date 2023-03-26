@@ -8,15 +8,19 @@ import {
 	searchRoute,
 } from "@/utils/util";
 import { setMenuList } from "@/redux/modules/menuSlice";
-import { setBreadcrumbList } from "@/redux/modules/breadcrumbSlice";
+import {
+	setBreadcrumbList,
+	setCurrentBreadcrumb,
+} from "@/redux/modules/breadcrumbSlice";
 import { setAuthRouter } from "@/redux/modules/authSlice";
 
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import * as Icons from "@ant-design/icons";
 import Logo from "./components/Logo";
 import "./index.less";
 import menuData from "@/mock/menu.json";
 const LayoutMenu = (props) => {
+	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const {
 		isCollapse,
@@ -99,6 +103,13 @@ const LayoutMenu = (props) => {
 	const navigate = useNavigate();
 	const clickMenu = ({ key }) => {
 		const route = searchRoute(key, props.menuList);
+		console.log(route, "route");
+		dispatch(
+			setCurrentBreadcrumb({
+				path: [route.path],
+				title: [route.title],
+			})
+		);
 		if (route.isLink) window.open(route.isLink, "_blank");
 		navigate(key);
 	};

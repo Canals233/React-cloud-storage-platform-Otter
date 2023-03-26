@@ -5,10 +5,11 @@ import {
 	ArrowLeftOutlined,
 } from "@ant-design/icons";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectBucketListByName } from "@/redux/modules/bucketSlice";
 import "./BucketDetail.less";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+
 
 function getItem(label, key, icon, children, type) {
 	return {
@@ -27,13 +28,12 @@ const items = [
 	]),
 ];
 
-const styles = {
-	backBtn: {
-		fontSize: 16,
-	},
-};
-
 const BucketDetail = () => {
+    //redux相关
+    const dispatch = useDispatch();
+    
+
+    //路由相关
 	const location = useLocation();
 	const navigate = useNavigate();
 	const URLParams = useParams(); //如果有多级会有多个参数
@@ -42,12 +42,14 @@ const BucketDetail = () => {
 	const currentBucket = useSelector(selectBucketListByName(bucketName));
 	const anchorType = searchParams.get("anchorType");
 
+
 	const onMenuChange = (e) => {
 		// console.log("click ", e);
 
 		//没开多选，所以e.key只有一个
-		navigate(`/bucket/${bucketName}&anchorType=${e.key}`);
+		navigate(`/bucket/${bucketName}?anchorType=${e.key}`);
 		//菜单子选项太多，不如传参条件渲染
+
 	};
 
 	const onBackClick = () => {
