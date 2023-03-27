@@ -8,15 +8,15 @@ import {
 } from "@/redux/modules/breadcrumbSlice";
 const BreadcrumbNav = () => {
 	const navigate = useNavigate();
-    const  dispatch=useDispatch()
+	const dispatch = useDispatch();
 	const { themeConfig } = useSelector((state) => state.global);
 
 	const currentBreadcrumb = useSelector(getCurrentBreadcrumb);
 	console.log(currentBreadcrumb);
 	const onBreadClick = (endpath) => {
 		navigate(endpath);
-        console.log(endpath)
-		// dispatch(backToOneBreadcrumb(endpath))
+		
+		dispatch(backToOneBreadcrumb(endpath))
 	};
 	return (
 		<>

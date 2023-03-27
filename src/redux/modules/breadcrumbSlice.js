@@ -14,18 +14,17 @@ const breadcrumbSlice = createSlice({
 			state.currentBreadcrumb = action.payload;
 		},
 		backToOneBreadcrumb(state, action) {
-			const endPath = action.payload.endPath;
+			const endPath = action.payload;
 			if (endPath === "/home") {
 				state.currentBreadcrumb = {
 					path: ["/home"],
 					title: ["概览"],
 				};
 			} else {
-				for (
-					let i = state.currentBreadcrumb.path.length - 1;
-					i >= 0;
-					i--
-				) {
+				let len = state.currentBreadcrumb.path.length;
+
+				for (let i = len - 1; i >= 0; i--) {
+					console.log(state.currentBreadcrumb.path[i], endPath);
 					if (state.currentBreadcrumb.path[i] === endPath) {
 						break;
 					}
