@@ -3,8 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const breadcrumbSlice = createSlice({
 	name: "breadcrumb",
 	initialState: {
-		breadcrumbList: {},
-		currentBreadcrumb: {},
+		breadcrumbList: {},//这个属性已经不再使用，记得去掉
+		currentBreadcrumb: {
+			path: ["/home"],
+			title: ["概览"],
+		},
 	},
 	reducers: {
 		setBreadcrumbList(state, action) {

@@ -1,20 +1,29 @@
-.back-btn {
-	font-size: 16px;
-    padding:12px 0 12px 24px;
-
-    &:hover{
-        cursor: pointer;
-    }
-	.back-icon {
-		color: blue;
-	}
-	.back-text {
-        font-size: 14px;
-        margin-left: 8px;
-		font-weight: 600;
-        transition: all 0.1s;
+.detail-content{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    .back-btn {
+        font-size: 16px;
+        padding:12px 0 12px 24px;
+    
         &:hover{
+            cursor: pointer;
+        }
+        .back-icon {
             color: blue;
         }
-	}
+        .back-text {
+            font-size: 14px;
+            margin-left: 8px;
+            font-weight: 600;
+            transition: all 0.1s;
+            &:hover{
+                color: blue;
+            }
+        }
+    }
+    .child-page{
+        width: 100%;
+        padding: 20px 20px 30px 20px;
+    }
 }

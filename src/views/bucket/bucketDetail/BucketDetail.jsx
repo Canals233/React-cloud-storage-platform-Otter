@@ -10,6 +10,7 @@ import { selectBucketListByName } from "@/redux/modules/bucketSlice";
 import "./BucketDetail.less";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
+import DetailFileList from "./BucketDetailPages/DetailFileList/DetailFileList";
 
 
 function getItem(label, key, icon, children, type) {
@@ -64,7 +65,7 @@ const BucketDetail = () => {
 	};
 
 	return (
-		<>
+		<div className="detail-content">
 			<div
 				style={{
 					width: 180,
@@ -83,7 +84,10 @@ const BucketDetail = () => {
 					onClick={onMenuChange}
 				/>
 			</div>
-		</>
+            <div className="child-page">
+            <DetailFileList/>
+            </div>
+		</div>
 	);
 };
 

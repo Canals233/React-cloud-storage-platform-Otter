@@ -17,6 +17,7 @@ const BucketCreateProvider = ({ children }) => {
 			name: "",
 			encrypt: true,
 			tags: [],
+			files: [],
 		});
 	};
 	const restartCreate = () => {

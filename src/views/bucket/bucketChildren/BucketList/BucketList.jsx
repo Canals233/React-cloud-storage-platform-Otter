@@ -8,7 +8,7 @@ const Bucketlist = () => {
 	const [bucketList, setBucketList] = useState([]);
 	let newBucketData = useSelector(selectAllBucketList);
 	useEffect(() => {
-		console.log("hi change");
+	
 		setBucketList(
 			[...newBucketData].sort((a, b) => a.name.localeCompare(b.name))
 		);
@@ -29,7 +29,7 @@ const Bucketlist = () => {
 			>
 				<BucketlistNav setResult={setBucketList} />
 			</div>
-            
+
 			<BucketlistCard TableData={bucketList} />
 		</div>
 	);

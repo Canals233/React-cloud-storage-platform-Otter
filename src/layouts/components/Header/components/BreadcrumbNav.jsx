@@ -12,12 +12,12 @@ const BreadcrumbNav = () => {
 	const { themeConfig } = useSelector((state) => state.global);
 
 	const currentBreadcrumb = useSelector(getCurrentBreadcrumb);
-	console.log(currentBreadcrumb);
+	
 	const onBreadClick = (endpath) => {
 		navigate(endpath);
-		
-		dispatch(backToOneBreadcrumb(endpath))
+		dispatch(backToOneBreadcrumb(endpath));
 	};
+    // console.log(currentBreadcrumb)
 	return (
 		<>
 			{!themeConfig.breadcrumb && (
@@ -30,7 +30,7 @@ const BreadcrumbNav = () => {
 					>
 						首页
 					</Breadcrumb.Item>
-					{currentBreadcrumb.title.map((item, index) => {
+					{currentBreadcrumb?.title.map((item, index) => {
 						return (
 							<Breadcrumb.Item
 								key={item}

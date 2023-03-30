@@ -22,17 +22,20 @@ import { visiableRenderMap } from "@/views/bucket/api/bucketApi.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
+import { setAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
 
 //这个组件是存储桶列表的卡片组件，包含了表格，表格的数据是从父组件传递过来的
 const BucketlistCard = ({ TableData }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const handleBucketClick = (name) => {
+	const handleBucketClick = (name, files) => {
 		navigate(`/bucket/${name}?anchorType=file`);
+
+		dispatch(setAllBucketDetail(files));
 		dispatch(
 			setCurrentBreadcrumb({
-				title: [`存储桶列表`,`${name}`],
-                path:['/bucket',`/bucket/${name}`]
+				title: [`存储桶列表`, `${name}`],
+				path: ["/bucket", `/bucket/${name}`],
 			})
 		);
 	};
@@ -59,7 +62,11 @@ const BucketlistCard = ({ TableData }) => {
 					}}
 					render={(text, record) => {
 						return (
-							<a onClick={() => handleBucketClick(record.name)}>
+							<a
+								onClick={() =>
+									handleBucketClick(record.name, record.files)
+								}
+							>
 								{text}
 							</a>
 						);
