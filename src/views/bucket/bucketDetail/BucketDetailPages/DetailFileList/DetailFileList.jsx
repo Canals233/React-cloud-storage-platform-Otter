@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import "./DetailFileList.less";
 import { DownOutlined, FolderOutlined } from "@ant-design/icons";
 import { selectAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
+import { UploadFileAction, CreateFolderAction } from "./DetailFileNavActions";
+import { useLocation } from "react-router-dom";
 
 const columns = [
 	{
@@ -80,44 +82,54 @@ const items = [
 	},
 ];
 
-const DetailFileList = () => {
+const DetailSearch = () => {
 	const [searchValue, setSearchValue] = React.useState("");
 	const handleSearchChange = (e) => {
 		setSearchValue(e.target.value);
 	};
+	return (
+		<Search
+			allowClear={true}
+			value={searchValue}
+			onChange={handleSearchChange}
+			enterButton="搜索"
+			placeholder="支持模糊搜索"
+			className="detail-search"
+		></Search>
+	);
+};
+
+const DetailNav = () => {
+   
+	return (
+		<Space className="action-btns">
+			<UploadFileAction />
+			<CreateFolderAction />
+			<Button>清空存储桶</Button>
+			<Dropdown
+				menu={{
+					items,
+				}}
+			>
+				<Button>
+					更多操作
+					<DownOutlined />
+				</Button>
+			</Dropdown>
+			<Button type="primary">任务概览</Button>
+		</Space>
+	);
+};
+
+const DetailFileList = () => {
 	let detailTableData = useSelector(selectAllBucketDetail);
-	
+	const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
 	return (
 		<Card>
-			<Space className="action-btns">
-				<Button type="primary"> 上传文件</Button>
-				<Popover content={"文件夹功能正在开发中，敬请期待"}>
-					<Button disabled> 新建文件夹</Button>
-				</Popover>
-				<Button>清空存储桶</Button>
-				<Dropdown
-					menu={{
-						items,
-					}}
-				>
-					<Button>
-						更多操作
-						<DownOutlined />
-					</Button>
-				</Dropdown>
-				<Button type="primary">任务概览</Button>
-			</Space>
-
+			<DetailNav />
 			<div className="detail-refresh-search">
 				<Button type="primary">刷新</Button>
-				<Search
-					allowClear={true}
-					value={searchValue}
-					onChange={handleSearchChange}
-					enterButton="搜索"
-					placeholder="支持模糊搜索"
-					className="detail-search"
-				></Search>
+				<DetailSearch />
 			</div>
 
 			<div className="detail-list-content">
@@ -126,15 +138,12 @@ const DetailFileList = () => {
 					columns={columns}
 					rowSelection={{
 						type: "checkbox",
-						onChange: (selectedRowKeys, selectedRows) => {
-							console.log(
-								`selectedRowKeys: ${selectedRowKeys}`,
-								"selectedRows: ",
-								selectedRows
-							);
+						onChange: (selectedRowKeys) => {
+							setSelectedRowKeys(selectedRowKeys);
 						},
+						selectedRowKeys,
 					}}
-                    rowKey='name'
+					rowKey="name" //为了方便，使用了文件名作为key
 				></Table>
 			</div>
 		</Card>
