@@ -1,4 +1,4 @@
-
+import dayjs from "dayjs";
 
 export const visiableRenderMap = (code) => {
 	let visiableStr = "";
@@ -22,4 +22,18 @@ export const radioTextMap = (value) => {
 	} else if (value === "666") {
 		newText = "所有人都可以读取和写入";
 	}
-	return newText;}
+	return newText;
+};
+
+export function formatFileSize(size) {
+	const units = ["B", "KB", "MB", "GB", "TB"];
+	let i = 0;
+	while (size >= 1024 && i < units.length - 1) {
+		size /= 1024;
+		i++;
+	}
+	return `${size.toFixed(2)} ${units[i]}`;
+}
+export function formatTimestamp(timestamp) {
+    return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss');
+  }

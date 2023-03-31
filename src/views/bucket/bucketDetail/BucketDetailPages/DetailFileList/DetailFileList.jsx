@@ -8,7 +8,7 @@ import "./DetailFileList.less";
 import { DownOutlined, FolderOutlined } from "@ant-design/icons";
 import { selectAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
 import { UploadFileAction, CreateFolderAction } from "./DetailFileNavActions";
-import { useLocation } from "react-router-dom";
+
 
 const columns = [
 	{
