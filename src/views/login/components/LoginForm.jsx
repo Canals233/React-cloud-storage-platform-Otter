@@ -2,8 +2,8 @@ import md5 from "js-md5";
 import { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { loginApi } from "@/api/modules/login";
-import { HOME_URL } from "@/config/config";
+import { loginApi,registerApi } from "@/api/modules/user";
+
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/globalSlice";
 import { useTranslation } from "react-i18next";
@@ -21,14 +21,16 @@ const LoginForm = (props) => {
 	const [loading, setLoading] = useState(false);
 	// 登录
 	const onFinish = async (loginForm) => {
+      
 		try {
 			setLoading(true);
-			loginForm.password = md5(loginForm.password);
+
 			const { data } = await loginApi(loginForm);
+			console.log(data,'loginres');
 			setToken(data?.access_token);
 			setTabsList([]);
 			message.success("登录成功！");
-			navigate(HOME_URL);
+			// navigate(HOME_URL);
 		} finally {
 			setLoading(false);
 		}
@@ -36,6 +38,20 @@ const LoginForm = (props) => {
 	const onFinishFailed = (errorInfo) => {
 		console.log("Failed:", errorInfo);
 	};
+	const onRegister = async () => {
+        const registerForm = form.getFieldsValue()
+        try {
+            setLoading(true);
+            const { data } = await registerApi(registerForm);
+            console.log(data);
+            setToken(data?.access_token);
+            setTabsList([]);
+            message.success("注册成功！");
+            // navigate(HOME_URL);
+        } finally {
+            setLoading(false);
+        }
+    };
 	return (
 		<Form
 			form={form}
@@ -48,7 +64,7 @@ const LoginForm = (props) => {
 			autoComplete="off"
 		>
 			<Form.Item
-				name="username"
+				name="userId"
 				rules={[{ required: true, message: "请输入用户名" }]}
 			>
 				<Input
@@ -68,20 +84,21 @@ const LoginForm = (props) => {
 			</Form.Item>
 			<Form.Item className="login-btn">
 				<Button
-					onClick={() => {
-						form.resetFields();
-					}}
-					icon={<CloseCircleOutlined />}
-				>
-					{t("login.reset")}
-				</Button>
-				<Button
 					type="primary"
 					htmlType="submit"
 					loading={loading}
 					icon={<UserOutlined />}
 				>
 					{t("login.confirm")}
+				</Button>
+				<Button
+					onClick={() => {
+                        onRegister();
+						form.resetFields();
+					}}
+					icon={<CloseCircleOutlined />}
+				>
+					{t("login.register")}
 				</Button>
 			</Form.Item>
 		</Form>

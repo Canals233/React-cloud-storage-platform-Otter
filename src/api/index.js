@@ -52,6 +52,7 @@ class RequestHttp {
 		 */
 		this.service.interceptors.response.use(
 			(response) => {
+                console.log(response,'OKresponse')
 				const { data, config } = response;
 				NProgress.done();
 				// * 在请求结束后，移除本次请求(关闭loading)
@@ -74,6 +75,7 @@ class RequestHttp {
 			},
 			async (error) => {
 				const { response } = error;
+                console.log(response,'ERRORresponse')
 				NProgress.done();
 				tryHideFullScreenLoading();
 				// 请求超时单独判断，请求超时没有 response

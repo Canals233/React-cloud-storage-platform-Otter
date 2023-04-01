@@ -1,7 +1,7 @@
 export default {
     login: {
         confirm: "Login",
-        reset: "Reset"
+        register: "Register"
     },
     home: {
         welcome: "Welcome"

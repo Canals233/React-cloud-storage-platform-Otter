@@ -37,7 +37,7 @@ export default defineConfig({
         open: true,
 		proxy: {
 			"/api": {
-				target: "https://mock.mengxuegu.com/mock/62abda3212c1416424630a45", // easymock
+				target: "http://118.195.240.214:5000", // easymock
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},
