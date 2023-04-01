@@ -6,7 +6,7 @@ import { setThemeConfig } from "@/redux/modules/globalSlice";
 import { updateCollapse } from "@/redux/modules/menuSlice";
 import SwitchDark from "@/components/SwitchDark";
 const Theme = (props) => {
-    const [visible, setVisible] = useState(false);
+    const [open, setOpen] = useState(false);
     const { setThemeConfig, updateCollapse } = props;
     const { isCollapse } = props.menu;
     const { themeConfig } = props.global;
@@ -21,11 +21,11 @@ const Theme = (props) => {
     };
     return (<>
 			<i className="icon-style iconfont icon-zhuti" onClick={() => {
-            setVisible(true);
+            setOpen(true);
         }}></i>
 			<Drawer title="布局设置" closable={false} onClose={() => {
-            setVisible(false);
-        }} visible={visible} width={320}>
+            setOpen(false);
+        }} open={open} width={320}>
 				{/* 全局主题 */}
 				<Divider className="divider">
 					<FireOutlined />

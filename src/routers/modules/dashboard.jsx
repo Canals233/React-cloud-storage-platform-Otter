@@ -5,16 +5,14 @@ import { LayoutIndex } from "@/routers/constant";
 const dashboardRouter = [
     {
         element: <LayoutIndex />,
-        meta: {
-            title: "Dashboard"
-        },
+     
         children: [
             {
-                path: "/dashboard/dataVisualize",
-                element: lazyLoad(React.lazy(() => import("@/views/dashboard/dataVisualize/index"))),
+                path: "/dashboard",
+                element: lazyLoad(React.lazy(() => import("@/views/dashboard/index"))),
                 meta: {
                     requiresAuth: true,
-                    title: "数据可视化",
+                    title: "可视化统计",
                     key: "dataVisualize"
                 }
             }

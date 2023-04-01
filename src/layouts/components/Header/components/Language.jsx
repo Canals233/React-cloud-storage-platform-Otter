@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { setLanguage } from "@/redux/modules/globalSlice";
 const Language = (props) => {
     const { language, setLanguage } = props;
-    const menu = (<Menu items={[
+    const  items=[
             {
                 key: "1",
                 label: <span>简体中文</span>,
@@ -16,8 +16,8 @@ const Language = (props) => {
                 onClick: () => setLanguage("en"),
                 disabled: language === "en"
             }
-        ]}/>);
-    return (<Dropdown overlay={menu} placement="bottom" trigger={["click"]} arrow={true}>
+        ]
+    return (<Dropdown menu={{items}} placement="bottom" trigger={["click"]} arrow={true}>
 			<i className="icon-style iconfont icon-zhongyingwen"></i>
 		</Dropdown>);
 };

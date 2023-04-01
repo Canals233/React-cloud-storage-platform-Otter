@@ -1,20 +1,12 @@
-import {
-	Button,
-	Dropdown,
-	message,
-	Modal,
-	Popover,
-	Space,
-	Table,
-	Upload,
-} from "antd";
+import { Button, Modal, Popover, Space, Table, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./NavActions.less";
 import { useDropzone } from "react-dropzone";
-import { formatFileSize } from "@/views/bucket/api/bucketApi";
-import { formatTimestamp } from "../../../api/bucketApi";
+import { formatFileSize, formatTimestamp } from "@/views/bucket/api/bucketApi";
+
+import { nanoid } from "nanoid";
 
 const getprops = (fileList, setFileList, args) => {
 	return {
@@ -39,27 +31,11 @@ const getprops = (fileList, setFileList, args) => {
 	};
 };
 
-const columns = [
-	{
-		title: "文件/文件夹",
-		dataIndex: "name",
-		key: "name",
-	},
-	{
-		title: "大小",
-		dataIndex: "size",
-		key: "size",
-	},
-	{
-		title: "操作",
-		key: "action",
-		render: () => <a>删除</a>,
-	},
-];
 // 只在这个组件里会用到。所以放在这里
 const filesToObjectArray = (files) => {
 	return files.map((file) => {
 		return {
+			id: nanoid(),
 			name: file.name,
 			size: formatFileSize(file.size),
 			time: formatTimestamp(file.lastModified),
@@ -67,8 +43,40 @@ const filesToObjectArray = (files) => {
 	});
 };
 
-const FilesTableContent = ({ fileList }) => {
+const FilesTableContent = ({ fileList, setFileList }) => {
+	const handleDeleteFile = (fileName) => {
+		const newFileList = fileList.filter((file) => file.name !== fileName);
+		setFileList(newFileList);
+		console.log(newFileList);
+	};
+	const columns = [
+		{
+			title: "文件/文件夹",
+			dataIndex: "name",
+			key: "name",
+		},
+		{
+			title: "大小",
+			dataIndex: "size",
+			key: "size",
+		},
+		{
+			title: "操作",
+			key: "action",
+			render: (text, record) => (
+				<a
+					onClick={() => {
+						handleDeleteFile(record.name);
+					}}
+				>
+					删除
+				</a>
+			),
+		},
+	];
+
 	const data = filesToObjectArray(fileList);
+
 	return (
 		<Table
 			className="upload-file-table"
@@ -95,7 +103,6 @@ const EmptyContent = () => {
 
 const MyDragger = ({ fileList, setFileList }) => {
 	const onDrop = (acceptedFiles) => {
-        
 		setFileList([...fileList, ...acceptedFiles]);
 		//下面是对file的细致操作,暂时还不用做
 		// acceptedFiles.forEach((file) => {
@@ -111,7 +118,7 @@ const MyDragger = ({ fileList, setFileList }) => {
 		// 	// };
 		// 	reader.readAsArrayBuffer(file);
 		// });
-	}
+	};
 	const { getRootProps, getInputProps } = useDropzone({
 		onDrop,
 		noClick: true,
@@ -124,7 +131,10 @@ const MyDragger = ({ fileList, setFileList }) => {
 		<div {...getRootProps()} className="upload-content">
 			<input {...getInputProps()} className="drag-upload-form" />
 			{fileList.length > 0 ? (
-				<FilesTableContent fileList={fileList} />
+				<FilesTableContent
+					fileList={fileList}
+					setFileList={setFileList}
+				/>
 			) : (
 				<EmptyContent />
 			)}
@@ -137,20 +147,20 @@ const UploadFileAction = () => {
 	const [fileList, setFileList] = useState([]);
 	const showModal = () => {
 		setIsModalOpen(true);
-        setFileList([])
+		setFileList([]);
 	};
 	const handleOk = () => {
 		setIsModalOpen(false);
-        setFileList([])
+		setFileList([]);
 	};
 	const handleCancel = () => {
 		setIsModalOpen(false);
-        setFileList([])
+		setFileList([]);
 	};
 	const location = useLocation();
 	//['','bucket','bucketPath']
 	const bucketPath = location.pathname.split("/").slice(2).join("/");
-	console.log(fileList);
+	// console.log(fileList);
 	return (
 		<>
 			<Button type="primary" onClick={showModal}>

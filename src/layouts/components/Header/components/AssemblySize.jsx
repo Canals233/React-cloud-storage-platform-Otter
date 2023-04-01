@@ -7,33 +7,29 @@ const AssemblySize = (props) => {
 	const onClick = (e) => {
 		setAssemblySize(e.key);
 	};
-	const menu = (
-		<Menu
-			items={[
-				{
-					key: "middle",
-					disabled: assemblySize == "middle",
-					label: <span>默认</span>,
-					onClick,
-				},
-				{
-					disabled: assemblySize == "large",
-					key: "large",
-					label: <span>大型</span>,
-					onClick,
-				},
-				{
-					disabled: assemblySize == "small",
-					key: "small",
-					label: <span>小型</span>,
-					onClick,
-				},
-			]}
-		/>
-	);
+	const items = [
+		{
+			key: "middle",
+			disabled: assemblySize == "middle",
+			label: <span>默认</span>,
+			onClick,
+		},
+		{
+			disabled: assemblySize == "large",
+			key: "large",
+			label: <span>大型</span>,
+			onClick,
+		},
+		{
+			disabled: assemblySize == "small",
+			key: "small",
+			label: <span>小型</span>,
+			onClick,
+		},
+	];
 	return (
 		<Dropdown
-			overlay={menu}
+			menu={{ items }}
 			placement="bottom"
 			trigger={["click"]}
 			arrow={true}

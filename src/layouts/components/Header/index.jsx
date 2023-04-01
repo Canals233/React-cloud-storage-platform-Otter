@@ -1,6 +1,5 @@
 import { Layout } from "antd";
 import AvatarIcon from "./components/AvatarIcon";
-import CollapseIcon from "./components/CollapseIcon";
 import BreadcrumbNav from "./components/BreadcrumbNav";
 import AssemblySize from "./components/AssemblySize";
 import Language from "./components/Language";
@@ -15,8 +14,8 @@ const LayoutHeader = () => {
 				<BreadcrumbNav />
 			</div>
 			<div className="header-ri">
-				<AssemblySize />
-				<Language />
+				{/* <AssemblySize /> */}
+				{/* <Language /> */}
 				<Theme />
 				<Fullscreen />
 				<span className="username">Canals</span>

@@ -29,7 +29,7 @@ const AvatarIcon = (props) => {
         });
     };
     // Dropdown Menu
-    const menu = (<Menu items={[
+    const items = [
             {
                 key: "1",
                 label: <span className="dropdown-item">首页</span>,
@@ -53,9 +53,9 @@ const AvatarIcon = (props) => {
                 label: <span className="dropdown-item">退出登录</span>,
                 onClick: logout
             }
-        ]}></Menu>);
+        ];
     return (<>
-			<Dropdown overlay={menu} placement="bottom" arrow trigger={["click"]}>
+			<Dropdown menu={{items}} placement="bottom" arrow trigger={["click"]}>
 				<Avatar size="large" src={avatar}/>
 			</Dropdown>
 			<InfoModal innerRef={infoRef}></InfoModal>
