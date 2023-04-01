@@ -1,8 +1,8 @@
 import logo from "@/assets/images/logo.png";
 import { useSelector } from "react-redux";
-import { getCollapse } from "@/redux/modules/menuSlice";
+import { getIsCollapse } from "@/redux/modules/menuSlice";
 const Logo = () => {
-	const isCollapse = useSelector(getCollapse);
+	const isCollapse = useSelector(getIsCollapse);
 
 	return (
 		<div className="logo-box">

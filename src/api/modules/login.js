@@ -15,7 +15,4 @@ export const loginApi = (params) => {
 export const getAuthorButtons = () => {
     return http.get(PORT1 + `/auth/buttons`);
 };
-// * 获取菜单列表
-export const getMenuList = () => {
-    return http.get(PORT1 + `/menu/list`);
-};
+

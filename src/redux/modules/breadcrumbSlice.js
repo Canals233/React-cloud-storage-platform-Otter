@@ -10,9 +10,7 @@ const breadcrumbSlice = createSlice({
 		},
 	},
 	reducers: {
-		setBreadcrumbList(state, action) {
-			state.breadcrumbList = action.payload;
-		},
+		
 		setCurrentBreadcrumb(state, action) {
 			state.currentBreadcrumb = action.payload;
 		},
@@ -41,7 +39,7 @@ const breadcrumbSlice = createSlice({
 export const getCurrentBreadcrumb = (state) =>
 	state.breadcrumb.currentBreadcrumb;
 
-export const { setBreadcrumbList, setCurrentBreadcrumb, backToOneBreadcrumb } =
+export const { setCurrentBreadcrumb, backToOneBreadcrumb } =
 	breadcrumbSlice.actions;
 
 export default breadcrumbSlice.reducer;
