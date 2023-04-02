@@ -1,4 +1,4 @@
-import LoginForm from "./components/LoginForm";
+import SignForm from "./components/SignForm";
 import SwitchDark from "@/components/SwitchDark";
 import loginLeft from "@/assets/images/login_left.png";
 import logo from "@/assets/images/logo.png";
@@ -15,7 +15,7 @@ const Login = () => {
 						<img className="login-icon" src={logo} alt="logo"/>
 						<span className="logo-text">小水濑云科技</span>
 					</div>
-					<LoginForm />
+					<SignForm />
 				</div>
 			</div>
 		</div>);

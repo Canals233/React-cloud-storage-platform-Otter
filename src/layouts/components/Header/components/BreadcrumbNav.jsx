@@ -33,7 +33,7 @@ const BreadcrumbNav = () => {
 					{currentBreadcrumb?.title.map((item, index) => {
 						return (
 							<Breadcrumb.Item
-								key={item}
+								key={index}
 								href
 								onClick={() => {
 									onBreadClick(currentBreadcrumb.path[index]);
