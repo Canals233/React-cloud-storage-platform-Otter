@@ -3,11 +3,12 @@ import { Form, Input, Radio, Select } from "antd";
 import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
-import { radioTextMap } from "@/views/bucket/api/bucketApi";
+import { radioTextMap,getPublicEnableObject, getPublicEnableString } from "@/views/bucket/api/bucketApi";
 import { BucketCreateContext } from "../../provider/BucketCreateProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import showWarningModal from "@/views/bucket/components/ShowWaringModal";
 import { PopHover } from "@/views/bucket/components/PopInfo";
+
 
 const popContent = <div>属性基加密是小水濑云科技的特色功能</div>;
 
@@ -48,15 +49,16 @@ const CreateStep1 = ({ userID }) => {
 	};
 	const handleRadioChange = (event) => {
 		const value = event.target.value;
-		if (value === "644" || value === "666") {
+        console.log(value)
+		if (value !== "privateReadWrite") {
 			showWarningModal(
 				"提示",
 				"注意：公有读权限可以通过匿名身份直接读取您存储桶中的数据，存在一定的安全风险，为确保您的数据安全，不推荐此配置，建议您选择私有。"
 			);
 		}
 		setRadioText(radioTextMap(value));
-
-		setBucket({ ...bucket, visiable: value });
+        const newPublicEnableObject=getPublicEnableObject(value)
+		setBucket({ ...bucket, ...newPublicEnableObject });
 		// console.log(value, newText);
 	};
 	const handleTagsChange = (value) => {
@@ -85,7 +87,7 @@ const CreateStep1 = ({ userID }) => {
 			</Form.Item>
 			<Form.Item label="访问权限" style={{ marginLeft: ".75rem" }}>
 				<AuthRadio
-					authValue={bucket.visiable}
+					authValue={getPublicEnableString(bucket.publicWriteEnable,bucket.publicReadEnable)}
 					radioText={radioText}
 					handleRadioChange={handleRadioChange}
 				/>

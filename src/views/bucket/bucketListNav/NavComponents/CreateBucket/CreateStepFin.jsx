@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { BucketCreateContext } from "../../provider/BucketCreateProvider";
-import { visiableRenderMap } from "@/views/bucket/api/bucketApi";
+import { publicEnableRenderMap } from "@/views/bucket/api/bucketApi";
 import { PopHover } from "@/views/bucket/components/PopInfo";
 const listStyle = {
 	key: {
@@ -13,11 +13,22 @@ const listStyle = {
 const popContent = <div>存储桶名称由[自定义名称]-[开发商 APPID]构成</div>;
 const bucketKVMapFunction = (item, index, userID) => {
 	switch (item[0]) {
-		case "visiable":
+		case "publicWriteEnable":
 			return (
 				<div key={index}>
-					<span style={listStyle.key}>{"访问权限"}</span>
-					<span>{visiableRenderMap(item[1])}</span>
+					<span style={listStyle.key}>{"允许公开写"}</span>
+					<span style={item[1] ? { color: "red" } : {}}>
+						{item[1] ? "是" : "否"}
+					</span>
+				</div>
+			);
+		case "publicReadEnable":
+			return (
+				<div key={index}>
+					<span style={listStyle.key}>{"允许公开读"}</span>
+					<span style={item[1] ? { color: "red" } : {}}>
+						{item[1] ? "是" : "否"}
+					</span>
 				</div>
 			);
 		case "encrypt":

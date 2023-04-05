@@ -3,22 +3,31 @@ import Column from "antd/lib/table/Column";
 import BucketlistCardActions from "./CardComponents/BucketListCardActions";
 import { PopHover } from "@/views/bucket/components/PopInfo";
 
-const visiableFilterArray = [
-	{
-		text: "公开读写",
-		value: "666",
-	},
-	{
-		text: "公开读，私有写",
-		value: "644",
-	},
-	{
-		text: "私有读写",
-		value: "600",
-	},
+const publicEnableFilterArray = [
+	{ text: "公开读写", value: "publicReadWrite" },
+	{ text: "私有读写", value: "privateReadWrite" },
+	{ text: "公开读私有写", value: "publicReadPrivateWrite" },
 ];
+const onPublicEnableFilter = (value, record) => {
+    if (value === "publicReadWrite") {
+        return (
+            record.publicWriteEnable &&
+            record.publicReadEnable
+        );
+    } else if (value === "publicReadPrivateWrite") {
+        return (
+            !record.publicWriteEnable &&
+            record.publicReadEnable
+        );
+    } else if (value === "privateReadWrite") {
+        return (
+            !record.publicWriteEnable &&
+            !record.publicReadEnable
+        );
+    }
+}
 const popContent = <div>存储桶名称由[自定义名称]-[开发商 APPID]构成</div>;
-import { visiableRenderMap } from "@/views/bucket/api/bucketApi.jsx";
+import { publicEnableRenderMap } from "@/views/bucket/api/bucketApi.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
@@ -43,7 +52,7 @@ const BucketlistCard = ({ TableData }) => {
 
 	return (
 		<>
-			<Table dataSource={TableData}>
+			<Table dataSource={TableData} rowKey={"bucketId"}>
 				<Column
 					title={
 						<>
@@ -74,13 +83,17 @@ const BucketlistCard = ({ TableData }) => {
 				></Column>
 				<Column
 					title="访问权限"
-					dataIndex="visiable"
-					key="visiable"
-					filters={visiableFilterArray}
-					onFilter={(value, record) =>
-						record.visiable.indexOf(value) === 0
-					}
-					render={visiableRenderMap}
+					dataIndex={["publicWriteEnable", "publicReadEnable"]}
+					key="publicEnable"
+					filters={publicEnableFilterArray}
+					onFilter={onPublicEnableFilter}
+                    //过滤逻辑是text映射value，再传到onfilter去筛选
+					render={(_, record) => {
+						return publicEnableRenderMap(
+							record.publicWriteEnable,
+							record.publicReadEnable
+						);
+					}}
 				/>
 				<Column
 					title="创建时间"
@@ -95,7 +108,9 @@ const BucketlistCard = ({ TableData }) => {
 					title="操作"
 					key="action"
 					render={(_, record) => {
-						return <BucketlistCardActions bucketKey={record.key} />;
+						return (
+							<BucketlistCardActions bucketId={record.bucketId} />
+						);
 					}}
 				/>
 			</Table>

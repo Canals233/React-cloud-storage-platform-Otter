@@ -7,7 +7,7 @@ import AddPerson from "./images/add_person.png";
 import AddTeam from "./images/add_team.png";
 import Today from "./images/today.png";
 import BookSum1 from "./images/book_sum.png";
-const { TabPane } = Tabs;
+
 const DataVisualize = () => {
     const onChange = (key) => {
         console.log(key);
@@ -23,10 +23,10 @@ const DataVisualize = () => {
     return (<div className="dataVisualize-box">
 			<div className=" card top-box">
 				<div className="top-title">数据可视化</div>
-				<Tabs defaultActiveKey="1" onChange={onChange}>
-					{tabsList.map(item => {
-            return <TabPane tab={item.label} key={item.name}></TabPane>;
-        })}
+				<Tabs defaultActiveKey="1" onChange={onChange} items={tabsList.map(item => {
+            return <span tab={item.label} key={item.name}></span>;
+        })} >
+					
 				</Tabs>
 				<div className="top-content">
 					<div className="item-left sle">
@@ -77,10 +77,11 @@ const DataVisualize = () => {
 			<div className="card bottom-box">
 				<div className="bottom-title">数据来源</div>
 				<div className="bottom-tabs">
-					<Tabs defaultActiveKey="1" onChange={onChange}>
-						{tabsList.map(item => {
-            return <TabPane tab={item.label} key={item.name}></TabPane>;
+					<Tabs defaultActiveKey="1" onChange={onChange} items={tabsList.map(item => {
+            return <span tab={item.label} key={item.name}></span>;
         })}
+                    >
+						
 					</Tabs>
 				</div>
 				<div className="curve-echarts">

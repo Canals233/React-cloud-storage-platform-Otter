@@ -1,15 +1,16 @@
 import { Dropdown, message, Modal, Select, Space, Table } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectBucketByKey } from "@/redux/modules/bucketSlice";
-import { updateBucketTagsByKey } from "../../../../redux/modules/bucketSlice";
+import { updateBucketTagsByBucketId ,selectBucketByBucketId} from "@/redux/modules/bucketSlice";
+import { removeBucketApi } from "@/api/modules/bucket";
+import { PopHover } from "../../components/PopInfo";
 
 //这个是最后一列的操作
 
-const BucketlistCardActions = ({ bucketKey }) => {
+const BucketlistCardActions = ({ bucketId }) => {
 	const [modalOpen, setModalOpen] = useState(false);
-	const currentBucket = useSelector(selectBucketByKey(bucketKey));
+	const currentBucket = useSelector(selectBucketByBucketId(bucketId));
 	const [tags, setTags] = useState(currentBucket.tags);
 	const dispatch = useDispatch();
 	// console.log(currentBucket)
@@ -24,19 +25,38 @@ const BucketlistCardActions = ({ bucketKey }) => {
 		setTags(value);
 	};
 	const onOKClick = () => {
-		dispatch(updateBucketTagsByKey({ bucketKey, tags }));
-        message.info( `${currentBucket.name}的标签更新成功`);
+		dispatch(updateBucketTagsByBucketId({ bucketId, tags }));
+		message.info(`${currentBucket.name}的标签更新成功`);
 		closeModal();
 	};
 
 	const items = [
 		{ label: <a onClick={onTagsClick}>标签</a>, key: "item-1" }, // 菜单项务必填写 key
 		{
-			label: <a href="https://www.antgroup.com">清空数据</a>,
+			label: <a>清空数据</a>,
 			key: "item-2",
 		},
-		{ label: <a href="https://www.antgroup.com">删除</a>, key: "item-3" },
+		{ label: <a>删除</a>, key: "item-3" },
 	];
+
+	const onBucketRemove = () => {
+		Modal.confirm({
+			title: "二次确认",
+			icon: <ExclamationCircleFilled />,
+			content: "请再次确认是否删除该存储桶",
+			okText: "确定删除",
+			okType: "danger",
+			cancelText: "取消",
+			onOk() {
+				removeBucketApi({
+					bucketId,
+				});
+			},
+			onCancel() {
+				console.log("Cancel");
+			},
+		});
+	};
 
 	return (
 		<>
@@ -59,7 +79,7 @@ const BucketlistCardActions = ({ bucketKey }) => {
 				/>
 			</Modal>
 
-			<Space size="small">
+			{/* <Space size="small">
 				<a>信息监控</a>
 				<a>数据管理</a>
 				<Dropdown
@@ -75,6 +95,17 @@ const BucketlistCardActions = ({ bucketKey }) => {
 						</Space>
 					</a>
 				</Dropdown>
+			</Space> */}
+			<Space size={"small"}>
+				<a onClick={onTagsClick}>
+					更改标签{" "}
+					<PopHover
+						content={
+							"标签设定暂只在本次登录有效，持久化在加急开发中"
+						}
+					/>
+				</a>
+				<a onClick={onBucketRemove}>删除存储桶</a>
 			</Space>
 		</>
 	);

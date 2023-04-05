@@ -26,7 +26,7 @@ const items = [
 	getItem("文件列表", "file", <MailOutlined />),
 	getItem("基本配置", "configs", <AppstoreOutlined />, [
 		getItem("标签管理", "tagsConfig"),
-		getItem("权限管理", "visiableConfig"),
+		getItem("权限管理", "publicEnableConfig"),
 	]),
 ];
 

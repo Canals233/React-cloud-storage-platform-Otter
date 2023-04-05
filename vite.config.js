@@ -37,8 +37,11 @@ export default defineConfig({
         open: true,
 		proxy: {
 			"/api": {
-				target: "http://118.195.240.214:5000", // easymock
+				// target: "https://118.195.240.214:5000", // HTTPS并且用IP直接访问
+                // secure: false,//跳过证书检查
+                target:'http://hduscda.cn:5000',
 				changeOrigin: true,
+                
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},
 		}

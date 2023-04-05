@@ -14,19 +14,19 @@ const bucketSlice = createSlice({
 		},
 		changeBucketsAuth(state, action) {
 			console.log("changeBucketsAuth", action.payload);
-			const [keys, newVisiable] = action.payload;
+			const [bucketIds, newPublicEnableObject] = action.payload;
 			//直接利用immer的特性，直接修改state
 			state.bucketList = state.bucketList.map((bucket) => {
-				if (keys.includes(bucket.key)) {
-					return { ...bucket, visiable: newVisiable };
+				if (bucketIds.includes(bucket.bucketId)) {
+					return { ...bucket, ...newPublicEnableObject };
 				}
 				return bucket;
 			});
 		},
-		updateBucketTagsByKey(state, action) {
-			const { key, tags } = action.payload;
+		updateBucketTagsByBucketId(state, action) {
+			const { bucketId, tags } = action.payload;
 			state.bucketList = state.bucketList.map((bucket) => {
-				if (bucket.key === key) {
+				if (bucket.bucketId === bucketId) {
 					return { ...bucket, tags };
 				}
 				return bucket;
@@ -38,14 +38,14 @@ const bucketSlice = createSlice({
 export const selectAllBucketList = (state) => state.bucket.bucketList;
 export const selectBucketListByName = (bucketName) => (state) =>
 	state.bucket.bucketList.filter((bucket) => bucket.name === bucketName)[0];
-export const selectBucketByKey = (bucketKey) => (state) =>
-	state.bucket.bucketList.filter((bucket) => bucket.key === bucketKey)[0];
+export const selectBucketByBucketId = (bucketId) => (state) =>
+	state.bucket.bucketList.filter((bucket) => bucket.bucketId === bucketId)[0];
 
 export const {
 	setBucketList,
 	addBucketList,
 	changeBucketsAuth,
-	updateBucketTagsByKey,
+	updateBucketTagsByBucketId,
 } = bucketSlice.actions;
 
 export default bucketSlice.reducer;

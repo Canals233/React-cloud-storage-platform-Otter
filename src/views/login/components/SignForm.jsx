@@ -13,8 +13,10 @@ import {
 	LockOutlined,
 	UserAddOutlined,
 	UserOutlined,
+    CheckCircleFilled
 } from "@ant-design/icons";
 import { messageMap, testPassword } from "./signApis";
+import confirm from "antd/lib/modal/confirm";
 
 const userIdValidator = (rule, value, callback) => {
 	if (!value) return callback("请输入用户名");
@@ -35,9 +37,36 @@ const SignForm = (props) => {
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState(false);
+
+	const showConfirm = () => {
+		confirm({
+			title: "账号成功注册，是否立即登录？",
+			icon: <CheckCircleFilled style={{color:'lightgreen'}} />,
+            okText:"登录",
+            cancelText:"取消",
+			async onOk() {
+                const loginForm = form.getFieldsValue();
+                try {
+                    setLoading(true);
+                    const { data } = await loginApi(loginForm);
+                    console.log(data, "loginres");
+                    setToken(data?.token);
+                    setTabsList([]);
+                    message.success("登录成功！");
+                    navigate(HOME_URL);
+                } finally {
+                    setLoading(false);
+                    form.resetFields();
+                }
+            },
+			onCancel() {},
+		});
+	};
+
 	// 登录
 	const onFinish = async () => {
 		const loginForm = form.getFieldsValue();
+        if(!loginForm.userId || !loginForm.password) return;
 		try {
 			setLoading(true);
 			const { data } = await loginApi(loginForm);
@@ -46,7 +75,8 @@ const SignForm = (props) => {
 				message.error(messageMap(data.errorMsg));
 				return;
 			}
-			setToken(data?.token);
+			setToken(data?.token );
+            // setToken('1')//测试用
 			setTabsList([]);
 			message.success("登录成功！");
 			navigate(HOME_URL);
@@ -54,29 +84,25 @@ const SignForm = (props) => {
 			setLoading(false);
 		}
 	};
-	const onFinishFailed = (errorInfo) => {
-		console.log("Failed:", errorInfo);
-	};
 	const onRegister = async () => {
 		const registerForm = form.getFieldsValue();
+        if(!registerForm.userId || !registerForm.password) return;
 		if (registerForm.userId.length < 6 || registerForm.userId.length > 16)
 			return;
-
 		if (!testPassword(registerForm.password)) return;
-
 		try {
 			setLoading(true);
 			const { data } = await registerApi(registerForm);
 			console.log(data, "registerres");
 			if (data.result === false) {
 				message.error(messageMap(data.errorMsg));
-				form.validateStatus = "error";
 				return;
 			}
 			setTabsList([]);
-			message.success("注册成功！");
-			form.resetFields();
-			navigate(HOME_URL);
+	
+			showConfirm();
+			// form.resetFields();
+			// navigate(HOME_URL);
 		} finally {
 			setLoading(false);
 		}
@@ -87,8 +113,6 @@ const SignForm = (props) => {
 			name="basic"
 			labelCol={{ span: 5 }}
 			initialValues={{ remember: true }}
-			onFinish={onFinish}
-			onFinishFailed={onFinishFailed}
 			size="large"
 			autoComplete="off"
 		>

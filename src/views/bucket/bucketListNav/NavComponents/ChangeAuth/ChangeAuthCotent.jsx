@@ -2,7 +2,7 @@ import { Button, Form, Space, Table, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllBucketList } from "@/redux/modules/bucketSlice";
-import { radioTextMap, visiableRenderMap } from "@/views/bucket/api/bucketApi";
+import { radioTextMap, publicEnableRenderMap,getPublicEnableObject } from "@/views/bucket/api/bucketApi";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import { changeBucketsAuth } from "@/redux/modules/bucketSlice";
 import SearchBucket from "@/views/bucket/components/SearchBucket";
@@ -16,8 +16,10 @@ const columns = [
 	},
 	{
 		title: "访问权限",
-		dataIndex: "visiable",
-		render: visiableRenderMap,
+		dataIndex: "publicEnable",
+		render:(_,record)=>{
+            return publicEnableRenderMap(record.publicWriteEnable,record.publicReadEnable)
+        },
 		width: 150,
 	},
 ];
@@ -33,8 +35,8 @@ const styles = {
 };
 
 const ChangeAuthContent = ({
-	selectedRowKeys,
-	setSelectedRowKeys,
+	selectedRowBucketIds,
+	setSelectedRowBucketIds,
 	selectedBuckets,
 	setSelectedBuckets,
 	radioValue,
@@ -62,49 +64,52 @@ const ChangeAuthContent = ({
 			dataIndex: "",
 			key: "del",
 			render: (_, record) => (
-				<a onClick={() => handleDelete(record.key)}>删除</a>
+				<a onClick={() => handleDelete(record.bucketId)}>删除</a>
 			),
 		},
 	];
 
 	const rowSelection = {
-		onChange: (selectedRowKeys, selectedRows) => {
+		onChange: (selectedRowBucketIds, selectedRows) => {
 			console.log(
-				`selectedRowKeys: ${selectedRowKeys}`,
+				`selectedRowBucketIds: ${selectedRowBucketIds}`,
 				"selectedRows: ",
 				selectedRows
 			);
 			setSelectedBuckets(selectedRows);
-			setSelectedRowKeys(selectedRowKeys);
+			setSelectedRowBucketIds(selectedRowBucketIds);
 		},
 		getCheckboxProps: (record) => ({
 			// Column configuration not to be checked
 			name: record.name,
-			selectedRowKeys: selectedRowKeys.includes(record.key), // 添加 checked 属性，用于控制行的选择状态
+			selectedRowBucketIds: selectedRowBucketIds.includes(record.bucketId), // 添加 checked 属性，用于控制行的选择状态
 		}),
 	};
 
-	const handleDelete = (key) => {
+	const handleDelete = (bucketId) => {
+        
 		const newSelectedData = selectedBuckets.filter(
-			(item) => item.key !== key
+			(item) => item.bucketId !== bucketId
 		);
 		setSelectedBuckets(newSelectedData);
 		// 取消选择时，更新第一个表格中相应行的选择状态为未选中
-		const newSelectedRowKeys = selectedRowKeys.filter(
-			(item) => item !== key
+		const newSelectedRowBucketIds = selectedRowBucketIds.filter(
+			(Id) => Id !== bucketId
 		);
-		setSelectedRowKeys(newSelectedRowKeys);
+        
+		setSelectedRowBucketIds(newSelectedRowBucketIds);
 	};
 	const handleComfirm = () => {
-		dispath(changeBucketsAuth([selectedRowKeys, radioValue]));
-		message.info(`更改了${selectedRowKeys.length}个存储桶的访问权限`);
+       
+		dispath(changeBucketsAuth([selectedRowBucketIds, getPublicEnableObject(radioValue)]));
+		message.info(`更改了${selectedRowBucketIds.length}个存储桶的访问权限`);
 		onCancel();
 	};
 
 	const handleRadioChange = (event) => {
 		const value = event.target.value;
 
-		if (value === "644" || value === "666") {
+		if (value !== "privateReadWrite") {
 			showWarningModal(
 				"提示",
 				"注意：公有读权限可以通过匿名身份直接读取您存储桶中的数据，存在一定的安全风险，为确保您的数据安全，不推荐此配置，建议您选择私有。"
@@ -139,7 +144,7 @@ const ChangeAuthContent = ({
 						size="small"
 						rowSelection={{
 							...rowSelection,
-							selectedRowKeys: selectedRowKeys,
+							selectedRowKeys: selectedRowBucketIds,
 						}}
 						columns={columns}
 						dataSource={tableData}
@@ -150,6 +155,7 @@ const ChangeAuthContent = ({
 							...styles.tableWrapper,
 							height: 350 - 42,
 						}}
+                        rowKey={'bucketId'}
 					/>
 				</div>
 				<div>

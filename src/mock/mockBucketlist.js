@@ -2,26 +2,29 @@ import { nanoid } from "nanoid";
 
 export const mockBucketlist = [
 	{
-		key: "1",
+		bucketId: "1",
 		name: "John",
-		visiable: "600",
+		publicWriteEnable: false,
+        publicReadEnable:false,
 		time: "2023-03-09 16:19:02",
 		tags: [],
 		files: [],
 	},
 	{
-		key: "2",
+		bucketId: "2",
 		name: "Jim",
-		visiable: "666",
+		publicWriteEnable: false,
+        publicReadEnable:true,
 		time: "2023-03-09 16:17:54",
 		tags: [],
 		files: [],
 	},
 
 	{
-		key: "3",
+		bucketId: "3",
 		name: "canals",
-		visiable: "644",
+		publicWriteEnable: true,
+        publicReadEnable:true,
 		time: "2023-03-08 16:28:21",
 		tags: [],
 		files: [
@@ -42,9 +45,10 @@ export const mockBucketlist = [
 		],
 	},
 	{
-		key: "4",
+		bucketId: "4",
 		name: "Joe",
-		visiable: "644",
+		publicWriteEnable: true,
+        publicReadEnable:true,
 		time: "2023-03-07 16:28:21",
 		tags: [],
 		files: [

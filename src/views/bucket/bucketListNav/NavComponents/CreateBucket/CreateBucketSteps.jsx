@@ -7,6 +7,7 @@ import { addBucketList } from "@/redux/modules/bucketSlice";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import CreateStepFin from "./CreateStepFin";
+import { createBucketApi } from "@/api/modules/bucket";
 const testUserID = "testID123";
 const steps = [
 	{
@@ -24,13 +25,8 @@ const CreateBucketSteps = () => {
 	//从上层传来的取消函数，以及当前进度和设置函数
 	const dispatch = useDispatch();
 
-	const {
-		bucket,
-		current,
-		createDisabled,
-		setCurrent,
-		restartCreate,
-	} = useContext(BucketCreateContext);
+	const { bucket, current, createDisabled, setCurrent, restartCreate } =
+		useContext(BucketCreateContext);
 
 	const next = () => {
 		setCurrent(current + 1);
@@ -40,6 +36,14 @@ const CreateBucketSteps = () => {
 	};
 	const finish = () => {
 		const formattedDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
+		const { data } = createBucketApi(
+			{
+				bucketName: bucket.name,
+				publicWriteEnable: true,
+				publicReadEnable: true,
+			}
+		
+		);
 		dispatch(
 			addBucketList({
 				...bucket,

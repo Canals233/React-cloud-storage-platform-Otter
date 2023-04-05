@@ -4,7 +4,8 @@ const BucketCreateContext = React.createContext();
 const BucketCreateProvider = ({ children }) => {
 	const [bucket, setBucket] = React.useState({
 		name: "",
-		visiable: "600",
+		publicWriteEnable: false,
+        publicReadEnable:false,
 		encrypt: true,
 		tags: [],
 	});
@@ -13,7 +14,8 @@ const BucketCreateProvider = ({ children }) => {
 	const [createDisabled, setCreateDisabled] = React.useState(true);
 	const cleanCreate = () => {
 		setBucket({
-			visiable: "600",
+			publicWriteEnable: false,
+        publicReadEnable:false,
 			name: "",
 			encrypt: true,
 			tags: [],
