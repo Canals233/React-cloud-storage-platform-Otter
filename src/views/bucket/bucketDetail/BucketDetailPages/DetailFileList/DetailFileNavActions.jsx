@@ -6,7 +6,8 @@ import "./NavActions.less";
 import { useDropzone } from "react-dropzone";
 import { formatFileSize, formatTimestamp } from "@/views/bucket/api/bucketApi";
 
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
+const nanoid=customAlphabet('123456789',10)
 
 const getprops = (fileList, setFileList, args) => {
 	return {

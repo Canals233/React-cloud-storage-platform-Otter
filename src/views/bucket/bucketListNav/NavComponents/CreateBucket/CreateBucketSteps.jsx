@@ -1,13 +1,15 @@
-import { Button, Divider, Steps } from "antd";
+import { Button, Divider, Steps, message } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BucketCreateContext } from "../../provider/BucketCreateProvider";
 import CreateStep1 from "./CreateStep1";
 import { addBucketList } from "@/redux/modules/bucketSlice";
 import dayjs from "dayjs";
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
+
 import CreateStepFin from "./CreateStepFin";
-import { createBucketApi } from "@/api/modules/bucket";
+
+import { useCreateBucketMutation } from "@/redux/modules/apiSlice";
 const testUserID = "testID123";
 const steps = [
 	{
@@ -20,11 +22,12 @@ const steps = [
 		content: <CreateStepFin userID={testUserID} />,
 	},
 ];
-
+const nanoid=customAlphabet('123456789',10)
 const CreateBucketSteps = () => {
 	//从上层传来的取消函数，以及当前进度和设置函数
 	const dispatch = useDispatch();
 
+	const [createBucket, data] = useCreateBucketMutation();
 	const { bucket, current, createDisabled, setCurrent, restartCreate } =
 		useContext(BucketCreateContext);
 
@@ -34,25 +37,27 @@ const CreateBucketSteps = () => {
 	const prev = () => {
 		setCurrent(current - 1);
 	};
-	const finish = () => {
-		const formattedDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
-		const { data } = createBucketApi(
-			{
-				bucketName: bucket.name,
-				publicWriteEnable: true,
-				publicReadEnable: true,
-			}
-		
-		);
-		dispatch(
-			addBucketList({
-				...bucket,
-				name: bucket.name + "-" + testUserID,
-				time: formattedDate,
-				key: nanoid(),
-			})
-		);
-		restartCreate();
+	const finish = async () => {
+		try {
+            const res = await createBucket(bucket.name + "-" + testUserID,bucket.publicWriteEnable,bucket.publicReadEnable);
+            console.log(res)
+
+			const formattedDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
+			dispatch(
+				addBucketList({
+					...bucket,
+					name: bucket.name + "-" + testUserID,
+					time: formattedDate,
+					bucketId: nanoid(),
+				})
+			);
+		} catch (error) {
+            message.error("创建失败,请检查网络连接")
+            console.error(error)
+
+		} finally {
+			restartCreate();
+		}
 	};
 	const items = steps.map((item) => ({
 		key: item.title,

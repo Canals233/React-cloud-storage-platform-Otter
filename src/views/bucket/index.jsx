@@ -37,7 +37,7 @@ const BucketListPage = () => {
 
 	return (
 		<>
-        <Button onClick={click} >111</Button>
+    
 			<PageHeader
 				title={"存储桶列表"}
 				ghost={false}

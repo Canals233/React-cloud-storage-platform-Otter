@@ -1,13 +1,16 @@
+import { customAlphabet } from "nanoid";
+
 import React from "react";
 const BucketCreateContext = React.createContext();
-
+const nanoid=customAlphabet('123456789',10)
 const BucketCreateProvider = ({ children }) => {
 	const [bucket, setBucket] = React.useState({
 		name: "",
 		publicWriteEnable: false,
-        publicReadEnable:false,
+		publicReadEnable: false,
 		encrypt: true,
 		tags: [],
+        bucketId: nanoid(),
 	});
 	const [current, setCurrent] = React.useState(0);
 	const [modalOpen, setModalOpen] = React.useState(false);
@@ -15,11 +18,12 @@ const BucketCreateProvider = ({ children }) => {
 	const cleanCreate = () => {
 		setBucket({
 			publicWriteEnable: false,
-        publicReadEnable:false,
+			publicReadEnable: false,
 			name: "",
 			encrypt: true,
 			tags: [],
 			files: [],
+			bucketId: nanoid(),
 		});
 	};
 	const restartCreate = () => {

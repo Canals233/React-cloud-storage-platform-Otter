@@ -2,9 +2,10 @@ import { Dropdown, message, Modal, Select, Space, Table } from "antd";
 import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateBucketTagsByBucketId ,selectBucketByBucketId} from "@/redux/modules/bucketSlice";
+import { updateBucketTagsByBucketId ,selectBucketByBucketId,removeBucketByBucketId} from "@/redux/modules/bucketSlice";
 import { removeBucketApi } from "@/api/modules/bucket";
 import { PopHover } from "../../components/PopInfo";
+import { useRemoveBucketMutation ,useRenameBucketMutation} from "@/redux/modules/apiSlice";
 
 //这个是最后一列的操作
 
@@ -13,6 +14,9 @@ const BucketlistCardActions = ({ bucketId }) => {
 	const currentBucket = useSelector(selectBucketByBucketId(bucketId));
 	const [tags, setTags] = useState(currentBucket.tags);
 	const dispatch = useDispatch();
+    const [removeBucket,removeRes]=useRemoveBucketMutation()
+    const [renameBucket,renameRes]=useRenameBucketMutation()
+
 	// console.log(currentBucket)
 	const closeModal = () => {
 		setModalOpen(false);
@@ -47,16 +51,23 @@ const BucketlistCardActions = ({ bucketId }) => {
 			okText: "确定删除",
 			okType: "danger",
 			cancelText: "取消",
-			onOk() {
-				removeBucketApi({
-					bucketId,
-				});
+			onOk :async() =>{
+				try {
+                    const res=await removeBucket(bucketId)
+                    console.log(res)
+                    removeBucketByBucketId(bucketId)
+                } catch (error) {
+                    console.error(error)
+                }
 			},
 			onCancel() {
 				console.log("Cancel");
 			},
 		});
 	};
+
+    const onBucketRename=()=>{
+    }
 
 	return (
 		<>
@@ -105,6 +116,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 						}
 					/>
 				</a>
+                <a onClick={onBucketRename}>重命名</a>
 				<a onClick={onBucketRemove}>删除存储桶</a>
 			</Space>
 		</>
