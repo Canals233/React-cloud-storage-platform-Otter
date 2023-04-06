@@ -100,7 +100,6 @@ const ChangeAuthContent = ({
 		setSelectedRowBucketIds(newSelectedRowBucketIds);
 	};
 	const handleComfirm = () => {
-       
 		dispath(changeBucketsAuth([selectedRowBucketIds, getPublicEnableObject(radioValue)]));
 		message.info(`更改了${selectedRowBucketIds.length}个存储桶的访问权限`);
 		onCancel();
