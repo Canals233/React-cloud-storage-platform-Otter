@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const globalState = {
 	token: "",
+    tokenExpired:false,
 	userInfo: "",
 	assemblySize: "middle",
 	language: "",
@@ -22,6 +23,9 @@ export const globalSlice = createSlice({
 		setToken: (state, action) => {
 			state.token = action.payload;
 		},
+        setTokenExpired: (state, action) => {
+            state.tokenExpired = action.payload;
+        },
 		setAssemblySize: (state, action) => {
 			state.assemblySize = action.payload;
 		},
@@ -34,7 +38,7 @@ export const globalSlice = createSlice({
 	},
 });
 
-export const { setToken, setAssemblySize, setLanguage, setThemeConfig } =
+export const { setToken,setTokenExpired, setAssemblySize, setLanguage, setThemeConfig } =
 	globalSlice.actions;
 
 export default globalSlice.reducer;

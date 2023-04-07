@@ -22,7 +22,7 @@ const steps = [
 		content: <CreateStepFin userID={testUserID} />,
 	},
 ];
-const nanoid=customAlphabet('123456789',10)
+const nanoid = customAlphabet("123456789", 10);
 const CreateBucketSteps = () => {
 	//从上层传来的取消函数，以及当前进度和设置函数
 	const dispatch = useDispatch();
@@ -39,8 +39,12 @@ const CreateBucketSteps = () => {
 	};
 	const finish = async () => {
 		try {
-            const res = await createBucket(bucket.name + "-" + testUserID,bucket.publicWriteEnable,bucket.publicReadEnable);
-            console.log(res)
+			const res = await createBucket({
+				bucketName: bucket.name + "-" + testUserID,
+				publicWriteEnable: bucket.publicWriteEnable,
+				publicReadEnable: bucket.publicReadEnable,
+			});
+			console.log(res);
 
 			const formattedDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
 			dispatch(
@@ -52,9 +56,8 @@ const CreateBucketSteps = () => {
 				})
 			);
 		} catch (error) {
-            message.error("创建失败,请检查网络连接")
-            console.error(error)
-
+			message.error("创建失败,请检查网络连接");
+			console.error(error);
 		} finally {
 			restartCreate();
 		}

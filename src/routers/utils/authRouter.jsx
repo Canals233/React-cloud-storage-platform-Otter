@@ -4,6 +4,9 @@ import { searchRoute } from "@/utils/util";
 import { rootRouter } from "@/routers/index";
 import { HOME_URL } from "@/config/config";
 import { store } from "@/redux/index";
+import { message } from "antd";
+import { set } from "lodash";
+import { setTokenExpired } from "@/redux/modules/globalSlice";
 const axiosCanceler = new AxiosCanceler();
 /**
  * @description 路由守卫组件
@@ -18,8 +21,15 @@ const AuthRouter = (props) => {
         return props.children;
     // * 判断是否有Token
     const token = store.getState().global.token;
-    if (!token)
+    const tokenExpired = store.getState().global.tokenExpired;
+    if (!token){
+        if(tokenExpired){
+            setTokenExpired(false)
+            message.warning("登录已过期，请重新登录");
+        }
         return <Navigate to="/login" replace/>;
+    }
+        
     // * Dynamic Router(动态路由，根据后端返回的菜单数据生成的一维数组)
     const dynamicRouter = store.getState().auth.authRouter;
     // * Static Router(静态路由，必须配置首页地址，否则不能进首页获取菜单、按钮权限等数据)，获取数据的时候会loading，所有配置首页地址也没问题

@@ -19,11 +19,7 @@ const BucketListPage = () => {
 	const bucketList = useSelector(selectAllBucketList);
     
     const  [getBucketList,data]=useGetBucketListMutation()
-    const click=async ()=>{
-        const temp= await getBucketList()
-        console.log(temp)
-        console.log(data)
-    }
+   
 	useEffect(() => {
 		if (bucketList.length === 0) {
 			dispatch(setBucketList(mockBucketlist));

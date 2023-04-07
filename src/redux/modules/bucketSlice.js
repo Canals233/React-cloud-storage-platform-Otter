@@ -16,8 +16,18 @@ const bucketSlice = createSlice({
             const bucketId = action.payload;
             state.bucketList = state.bucketList.filter((bucket) => bucket.bucketId !== bucketId);
         },
+        renameBucketByBucketId(state, action) {
+            const { bucketId, newBucketName } = action.payload;
+         
+            state.bucketList = state.bucketList.map((bucket) => {
+                if (bucket.bucketId === bucketId) {
+                    return { ...bucket, name: newBucketName };
+                }
+                return bucket;
+            });
+        },
 		changeBucketsAuth(state, action) {
-			console.log("changeBucketsAuth", action.payload);
+			
 			const [bucketIds, newPublicEnableObject] = action.payload;
 			//直接利用immer的特性，直接修改state
 			state.bucketList = state.bucketList.map((bucket) => {
@@ -49,6 +59,7 @@ export const {
 	setBucketList,
 	addBucketList,
     removeBucketByBucketId,
+    renameBucketByBucketId,
 	changeBucketsAuth,
 	updateBucketTagsByBucketId,
 } = bucketSlice.actions;
