@@ -22,10 +22,21 @@ export const apiSlice = createApi({
 	async baseQuery(...args) {
 		const result = await bq(...args);
 		console.log("拦截到的请求:", result);
-		if (result.data.data.includes("expired")) {
-            store.dispatch(setToken(''))
-			store.dispatch(setTokenExpired(true));
-			throw new Error("token过期");
+		if (result.error?.status === "TIMEOUT_ERROR") {
+			throw new Error("请求超时");
+		} else if (result.error?.status === "FETCH_ERROR") {
+			throw new Error("网络错误,请检查网络连接");
+		} else if (result.data?.data?.errorMsg) {
+			const errorMsg = result.data.data.errorMsg;
+            console.log('拦截到的错误',errorMsg)
+			if (errorMsg.includes("expired")) {
+				store.dispatch(setToken(""));
+				store.dispatch(setTokenExpired(true));
+				throw new Error("token过期");
+			}
+            else if(errorMsg.includes('重复的存储桶名称')){
+                throw new Error(errorMsg);
+            }
 		}
 		return result;
 	},

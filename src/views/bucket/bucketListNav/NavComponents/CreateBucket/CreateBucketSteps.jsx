@@ -45,6 +45,9 @@ const CreateBucketSteps = () => {
 				publicReadEnable: bucket.publicReadEnable,
 			});
 			console.log(res);
+            if(res.error){
+                throw res.error.message
+            }
 
 			const formattedDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
 			dispatch(
@@ -56,8 +59,8 @@ const CreateBucketSteps = () => {
 				})
 			);
 		} catch (error) {
-			message.error("创建失败,请检查网络连接");
-			console.error(error);
+			message.error(error);
+			
 		} finally {
 			restartCreate();
 		}
