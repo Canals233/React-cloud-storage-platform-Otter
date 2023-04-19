@@ -19,7 +19,7 @@ import { messageMap, testPassword } from "./signApis";
 import confirm from "antd/lib/modal/confirm";
 
 const userIdValidator = (rule, value, callback) => {
-	if (!value) return callback("请输入用户名");
+	if (!value) return ("请输入用户名");
 	if (value && (value.length < 6 || value.length > 16)) {
 		callback("用户名长度必须在6到16之间");
 	}

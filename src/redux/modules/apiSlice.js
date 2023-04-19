@@ -58,11 +58,11 @@ export const apiSlice = createApi({
 			}),
 			invalidatesTags: ["BucketList"],
 		}),
-		removeBucket: builder.mutation({
-			query: (removeBucketObject) => ({
-				url: `/bucket/remove`,
+		deleteBucket: builder.mutation({
+			query: (deleteBucketObject) => ({
+				url: `/bucket/delete`,
 				method: "POST",
-				body: removeBucketObject,
+				body: deleteBucketObject,
 			}),
 			invalidatesTags: ["BucketList"],
 		}),
@@ -89,6 +89,6 @@ export const apiSlice = createApi({
 export const {
 	useGetBucketListMutation,
 	useCreateBucketMutation,
-	useRemoveBucketMutation,
+	useDeleteBucketMutation,
 	useRenameBucketMutation,
 } = apiSlice;

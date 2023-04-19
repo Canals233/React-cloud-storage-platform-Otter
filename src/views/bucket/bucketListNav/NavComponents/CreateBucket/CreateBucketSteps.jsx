@@ -48,6 +48,9 @@ const CreateBucketSteps = () => {
             if(res.error){
                 throw res.error.message
             }
+            if(res.data.data.result){
+                message.success(`存储桶 ${bucket.name}-${testUserID}创建成功`)
+            }
 
 			const formattedDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
 			dispatch(

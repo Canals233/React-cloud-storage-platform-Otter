@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	updateBucketTagsByBucketId,
 	selectBucketByBucketId,
-	removeBucketByBucketId,
+	deleteBucketByBucketId,
 	renameBucketByBucketId,
 } from "@/redux/modules/bucketSlice";
-import { removeBucketApi } from "@/api/modules/bucket";
+import { deleteBucketApi } from "@/api/modules/bucket";
 import { PopHover } from "../../components/PopInfo";
 import {
-	useRemoveBucketMutation,
+	useDeleteBucketMutation,
 	useRenameBucketMutation,
 } from "@/redux/modules/apiSlice";
 
@@ -24,7 +24,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 	const [tags, setTags] = useState(currentBucket.tags);
 	const [newBucketName, setNewBucketName] = useState("");
 	const dispatch = useDispatch();
-	const [removeBucket, removeRes] = useRemoveBucketMutation();
+	const [deleteBucket, deleteRes] = useDeleteBucketMutation();
 	const [renameBucket, renameRes] = useRenameBucketMutation();
 
 	// console.log(currentBucket)
@@ -50,28 +50,27 @@ const BucketlistCardActions = ({ bucketId }) => {
 	};
 
 	const onRenameOK = async () => {
-	try {
-        const res = await renameBucket({ bucketId: bucketId, bucketName: newBucketName });
-        console.log(res);
-        if(res.data.errorMsg){
-            message.error(res.data.errorMsg);
-            return;
-        }
-		dispatch(renameBucketByBucketId({ bucketId, newBucketName }));
-		
-    } catch (error) {
-        
-    }finally{
-        setNewBucketName("");
-		setRenameModalOpen(false);
-    }
-		
+		try {
+			const res = await renameBucket({
+				bucketId: bucketId,
+				bucketName: newBucketName,
+			});
+			console.log(res);
+			if (res.data.errorMsg) {
+				message.error(res.data.errorMsg);
+				return;
+			}
+			dispatch(renameBucketByBucketId({ bucketId, newBucketName }));
+		} catch (error) {
+		} finally {
+			setNewBucketName("");
+			setRenameModalOpen(false);
+		}
 	};
 
-    const handleRenameInput = (e) => {
+	const handleRenameInput = (e) => {
 		const newValue = e.target.value;
 		setNewBucketName(newValue);
-        
 	};
 
 	const items = [
@@ -83,9 +82,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 		{ label: <a>删除</a>, key: "item-3" },
 	];
 
-	
-
-	const onBucketRemove = () => {
+	const onBucketDelete = () => {
 		Modal.confirm({
 			title: "删除存储桶",
 			icon: <ExclamationCircleFilled />,
@@ -95,9 +92,9 @@ const BucketlistCardActions = ({ bucketId }) => {
 			cancelText: "取消",
 			onOk: async () => {
 				try {
-					const res = await removeBucket({bucketId});
+					const res = await deleteBucket({ bucketId });
 					console.log(res);
-					removeBucketByBucketId(bucketId);
+					deleteBucketByBucketId(bucketId);
 				} catch (error) {
 					console.error(error);
 				}
@@ -181,7 +178,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 					/>
 				</a>
 				<a onClick={onRenameClick}>重命名</a>
-				<a onClick={onBucketRemove}>删除存储桶</a>
+				<a onClick={onBucketDelete}>删除存储桶</a>
 			</Space>
 		</>
 	);

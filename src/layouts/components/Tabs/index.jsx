@@ -3,17 +3,17 @@ import { HomeFilled } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HOME_URL } from "@/config/config";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setTabsList } from "@/redux/modules/tabsSlice";
 import { routerArray } from "@/routers";
 import { searchRoute } from "@/utils/util";
 import MoreButton from "./components/MoreButton";
 import "./index.less";
-const LayoutTabs = (props) => {
-	const { tabsList } = props.tabs;
-	const { themeConfig } = props.global;
-	const { setTabsList } = props;
-	
+const LayoutTabs = () => {
+	const dispatch = useDispatch();
+	const tabsList = useSelector((state) => state.tabs.tabsList);
+	const themeConfig = useSelector((state) => state.global.themeConfig);
+
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const [activeValue, setActiveValue] = useState(pathname);
@@ -33,7 +33,7 @@ const LayoutTabs = (props) => {
 		if (tabsList.every((item) => item.path !== route.path)) {
 			newTabsList.push({ title: route.meta?.title, path: route.path });
 		}
-		setTabsList(newTabsList);
+		dispatch(setTabsList(newTabsList));
 		setActiveValue(pathname);
 	};
 	// delete tabs
@@ -48,7 +48,7 @@ const LayoutTabs = (props) => {
 			});
 		}
 		message.success("你删除了Tabs标签");
-		setTabsList(tabsList.filter((item) => item.path !== tabPath));
+		dispatch(setTabsList(tabsList.filter((item) => item.path !== tabPath)));
 	};
 	return (
 		<>
@@ -92,6 +92,5 @@ const LayoutTabs = (props) => {
 		</>
 	);
 };
-const mapStateToProps = (state) => state;
-const mapDispatchToProps = { setTabsList };
-export default connect(mapStateToProps, mapDispatchToProps)(LayoutTabs);
+
+export default LayoutTabs;

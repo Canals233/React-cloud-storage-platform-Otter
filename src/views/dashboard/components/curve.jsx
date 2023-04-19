@@ -3,8 +3,8 @@ const Curve = () => {
     const data = [
         { value: 30, spotName: "掘金" },
         { value: 90, spotName: "CSDN" },
-        { value: 10, spotName: "Gitee" },
-        { value: 70, spotName: "GitHub" },
+        { value: 10, spotName: "授权" },
+        { value: 70, spotName: "公开" },
         { value: 20, spotName: "知乎" },
         { value: 60, spotName: "MyBlog" },
         { value: 55, spotName: "简书" },

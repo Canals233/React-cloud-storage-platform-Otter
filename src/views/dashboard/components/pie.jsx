@@ -1,12 +1,12 @@
 import { useEcharts } from "@/hooks/useEcharts";
 const Curve = () => {
     const pieData = [
-        { value: 5000, name: "Gitee 访问量" },
-        { value: 5000, name: "GitHub 访问量" }
+        { value: 5000, name: "授权 访问量" },
+        { value: 5000, name: "公开 访问量" }
     ];
     const option = {
         title: {
-            text: "Gitee / GitHub",
+            text: "授权 / 公开",
             subtext: "访问占比",
             left: "56%",
             top: "45%",

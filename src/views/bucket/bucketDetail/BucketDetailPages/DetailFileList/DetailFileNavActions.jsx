@@ -182,14 +182,14 @@ const UploadFileAction = () => {
 						<Button type="primary">上传文件</Button>
 					</Upload>
 					<Upload {...getprops(fileList, setFileList)} directory>
-						<Button>上传文件夹</Button>
+						<Button >上传文件夹</Button>
 					</Upload>
 					<span className="upload-to-text">上传至</span>
 					<span className="upload-path">{bucketPath}/</span>
 				</Space>
 				<p className="upload-info">
 					若上传路径中存在同名文件，上传将覆盖原有文件。 <br />
-					上传文件夹将拆分上传文件夹内的所有文件，直接上传文件夹功能正在加紧开发中，敬请期待！
+					{/* 上传文件夹将拆分上传文件夹内的所有文件，直接上传文件夹功能正在加紧开发中，敬请期待！ */}
 				</p>
 				<MyDragger fileList={fileList} setFileList={setFileList} />
 
@@ -214,7 +214,7 @@ const UploadFileAction = () => {
 const CreateFolderAction = () => {
 	return (
 		<Popover content={"文件夹功能正在开发中，敬请期待"}>
-			<Button disabled> 新建文件夹</Button>
+			<Button type="primary"> 新建文件夹</Button>
 		</Popover>
 	);
 };

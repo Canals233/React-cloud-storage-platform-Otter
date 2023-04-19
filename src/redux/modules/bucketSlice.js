@@ -12,7 +12,7 @@ const bucketSlice = createSlice({
 		addBucketList(state, action) {
 			state.bucketList.unshift(action.payload);
 		},
-        removeBucketByBucketId(state, action) {
+        deleteBucketByBucketId(state, action) {
             const bucketId = action.payload;
             state.bucketList = state.bucketList.filter((bucket) => bucket.bucketId !== bucketId);
         },
@@ -58,7 +58,7 @@ export const selectBucketByBucketId = (bucketId) => (state) =>
 export const {
 	setBucketList,
 	addBucketList,
-    removeBucketByBucketId,
+    deleteBucketByBucketId,
     renameBucketByBucketId,
 	changeBucketsAuth,
 	updateBucketTagsByBucketId,
