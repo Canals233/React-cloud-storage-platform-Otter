@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./NavActions.less";
 import { useDropzone } from "react-dropzone";
-import { formatFileSize, formatTimestamp } from "@/views/bucket/api/bucketApi";
+import { formatFileSize, formatTimestamp } from "@/utils/util.js";
 
 import { customAlphabet } from "nanoid";
 const nanoid=customAlphabet('123456789',10)

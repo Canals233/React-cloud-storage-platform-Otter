@@ -43,5 +43,4 @@ const LayoutIndex = () => {
 		</Layout>
 	);
 };
-// const mapStateToProps = (state) => state.menu;
 export default LayoutIndex;

@@ -21,22 +21,21 @@ export const apiSlice = createApi({
 	reducerPath: "api",
 	async baseQuery(...args) {
 		const result = await bq(...args);
-		console.log("拦截到的请求:", result);
+		console.log("拦截到的响应:", result);
 		if (result.error?.status === "TIMEOUT_ERROR") {
 			throw new Error("请求超时");
 		} else if (result.error?.status === "FETCH_ERROR") {
 			throw new Error("网络错误,请检查网络连接");
 		} else if (result.data?.data?.errorMsg) {
 			const errorMsg = result.data.data.errorMsg;
-            console.log('拦截到的错误',errorMsg)
+			console.log("拦截到的错误", errorMsg);
 			if (errorMsg.includes("expired")) {
 				store.dispatch(setToken(""));
 				store.dispatch(setTokenExpired(true));
 				throw new Error("token过期");
+			} else if (errorMsg.includes("重复的存储桶名称")) {
+				throw new Error(errorMsg);
 			}
-            else if(errorMsg.includes('重复的存储桶名称')){
-                throw new Error(errorMsg);
-            }
 		}
 		return result;
 	},
@@ -74,6 +73,31 @@ export const apiSlice = createApi({
 			}),
 			invalidatesTags: ["BucketList"],
 		}),
+		getDirectoryContentList: builder.mutation({
+			query: (getDirectoryContentListObject) => ({
+				url: `/directory/list`,
+				method: "GET",
+				body: getDirectoryContentListObject,
+			}),
+			providesTags: ["DirectoryList"],
+			invalidatesTags: ["DirectoryList"],
+		}),
+		createDirectory: builder.mutation({
+			query: (createDirectoryObject) => ({
+				url: `/directory/create`,
+				method: "POST",
+				body: createDirectoryObject,
+			}),
+			invalidatesTags: ["DirectoryList"],
+		}),
+		deleteDirectory: builder.mutation({
+			query: (deleteDirectoryObject) => ({
+				url: `/directory/delete`,
+				method: "POST",
+				body: deleteDirectoryObject,
+			}),
+			invalidatesTags: ["DirectoryList"],
+		}),
 	}),
 });
 //query导出Query，mutation导出Mutation
@@ -91,4 +115,7 @@ export const {
 	useCreateBucketMutation,
 	useDeleteBucketMutation,
 	useRenameBucketMutation,
+	useGetDirectoryContentListMutation,
+	useCreateDirectoryMutation,
+	useDeleteDirectoryMutation,
 } = apiSlice;

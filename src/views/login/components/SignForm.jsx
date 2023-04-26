@@ -1,4 +1,3 @@
-import md5 from "js-md5";
 import { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +12,13 @@ import {
 	LockOutlined,
 	UserAddOutlined,
 	UserOutlined,
-    CheckCircleFilled
+	CheckCircleFilled,
 } from "@ant-design/icons";
 import { messageMap, testPassword } from "./signApis";
 import confirm from "antd/lib/modal/confirm";
 
 const userIdValidator = (rule, value, callback) => {
-	if (!value) return ("请输入用户名");
+	if (!value) return "请输入用户名";
 	if (value && (value.length < 6 || value.length > 16)) {
 		callback("用户名长度必须在6到16之间");
 	}
@@ -38,35 +37,21 @@ const SignForm = (props) => {
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState(false);
 
-	const showConfirm = () => {
-		confirm({
-			title: "账号成功注册，是否立即登录？",
-			icon: <CheckCircleFilled style={{color:'lightgreen'}} />,
-            okText:"登录",
-            cancelText:"取消",
-			async onOk() {
-                const loginForm = form.getFieldsValue();
-                try {
-                    setLoading(true);
-                    const { data } = await loginApi(loginForm);
-                    console.log(data, "loginres");
-                    setToken(data?.token);
-                    setTabsList([]);
-                    message.success("登录成功！");
-                    navigate(HOME_URL);
-                } finally {
-                    setLoading(false);
-                    form.resetFields();
-                }
-            },
-			onCancel() {},
-		});
-	};
+    
+const enablelocalTest = () => {
+	setToken("1"); //测试用
+	setTabsList([]);
+	message.success("登录成功！");
+	navigate(HOME_URL);
+};
 
 	// 登录
-	const onFinish = async () => {
+	const onLogin = async () => {
+		enablelocalTest(); //上线记得删掉
+		return;
+
 		const loginForm = form.getFieldsValue();
-        if(!loginForm.userId || !loginForm.password) return;
+		if (!loginForm.userId || !loginForm.password) return;
 		try {
 			setLoading(true);
 			const { data } = await loginApi(loginForm);
@@ -75,18 +60,32 @@ const SignForm = (props) => {
 				message.error(messageMap(data.errorMsg));
 				return;
 			}
-			setToken(data?.token );
-            // setToken('1')//测试用
+			setToken(data?.token);
 			setTabsList([]);
 			message.success("登录成功！");
 			navigate(HOME_URL);
 		} finally {
 			setLoading(false);
+			form.resetFields();
 		}
 	};
+
+	const showConfirm = () => {
+		confirm({
+			title: "账号成功注册，是否立即登录？",
+			icon: <CheckCircleFilled style={{ color: "lightgreen" }} />,
+			okText: "登录",
+			cancelText: "取消",
+			async onOk() {
+				onLogin();
+			},
+			onCancel() {},
+		});
+	};
+
 	const onRegister = async () => {
 		const registerForm = form.getFieldsValue();
-        if(!registerForm.userId || !registerForm.password) return;
+		if (!registerForm.userId || !registerForm.password) return;
 		if (registerForm.userId.length < 6 || registerForm.userId.length > 16)
 			return;
 		if (!testPassword(registerForm.password)) return;
@@ -99,7 +98,7 @@ const SignForm = (props) => {
 				return;
 			}
 			setTabsList([]);
-	
+
 			showConfirm();
 			// form.resetFields();
 			// navigate(HOME_URL);
@@ -107,6 +106,7 @@ const SignForm = (props) => {
 			setLoading(false);
 		}
 	};
+
 	return (
 		<Form
 			form={form}
@@ -147,7 +147,7 @@ const SignForm = (props) => {
 				<Button
 					type="primary"
 					onClick={() => {
-						onFinish();
+						onLogin();
 					}}
 					loading={loading}
 					icon={<CarryOutOutlined />}

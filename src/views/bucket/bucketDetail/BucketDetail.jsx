@@ -12,7 +12,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
 import DetailFileList from "./BucketDetailPages/DetailFileList/DetailFileList";
 
-
 function getItem(label, key, icon, children, type) {
 	return {
 		key,
@@ -31,35 +30,51 @@ const items = [
 ];
 
 const BucketDetail = () => {
-    //redux相关
-    const dispatch = useDispatch();
-    
+	//redux相关
+	const dispatch = useDispatch();
 
-    //路由相关
+	//路由相关
 	const location = useLocation();
 	const navigate = useNavigate();
 	const URLParams = useParams(); //如果有多级会有多个参数
 	const bucketName = URLParams.name;
 	const searchParams = new URLSearchParams(location.search);
 	const currentBucket = useSelector(selectBucketListByName(bucketName));
-	const anchorType = searchParams.get("anchorType");
+	const type = searchParams.get("type");
 
+	const BucketDetailOutlet = () => {
+		if (type === "file") {
+			return <DetailFileList />;
+		} else if (type === "tagsConfig") {
+			return <div>tagsConfig</div>;
+		} else if (type === "publicEnableConfig") {
+			return <div>publicEnableConfig</div>;
+		} else {
+			return <div>文件列表</div>;
+		}
+	};
 
 	const onMenuChange = (e) => {
-		// console.log("click ", e);
+		console.log("click ", e);
 
 		//没开多选，所以e.key只有一个
-		navigate(`/bucket/${bucketName}?anchorType=${e.key}`);
-		//菜单子选项太多，不如传参条件渲染
+		if (e.keyPath.length === 1) {
+			navigate(`/bucket/${bucketName}?type=${e.key}`);
+		} else {
+			navigate(
+				`/bucket/${bucketName}?type=${e.key}&anchorType=${e.keyPath[0]}`
+			);
+		}
 
+		//菜单子选项太多，不如传参条件渲染
 	};
 
 	const onBackClick = () => {
 		navigate(`/bucket`);
-        dispatch(
+		dispatch(
 			setCurrentBreadcrumb({
 				title: [`存储桶列表`],
-                path:['/bucket']
+				path: ["/bucket"],
 			})
 		);
 	};
@@ -84,9 +99,9 @@ const BucketDetail = () => {
 					onClick={onMenuChange}
 				/>
 			</div>
-            <div className="child-page">
-            <DetailFileList/>
-            </div>
+			<div className="children-page">
+				<BucketDetailOutlet />
+			</div>
 		</div>
 	);
 };

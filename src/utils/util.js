@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 /**
  * @description 获取localStorage
  * @param {String} key Storage名称
@@ -145,3 +147,17 @@ export function randomNum(min, max) {
     let num = Math.floor(Math.random() * (min - max) + max);
     return num;
 }
+
+
+export function formatFileSize(size) {
+	const units = ["B", "KB", "MB", "GB", "TB"];
+	let i = 0;
+	while (size >= 1024 && i < units.length - 1) {
+		size /= 1024;
+		i++;
+	}
+	return `${size.toFixed(2)} ${units[i]}`;
+}
+export function formatTimestamp(timestamp) {
+    return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss');
+  }
