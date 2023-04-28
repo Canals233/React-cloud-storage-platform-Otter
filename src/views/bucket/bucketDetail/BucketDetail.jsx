@@ -11,6 +11,7 @@ import "./BucketDetail.less";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
 import DetailFileList from "./BucketDetailPages/DetailFileList/DetailFileList";
+import BucketConfigs from "./BucketDetailPages/BucketConfigs/BucketConfigs";
 
 function getItem(label, key, icon, children, type) {
 	return {
@@ -41,15 +42,15 @@ const BucketDetail = () => {
 	const searchParams = new URLSearchParams(location.search);
 	const currentBucket = useSelector(selectBucketListByName(bucketName));
 	const type = searchParams.get("type");
+    const anchorType = searchParams.get("anchorType");
 
 	const BucketDetailOutlet = () => {
 		if (type === "file") {
 			return <DetailFileList />;
-		} else if (type === "tagsConfig") {
-			return <div>tagsConfig</div>;
-		} else if (type === "publicEnableConfig") {
-			return <div>publicEnableConfig</div>;
-		} else {
+		} else if (type === "tagsConfig" || type === "publicEnableConfig") {
+			return <BucketConfigs anchorType={anchorType}/>;
+		} 
+		else {
 			return <div>文件列表</div>;
 		}
 	};
@@ -82,11 +83,8 @@ const BucketDetail = () => {
 	return (
 		<div className="detail-content">
 			<div
-				style={{
-					width: 180,
-					height: "100%",
-					backgroundColor: "white",
-				}}
+            className="side-menu"
+				
 			>
 				<div className="back-btn" onClick={onBackClick}>
 					<ArrowLeftOutlined className="back-icon" />
