@@ -30,6 +30,11 @@ const App = (props) => {
 		setLanguage(language || getBrowserLang());
 		setAntdLanguage();
 	}, [language]);
+    useEffect(()=>{
+        document.ondragover = document.ondragenter = document.ondrop = (ev) => ev.preventDefault()
+        console.log('禁止所有的打开文件操作')
+        //禁止所有的打开文件操作
+    },[])
 	return (
 		<HashRouter>
 			<ConfigProvider locale={i18nLocale} componentSize={assemblySize}>

@@ -4,12 +4,15 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./NavActions.less";
 import { useDropzone } from "react-dropzone";
-import { formatFileSize, formatTimestamp } from "@/utils/util.js";
 
-import { customAlphabet } from "nanoid";
-const nanoid=customAlphabet('123456789',10)
+import {
+	StandardDirectory,
+	filesToObjectArray,
+} from "../DetailFileUtils/DetailFileUtils";
 
-const getprops = (fileList, setFileList, args) => {
+const bucketUploadDirectory = new StandardDirectory();
+
+const getUploadProps = (fileList, setFileList, args) => {
 	return {
 		name: "file",
 		multiple: true,
@@ -32,16 +35,96 @@ const getprops = (fileList, setFileList, args) => {
 	};
 };
 
-// 只在这个组件里会用到。所以放在这里
-const filesToObjectArray = (files) => {
-	return files.map((file) => {
-		return {
-			id: nanoid(),
-			name: file.name,
-			size: formatFileSize(file.size),
-			time: formatTimestamp(file.lastModified),
-		};
+const RecursivelyCreateDirectory = (
+	pathArray,
+	currentDirectory, //可以认为当前在这一层的文件夹中进行操作
+	originalFile
+) => {
+	if (pathArray.length === 1) {
+		//访问到了最后的文件，推入当前文件夹的文件列表中
+		currentDirectory.pushFile(originalFile);
+		bucketUploadDirectory.size += originalFile.size;
+		return;
+	}
+	//仍然有子文件夹，继续递归
+	const newFileName = pathArray[0];
+    console.log(currentDirectory, "currentDirectory")
+	currentDirectory.setSubDirectoryByName(newFileName);
+	RecursivelyCreateDirectory(
+		pathArray.slice(1),
+		currentDirectory.getSubDirectoryByName(newFileName),
+		originalFile
+	);
+};
+
+const MyDragger = ({ fileList, setFileList }) => {
+	const onDrop = (acceptedFiles) => {
+		setFileList([...fileList, ...acceptedFiles]);
+
+		console.log(acceptedFiles, "acceptedFiles");
+		acceptedFiles.forEach((acceptedFile) => {
+			const path = acceptedFile.path;
+			if (path.length === 1) {
+				//这种情况，说明它是一个文件
+				//桶文件夹不需要size显示
+				bucketUploadDirectory.pushFile(acceptedFile);
+			} else {
+				//这种情况，说明它是一个文件夹
+				const pathArray = path.split("/").slice(1); //path有一个/开头，需要去掉第一个空元素
+				console.log(pathArray, "cur path");
+				RecursivelyCreateDirectory(
+					pathArray.slice(1),
+					bucketUploadDirectory,
+					acceptedFile //同一个对象的引用，性能问题不是很大?
+				);
+				console.log(
+					bucketUploadDirectory,
+					"processed bucket directory"
+				);
+			}
+		});
+
+		// async function uploadDirectory(path, files) {
+		// 	const folders = path.split("/").filter((folder) => folder !== "");
+		// 	let currentFolder = "";
+		// 	for (const folder of folders) {
+		// 		currentFolder += `/${folder}`;
+		// 		// 检查 currentFolder 是否存在，不存在则创建
+		// 		const directoryExists = await checkDirectoryExists(
+		// 			currentFolder
+		// 		);
+		// 		if (!directoryExists) {
+		// 			await createDirectory(currentFolder);
+		// 		}
+		// 	}
+		// 	await changeDirectory(path);
+		// 	for (const file of files) {
+		// 		await uploadFile(file);
+		// 	}
+		// }
+	};
+    //需要允许重复上传
+	const { getRootProps, getInputProps } = useDropzone({
+		onDrop,
+		noClick: true,
+		noKeyboard: true,
+		multiple: true,
 	});
+
+	//directory 和 webkitdirectory似乎因为React的TS定义原因要指定空字符串
+	return (
+		<div {...getRootProps()} className="upload-content">
+			<input {...getInputProps()} className="drag-upload-form" />
+			{fileList.length > 0 ? (
+				<FilesTableContent
+					fileList={fileList}
+					setFileList={setFileList}
+				/>
+			) : (
+				<EmptyContent />
+			)}
+		</div>
+	);
 };
 
 const FilesTableContent = ({ fileList, setFileList }) => {
@@ -86,6 +169,7 @@ const FilesTableContent = ({ fileList, setFileList }) => {
 			}}
 			dataSource={data}
 			columns={columns}
+			rowKey={"id"}
 		></Table>
 	);
 };
@@ -99,47 +183,6 @@ const EmptyContent = () => {
 			<p className="upload-text">未选择文件/文件夹</p>
 			<p className="upload-hint">支持拖拽上传，支持选择多个文件/文件夹</p>
 		</>
-	);
-};
-
-const MyDragger = ({ fileList, setFileList }) => {
-	const onDrop = (acceptedFiles) => {
-		setFileList([...fileList, ...acceptedFiles]);
-		//下面是对file的细致操作,暂时还不用做
-		// acceptedFiles.forEach((file) => {
-
-		// 	const reader = new FileReader();
-
-		// 	reader.onabort = () => console.log("file reading was aborted");
-		// 	reader.onerror = () => console.log("file reading has failed");
-		// 	// reader.onload = () => {
-		// 	// 	// Do whatever you want with the file contents
-		// 	// 	const binaryStr = reader.result;
-		// 	// 	console.log(binaryStr);
-		// 	// };
-		// 	reader.readAsArrayBuffer(file);
-		// });
-	};
-	const { getRootProps, getInputProps } = useDropzone({
-		onDrop,
-		noClick: true,
-		noKeyboard: true,
-		multiple: true,
-	});
-
-	//directory 和 webkitdirectory似乎因为React的TS定义原因要指定空字符串
-	return (
-		<div {...getRootProps()} className="upload-content">
-			<input {...getInputProps()} className="drag-upload-form" />
-			{fileList.length > 0 ? (
-				<FilesTableContent
-					fileList={fileList}
-					setFileList={setFileList}
-				/>
-			) : (
-				<EmptyContent />
-			)}
-		</div>
 	);
 };
 
@@ -178,11 +221,14 @@ const UploadFileAction = () => {
 				footer={null}
 			>
 				<Space>
-					<Upload {...getprops(fileList, setFileList)}>
+					<Upload {...getUploadProps(fileList, setFileList)}>
 						<Button type="primary">上传文件</Button>
 					</Upload>
-					<Upload {...getprops(fileList, setFileList)} directory>
-						<Button >上传文件夹</Button>
+					<Upload
+						{...getUploadProps(fileList, setFileList)}
+						directory
+					>
+						<Button>上传文件夹</Button>
 					</Upload>
 					<span className="upload-to-text">上传至</span>
 					<span className="upload-path">{bucketPath}/</span>
@@ -211,11 +257,4 @@ const UploadFileAction = () => {
 	);
 };
 
-const CreateFolderAction = () => {
-	return (
-		<Popover content={"文件夹功能正在开发中，敬请期待"}>
-			<Button type="primary"> 新建文件夹</Button>
-		</Popover>
-	);
-};
-export { UploadFileAction, CreateFolderAction };
+export { UploadFileAction };

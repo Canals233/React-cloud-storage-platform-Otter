@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import "./DetailFileList.less";
 import { DownOutlined, FolderOutlined } from "@ant-design/icons";
 import { selectAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
-import { UploadFileAction, CreateFolderAction } from "./DetailFileNavActions";
+import { UploadFileAction} from "./DetailFileNavActions/DetailFileNavActions";
 
 
 const columns = [
@@ -104,7 +104,7 @@ const DetailNav = () => {
 	return (
 		<Space className="action-btns">
 			<UploadFileAction />
-			<CreateFolderAction />
+			
 			<Button>清空存储桶</Button>
 			<Dropdown
 				menu={{
@@ -124,6 +124,7 @@ const DetailNav = () => {
 const DetailFileList = () => {
 	let detailTableData = useSelector(selectAllBucketDetail);
 	const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
+    
 	return (
 		<Card>
 			<DetailNav />
