@@ -149,7 +149,17 @@ export function randomNum(min, max) {
 }
 
 
+/**
+ * 
+ * @param {number} size 
+ * @returns 
+ */
 export function formatFileSize(size) {
+   if(typeof size !== 'number') {
+        console.log('size is not a number')
+        return
+   }
+   
 	const units = ["B", "KB", "MB", "GB", "TB"];
 	let i = 0;
 	while (size >= 1024 && i < units.length - 1) {

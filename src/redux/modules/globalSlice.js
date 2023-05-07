@@ -6,6 +6,7 @@ const globalState = {
 	userInfo: "",
 	assemblySize: "middle",
 	language: "",
+    isElectorn:false,
 	themeConfig: {
 		primary: "#1890ff",
 		isDark: false,
@@ -35,10 +36,15 @@ export const globalSlice = createSlice({
 		setThemeConfig: (state, action) => {
 			state.themeConfig = action.payload;
 		},
+        setIsElectorn: (state, action) => {
+            state.isElectorn = action.payload;
+        }
 	},
 });
 
-export const { setToken,setTokenExpired, setAssemblySize, setLanguage, setThemeConfig } =
+export const { setToken,setTokenExpired, setAssemblySize, setLanguage, setThemeConfig,setIsElectorn } =
 	globalSlice.actions;
+export const getGlobalState = (state) => state.global;
+export  const getIsElectorn = (state) => state.global.isElectorn;
 
 export default globalSlice.reducer;

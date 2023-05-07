@@ -1,14 +1,18 @@
 import { Button, Modal, Popover, Space, Table, Upload } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import { InboxOutlined, FolderFilled, FileFilled } from "@ant-design/icons";
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./NavActions.less";
 import { useDropzone } from "react-dropzone";
+import nodepath from "path";
 
 import {
 	StandardDirectory,
 	filesToObjectArray,
+	getRelativePaths,
 } from "../DetailFileUtils/DetailFileUtils";
+import { useSelector } from "react-redux";
+import { getIsElectorn } from "@/redux/modules/globalSlice";
 
 const bucketUploadDirectory = new StandardDirectory();
 
@@ -38,17 +42,18 @@ const getUploadProps = (fileList, setFileList, args) => {
 const RecursivelyCreateDirectory = (
 	pathArray,
 	currentDirectory, //可以认为当前在这一层的文件夹中进行操作
-	originalFile
+	originalFile //传入的是引用
 ) => {
-	if (pathArray.length === 1) {
+	currentDirectory.size += originalFile.size; //文件不会被重新访问，所以可以直接在这里加上文件大小
+	if (pathArray.length <= 1) {
 		//访问到了最后的文件，推入当前文件夹的文件列表中
 		currentDirectory.pushFile(originalFile);
-		bucketUploadDirectory.size += originalFile.size;
+
 		return;
 	}
 	//仍然有子文件夹，继续递归
 	const newFileName = pathArray[0];
-    console.log(currentDirectory, "currentDirectory")
+	// console.log(currentDirectory, "currentDirectory");
 	currentDirectory.setSubDirectoryByName(newFileName);
 	RecursivelyCreateDirectory(
 		pathArray.slice(1),
@@ -57,53 +62,29 @@ const RecursivelyCreateDirectory = (
 	);
 };
 
-const MyDragger = ({ fileList, setFileList }) => {
+const MyDragger = ({ fileList, setFileList, isElectron }) => {
 	const onDrop = (acceptedFiles) => {
-		setFileList([...fileList, ...acceptedFiles]);
+		setFileList(fileList.concat(acceptedFiles));
+		let relativePaths = acceptedFiles.map((file) => file.path);
+		if (isElectron) {
+			relativePaths = getRelativePaths(relativePaths);
+		}
+		// console.log(relativePaths, "relativePaths");
+		// console.log(acceptedFiles, "acceptedFiles");
+		acceptedFiles.forEach((acceptedFile, index) => {
+			const path = relativePaths[index];
 
-		console.log(acceptedFiles, "acceptedFiles");
-		acceptedFiles.forEach((acceptedFile) => {
-			const path = acceptedFile.path;
-			if (path.length === 1) {
-				//这种情况，说明它是一个文件
-				//桶文件夹不需要size显示
-				bucketUploadDirectory.pushFile(acceptedFile);
-			} else {
-				//这种情况，说明它是一个文件夹
-				const pathArray = path.split("/").slice(1); //path有一个/开头，需要去掉第一个空元素
-				console.log(pathArray, "cur path");
-				RecursivelyCreateDirectory(
-					pathArray.slice(1),
-					bucketUploadDirectory,
-					acceptedFile //同一个对象的引用，性能问题不是很大?
-				);
-				console.log(
-					bucketUploadDirectory,
-					"processed bucket directory"
-				);
-			}
+			const pathArray = path.split("/").slice(1); //path有一个/开头，需要去掉第一个空元素
+			// console.log(pathArray, "cur path");
+			RecursivelyCreateDirectory(
+				pathArray.slice(1),
+				bucketUploadDirectory,
+				acceptedFile //同一个对象的引用，性能问题不是很大?
+			);
 		});
-
-		// async function uploadDirectory(path, files) {
-		// 	const folders = path.split("/").filter((folder) => folder !== "");
-		// 	let currentFolder = "";
-		// 	for (const folder of folders) {
-		// 		currentFolder += `/${folder}`;
-		// 		// 检查 currentFolder 是否存在，不存在则创建
-		// 		const directoryExists = await checkDirectoryExists(
-		// 			currentFolder
-		// 		);
-		// 		if (!directoryExists) {
-		// 			await createDirectory(currentFolder);
-		// 		}
-		// 	}
-		// 	await changeDirectory(path);
-		// 	for (const file of files) {
-		// 		await uploadFile(file);
-		// 	}
-		// }
+		// console.log(bucketUploadDirectory, "processed bucket directory");
 	};
-    //需要允许重复上传
+	//需要允许重复上传
 	const { getRootProps, getInputProps } = useDropzone({
 		onDrop,
 		noClick: true,
@@ -138,6 +119,16 @@ const FilesTableContent = ({ fileList, setFileList }) => {
 			title: "文件/文件夹",
 			dataIndex: "name",
 			key: "name",
+			render: (text, record) => {
+				return (
+					<Space>
+						{record.type === "directory" && <FolderFilled style={{
+                            color:'lightblue'
+                        }} />}
+						{text}
+					</Space>
+				);
+			},
 		},
 		{
 			title: "大小",
@@ -158,16 +149,15 @@ const FilesTableContent = ({ fileList, setFileList }) => {
 			),
 		},
 	];
-
-	const data = filesToObjectArray(fileList);
-
+	let renderableArray = bucketUploadDirectory.getRenderableArray();
+    // console.log(renderableArray, "renderable array");
 	return (
 		<Table
 			className="upload-file-table"
 			scroll={{
 				y: 200,
 			}}
-			dataSource={data}
+			dataSource={renderableArray}
 			columns={columns}
 			rowKey={"id"}
 		></Table>
@@ -189,6 +179,7 @@ const EmptyContent = () => {
 const UploadFileAction = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [fileList, setFileList] = useState([]);
+	const isElectron = useSelector(getIsElectorn);
 	const showModal = () => {
 		setIsModalOpen(true);
 		setFileList([]);
@@ -237,7 +228,11 @@ const UploadFileAction = () => {
 					若上传路径中存在同名文件，上传将覆盖原有文件。 <br />
 					{/* 上传文件夹将拆分上传文件夹内的所有文件，直接上传文件夹功能正在加紧开发中，敬请期待！ */}
 				</p>
-				<MyDragger fileList={fileList} setFileList={setFileList} />
+				<MyDragger
+					fileList={fileList}
+					setFileList={setFileList}
+					isElectron={isElectron}
+				/>
 
 				<div className="upload-footer">
 					{/* Space长度为元素长度，要套一层才能实现居中 */}

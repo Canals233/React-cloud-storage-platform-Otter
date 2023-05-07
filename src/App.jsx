@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { getBrowserLang } from "@/utils/util";
 import { ConfigProvider } from "antd";
-import { connect } from "react-redux";
-import { setLanguage } from "@/redux/modules/globalSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setLanguage, setIsElectorn } from "@/redux/modules/globalSlice";
 import { HashRouter } from "react-router-dom";
 import AuthRouter from "@/routers/utils/authRouter";
 import Router from "@/routers/index";
@@ -11,8 +11,11 @@ import zhCN from "antd/lib/locale/zh_CN";
 import enUS from "antd/lib/locale/en_US";
 import i18n from "i18next";
 import "moment/dist/locale/zh-cn";
-const App = (props) => {
-	const { language, assemblySize, themeConfig, setLanguage } = props;
+import { getGlobalState } from "./redux/modules/globalSlice";
+
+const App = () => {
+	const { language, assemblySize, themeConfig } = useSelector(getGlobalState);
+	const dispatch = useDispatch();
 	const [i18nLocale, setI18nLocale] = useState(zhCN);
 	// 全局使用主题
 	useTheme(themeConfig);
@@ -27,14 +30,30 @@ const App = (props) => {
 	useEffect(() => {
 		// 全局使用国际化
 		i18n.changeLanguage(language || getBrowserLang());
-		setLanguage(language || getBrowserLang());
+		dispatch(setLanguage(language || getBrowserLang()));
 		setAntdLanguage();
 	}, [language]);
-    useEffect(()=>{
-        document.ondragover = document.ondragenter = document.ondrop = (ev) => ev.preventDefault()
-        console.log('禁止所有的打开文件操作')
-        //禁止所有的打开文件操作
-    },[])
+	useEffect(() => {
+		document.ondragover =
+			document.ondragenter =
+			document.ondrop =
+				(ev) => ev.preventDefault();
+		console.log("禁止所有的打开文件操作");
+		//禁止所有的打开文件操作
+		let isElectron;
+		if (typeof window === "undefined") {
+			isElectron = true; // Electron
+		} else {
+			isElectron = false; // Browser
+
+			if (typeof process === "object" && process.type === "renderer") {
+				isElectron = true; // Electron
+			} else if (navigator.userAgent.indexOf("Electron") >= 0) {
+				isElectron = true; // Electron
+			}
+			dispatch(setIsElectorn(isElectron));
+		}
+	}, []);
 	return (
 		<HashRouter>
 			<ConfigProvider locale={i18nLocale} componentSize={assemblySize}>
@@ -45,6 +64,5 @@ const App = (props) => {
 		</HashRouter>
 	);
 };
-const mapStateToProps = (state) => state.global;
-const mapDispatchToProps = { setLanguage };
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default App;
