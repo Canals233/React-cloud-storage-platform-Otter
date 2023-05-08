@@ -1,18 +1,17 @@
 import { Button, Modal, Popover, Space, Table, Upload } from "antd";
 import { InboxOutlined, FolderFilled, FileFilled } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./NavActions.less";
 import { useDropzone } from "react-dropzone";
-import nodepath from "path";
 
 import {
 	StandardDirectory,
-	filesToObjectArray,
 	getRelativePaths,
 } from "../DetailFileUtils/DetailFileUtils";
 import { useSelector } from "react-redux";
 import { getIsElectorn } from "@/redux/modules/globalSlice";
+import { useRef } from "react";
 
 const bucketUploadDirectory = new StandardDirectory();
 
@@ -48,7 +47,6 @@ const RecursivelyCreateDirectory = (
 	if (pathArray.length <= 1) {
 		//访问到了最后的文件，推入当前文件夹的文件列表中
 		currentDirectory.pushFile(originalFile);
-
 		return;
 	}
 	//仍然有子文件夹，继续递归
@@ -63,26 +61,62 @@ const RecursivelyCreateDirectory = (
 };
 
 const MyDragger = ({ fileList, setFileList, isElectron }) => {
+	const [dropProps, setDropProps] = useState(["1"]);
+	const dropPropsRef = useRef(dropProps);
+	if (isElectron) {
+		useEffect(() => {
+			let handleDropToGetDisplayedFiles = (e) => {
+				e.preventDefault();
+				const dropfiles = e.dataTransfer.files;
+				// console.log(dropfiles, "当前拖动");
+				const dropfilesArray = Object.values(dropfiles);
+       
+				setDropProps(dropfilesArray.map((file) => ({
+                    path:file.path,
+                    name:file.name
+                })));
+			};
+
+			window.addEventListener(
+				"drop",
+				(e) => handleDropToGetDisplayedFiles(e),
+				true
+			);
+			return () =>
+				window.removeEventListener(
+					"drop",
+					(e) => handleDropToGetDisplayedFiles(e),
+					true
+				);
+		}, []);
+	}
+	useEffect(() => {
+		dropPropsRef.current = dropProps;
+        // console.log('当前的state已经最新',dropPropsRef.current)
+	}, [dropProps]);
 	const onDrop = (acceptedFiles) => {
-		setFileList(fileList.concat(acceptedFiles));
-		let relativePaths = acceptedFiles.map((file) => file.path);
+		setFileList(fileList.concat(acceptedFiles)); //连接旧文件列表和新文件列表
+		let relativePaths = acceptedFiles.map((file) => file.path); //构建文件路径数组
 		if (isElectron) {
-			relativePaths = getRelativePaths(relativePaths);
+			relativePaths = getRelativePaths(
+				relativePaths,
+				dropPropsRef.current
+			);
 		}
 		// console.log(relativePaths, "relativePaths");
-		// console.log(acceptedFiles, "acceptedFiles");
+		console.log(acceptedFiles, "acceptedFiles");
 		acceptedFiles.forEach((acceptedFile, index) => {
-			const path = relativePaths[index];
-
-			const pathArray = path.split("/").slice(1); //path有一个/开头，需要去掉第一个空元素
+			const path = relativePaths[index]; //获取到每个文件的路径字符串
+			const pathArray = path.split("/").slice(1); //拆分得到数组，path有一个/开头，需要去掉第一个空元素
 			// console.log(pathArray, "cur path");
+			//electron只上传一个文件会空路径，但是由于acceptedFile和path顺序对应。不会错误
 			RecursivelyCreateDirectory(
-				pathArray.slice(1),
+				pathArray, //弹出这一级文件夹的路径
 				bucketUploadDirectory,
-				acceptedFile //同一个对象的引用，性能问题不是很大?
+				acceptedFile //同一个对象的引用，性能问题不是很大
 			);
 		});
-		// console.log(bucketUploadDirectory, "processed bucket directory");
+		console.log(bucketUploadDirectory, "processed bucket directory");
 	};
 	//需要允许重复上传
 	const { getRootProps, getInputProps } = useDropzone({
@@ -92,7 +126,6 @@ const MyDragger = ({ fileList, setFileList, isElectron }) => {
 		multiple: true,
 	});
 
-	//directory 和 webkitdirectory似乎因为React的TS定义原因要指定空字符串
 	return (
 		<div {...getRootProps()} className="upload-content">
 			<input {...getInputProps()} className="drag-upload-form" />
@@ -122,9 +155,13 @@ const FilesTableContent = ({ fileList, setFileList }) => {
 			render: (text, record) => {
 				return (
 					<Space>
-						{record.type === "directory" && <FolderFilled style={{
-                            color:'lightblue'
-                        }} />}
+						{record.type === "directory" && (
+							<FolderFilled
+								style={{
+									color: "lightblue",
+								}}
+							/>
+						)}
 						{text}
 					</Space>
 				);
@@ -150,7 +187,7 @@ const FilesTableContent = ({ fileList, setFileList }) => {
 		},
 	];
 	let renderableArray = bucketUploadDirectory.getRenderableArray();
-    // console.log(renderableArray, "renderable array");
+	// console.log(renderableArray, "renderable array");
 	return (
 		<Table
 			className="upload-file-table"
@@ -179,18 +216,25 @@ const EmptyContent = () => {
 const UploadFileAction = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [fileList, setFileList] = useState([]);
+
 	const isElectron = useSelector(getIsElectorn);
+
+	const resetFiles = () => {
+		setFileList([]);
+		bucketUploadDirectory.clean();
+	};
+
 	const showModal = () => {
 		setIsModalOpen(true);
-		setFileList([]);
+		resetFiles();
 	};
 	const handleOk = () => {
 		setIsModalOpen(false);
-		setFileList([]);
+		resetFiles();
 	};
 	const handleCancel = () => {
 		setIsModalOpen(false);
-		setFileList([]);
+		resetFiles();
 	};
 	const location = useLocation();
 	//['','bucket','bucketPath']

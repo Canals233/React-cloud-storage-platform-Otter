@@ -72,7 +72,7 @@ const BucketlistCard = ({ TableData }) => {
 			console.log(currentListData);
 		}
 	}
-	console.log(TableData, getBucketListResult, "TableData,bucketListData");
+	// console.log(TableData, getBucketListResult, "TableData,bucketListData");
 
 	// 排序时候要注意，antd4的排序的参数是整行的数据对象，而不是单个数据，要访问属性后排序
 
