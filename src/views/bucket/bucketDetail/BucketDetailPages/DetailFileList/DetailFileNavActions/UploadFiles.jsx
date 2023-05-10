@@ -1,8 +1,9 @@
 import { Button, Modal, Popover, Space, Table, Upload } from "antd";
 import { InboxOutlined, FolderFilled, FileFilled } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import { formatFileSize } from "@/utils/util.js";
+import React, { useEffect, useReducer, useState } from "react";
 import { useLocation } from "react-router-dom";
-import "./NavActions.less";
+import "./uploadFiles.less";
 import { useDropzone } from "react-dropzone";
 
 import {
@@ -15,7 +16,7 @@ import { useRef } from "react";
 
 const bucketUploadDirectory = new StandardDirectory();
 
-const getUploadProps = (fileList, setFileList, args) => {
+const getUploadProps = (setHasFile,forceUpdate, args) => {
 	return {
 		name: "file",
 		multiple: true,
@@ -23,17 +24,26 @@ const getUploadProps = (fileList, setFileList, args) => {
 			console.log("Dropped files", e.dataTransfer);
 		},
 		showUploadList: false,
-		onRemove: (file) => {
-			const index = fileList.indexOf(file);
-			const newFileList = fileList.slice();
-			newFileList.splice(index, 1);
-			setFileList(newFileList);
-		},
+		onRemove: () => {},
 		beforeUpload: (file) => {
-			setFileList([...fileList, file]);
+			// console.log("uploaded file", file);
+			if (!file.webkitRelativePath) {
+				bucketUploadDirectory.pushFile(file);
+			} else {
+				const pathArray = file.webkitRelativePath.split("/"); //这个方法里访问到的webkitRelativePath没有前缀/，可以不用slice1
+				// console.log(pathArray, "cur path");
+				//electron只上传一个文件会空路径，但是由于acceptedFile和path顺序对应。不会错误
+				RecursivelyCreateDirectory(
+					pathArray, //弹出这一级文件夹的路径
+					bucketUploadDirectory,
+					file //同一个对象的引用，性能问题不是很大
+				);
+			}
+            setHasFile(true);
+			forceUpdate()
+           
 			return false;
 		},
-		fileList,
 		...args,
 	};
 };
@@ -60,21 +70,23 @@ const RecursivelyCreateDirectory = (
 	);
 };
 
-const MyDragger = ({ fileList, setFileList, isElectron }) => {
-	const [dropProps, setDropProps] = useState(["1"]);
+const MyDragger = ({ hasFile, setHasFile, isElectron }) => {
+	const [dropProps, setDropProps] = useState([]);
 	const dropPropsRef = useRef(dropProps);
 	if (isElectron) {
 		useEffect(() => {
 			let handleDropToGetDisplayedFiles = (e) => {
 				e.preventDefault();
 				const dropfiles = e.dataTransfer.files;
-				// console.log(dropfiles, "当前拖动");
+				console.log(dropfiles, "当前拖动");
 				const dropfilesArray = Object.values(dropfiles);
-       
-				setDropProps(dropfilesArray.map((file) => ({
-                    path:file.path,
-                    name:file.name
-                })));
+
+				setDropProps(
+					dropfilesArray.map((file) => ({
+						path: file.path,
+						name: file.name,
+					}))
+				);
 			};
 
 			window.addEventListener(
@@ -92,10 +104,9 @@ const MyDragger = ({ fileList, setFileList, isElectron }) => {
 	}
 	useEffect(() => {
 		dropPropsRef.current = dropProps;
-        // console.log('当前的state已经最新',dropPropsRef.current)
+		// console.log('当前的state已经最新',dropPropsRef.current)
 	}, [dropProps]);
 	const onDrop = (acceptedFiles) => {
-		setFileList(fileList.concat(acceptedFiles)); //连接旧文件列表和新文件列表
 		let relativePaths = acceptedFiles.map((file) => file.path); //构建文件路径数组
 		if (isElectron) {
 			relativePaths = getRelativePaths(
@@ -105,6 +116,7 @@ const MyDragger = ({ fileList, setFileList, isElectron }) => {
 		}
 		// console.log(relativePaths, "relativePaths");
 		console.log(acceptedFiles, "acceptedFiles");
+
 		acceptedFiles.forEach((acceptedFile, index) => {
 			const path = relativePaths[index]; //获取到每个文件的路径字符串
 			const pathArray = path.split("/").slice(1); //拆分得到数组，path有一个/开头，需要去掉第一个空元素
@@ -117,6 +129,7 @@ const MyDragger = ({ fileList, setFileList, isElectron }) => {
 			);
 		});
 		console.log(bucketUploadDirectory, "processed bucket directory");
+		setHasFile(true);
 	};
 	//需要允许重复上传
 	const { getRootProps, getInputProps } = useDropzone({
@@ -125,15 +138,12 @@ const MyDragger = ({ fileList, setFileList, isElectron }) => {
 		noKeyboard: true,
 		multiple: true,
 	});
-
+	// console.log(hasFile, "hasFile")
 	return (
 		<div {...getRootProps()} className="upload-content">
 			<input {...getInputProps()} className="drag-upload-form" />
-			{fileList.length > 0 ? (
-				<FilesTableContent
-					fileList={fileList}
-					setFileList={setFileList}
-				/>
+			{hasFile ? (
+				<FilesTableContent setHasFile={setHasFile} />
 			) : (
 				<EmptyContent />
 			)}
@@ -141,12 +151,7 @@ const MyDragger = ({ fileList, setFileList, isElectron }) => {
 	);
 };
 
-const FilesTableContent = ({ fileList, setFileList }) => {
-	const handleDeleteFile = (fileName) => {
-		const newFileList = fileList.filter((file) => file.name !== fileName);
-		setFileList(newFileList);
-		console.log(newFileList);
-	};
+const FilesTableContent = ({ setHasFile }) => {
 	const columns = [
 		{
 			title: "文件/文件夹",
@@ -178,14 +183,21 @@ const FilesTableContent = ({ fileList, setFileList }) => {
 			render: (text, record) => (
 				<a
 					onClick={() => {
-						handleDeleteFile(record.name);
+						handleDeleteFile(record);
 					}}
 				>
 					删除
 				</a>
 			),
 		},
-	];
+	];  
+    const [, forceUpdate] = useReducer((x) => x + 1, 0);
+	const handleDeleteFile = (record) => {
+		bucketUploadDirectory.deleteFileOrDirectoryByRecord(record);
+		forceUpdate();
+		setHasFile(!bucketUploadDirectory.isEmpty());
+	};
+
 	let renderableArray = bucketUploadDirectory.getRenderableArray();
 	// console.log(renderableArray, "renderable array");
 	return (
@@ -213,15 +225,15 @@ const EmptyContent = () => {
 	);
 };
 
-const UploadFileAction = () => {
+export default function UploadFileAction  ()  {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [fileList, setFileList] = useState([]);
-
+	const [hasFile, setHasFile] = useState(false);
+    const [, forceUpdate] = useReducer((x) => x + 1, 0);
 	const isElectron = useSelector(getIsElectorn);
 
 	const resetFiles = () => {
-		setFileList([]);
 		bucketUploadDirectory.clean();
+		setHasFile(false);
 	};
 
 	const showModal = () => {
@@ -239,7 +251,7 @@ const UploadFileAction = () => {
 	const location = useLocation();
 	//['','bucket','bucketPath']
 	const bucketPath = location.pathname.split("/").slice(2).join("/");
-	// console.log(fileList);
+
 	return (
 		<>
 			<Button type="primary" onClick={showModal}>
@@ -256,25 +268,23 @@ const UploadFileAction = () => {
 				footer={null}
 			>
 				<Space>
-					<Upload {...getUploadProps(fileList, setFileList)}>
+					<Upload {...getUploadProps(setHasFile,forceUpdate)}>
 						<Button type="primary">上传文件</Button>
 					</Upload>
-					<Upload
-						{...getUploadProps(fileList, setFileList)}
-						directory
-					>
+					<Upload {...getUploadProps(setHasFile,forceUpdate)} directory>
 						<Button>上传文件夹</Button>
 					</Upload>
 					<span className="upload-to-text">上传至</span>
 					<span className="upload-path">{bucketPath}/</span>
+                    
 				</Space>
 				<p className="upload-info">
 					若上传路径中存在同名文件，上传将覆盖原有文件。 <br />
-					{/* 上传文件夹将拆分上传文件夹内的所有文件，直接上传文件夹功能正在加紧开发中，敬请期待！ */}
 				</p>
+                <p className="upload-size">当前上传总大小: <span className="sizetext">{formatFileSize(bucketUploadDirectory.size)}</span></p>
 				<MyDragger
-					fileList={fileList}
-					setFileList={setFileList}
+					hasFile={hasFile}
+					setHasFile={setHasFile}
 					isElectron={isElectron}
 				/>
 
@@ -296,4 +306,4 @@ const UploadFileAction = () => {
 	);
 };
 
-export { UploadFileAction };
+

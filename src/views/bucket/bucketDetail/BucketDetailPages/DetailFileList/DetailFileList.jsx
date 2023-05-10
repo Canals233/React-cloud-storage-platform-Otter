@@ -1,14 +1,13 @@
 import { Button, Card, Dropdown, Popover, Space, Table } from "antd";
 import Search from "antd/lib/input/Search";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import "./DetailFileList.less";
 import { DownOutlined, FolderOutlined } from "@ant-design/icons";
 import { selectAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
-import { UploadFileAction} from "./DetailFileNavActions/DetailFileNavActions";
-
+import UploadFileAction from "./DetailFileNavActions/UploadFiles";
 
 const columns = [
 	{
@@ -63,7 +62,7 @@ const columns = [
 	},
 ];
 
-const items = [
+const actionDropdownItems = [
 	{
 		key: "1",
 		label: (
@@ -82,9 +81,9 @@ const items = [
 	},
 ];
 
-const DetailSearch = () => {
-	const [searchValue, setSearchValue] = React.useState("");
+const DetailSearch = ({ searchValue, setSearchValue }) => {
 	const handleSearchChange = (e) => {
+		console.log(e.target.value, "search value");
 		setSearchValue(e.target.value);
 	};
 	return (
@@ -100,15 +99,13 @@ const DetailSearch = () => {
 };
 
 const DetailNav = () => {
-   
 	return (
 		<Space className="action-btns">
 			<UploadFileAction />
-			
 			<Button>清空存储桶</Button>
 			<Dropdown
 				menu={{
-					items,
+					actionDropdownItems,
 				}}
 			>
 				<Button>
@@ -123,14 +120,32 @@ const DetailNav = () => {
 
 const DetailFileList = () => {
 	let detailTableData = useSelector(selectAllBucketDetail);
+   
 	const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
+	const [searchValue, setSearchValue] = React.useState("");
     
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			if (searchValue) {
+				detailTableData.filter((item) => {
+					return item.name.includes(searchValue);
+				});
+			}
+		}, 500);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [searchValue]);
 	return (
 		<Card>
 			<DetailNav />
 			<div className="detail-refresh-search">
 				<Button type="primary">刷新</Button>
-				<DetailSearch />
+				<DetailSearch
+					searchValue={searchValue}
+					setSearchValue={setSearchValue}
+				/>
 			</div>
 
 			<div className="detail-list-content">

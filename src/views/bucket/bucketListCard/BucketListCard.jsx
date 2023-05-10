@@ -33,9 +33,9 @@ const popContent = <div>存储桶名称由[自定义名称]-[开发商 APPID]构
 const BucketlistCard = ({ TableData }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const handleBucketClick = (name, files) => {
+	const handleBucketClick = (name, bucketDetailFiles) => {
 		navigate(`/bucket/${name}?type=file`);
-		dispatch(setAllBucketDetail(files));
+		dispatch(setAllBucketDetail(bucketDetailFiles));
 		dispatch(
 			setCurrentBreadcrumb({
 				title: [`存储桶列表`, `${name}`],

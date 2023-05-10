@@ -24,6 +24,21 @@ export class StandardDirectory {
 	pushFile(file) {
 		this.files.push(file);
 	}
+	isEmpty() {
+		return this.files.length === 0 && this.subDirectories.size === 0;
+	}
+	deleteFileOrDirectoryByRecord(record) {
+		// console.log(record)
+		if (record.type === "file") {
+			this.files = this.files.filter((file) => {
+				return file.name !== record.name;
+			});
+		} else {
+			this.subDirectories.delete(record.name);
+		}
+		this.size -= record.originSize;
+		console.log("删除之后的内容", this);
+	}
 	setSubDirectoryByName(name) {
 		// console.log(this.subDirectories, "this.subDirectories")
 		if (!this.subDirectories.has(name)) {
@@ -43,17 +58,25 @@ export class StandardDirectory {
 			renderableArray.push({
 				id: nanoid(),
 				name: key,
+				originSize: size,
 				size: formatFileSize(size),
 				time: formatTimestamp(Date.now()),
 				type: "directory",
 			});
 		});
-
 		renderableArray = renderableArray.concat(
 			filesToObjectArray(this.files)
 		);
-
 		return renderableArray;
+	}
+
+	async uploadFiles(file) {
+		try {
+			const res = await mockUploadFile(file);
+            if (res === "success") {
+                
+            }
+		} catch (error) {}
 	}
 }
 /**
@@ -66,6 +89,7 @@ export function filesToObjectArray(files) {
 		return {
 			id: nanoid(),
 			name: file.name,
+			originSize: file.size,
 			size: formatFileSize(file.size),
 			time: formatTimestamp(file.lastModified),
 			type: "file",
@@ -103,12 +127,19 @@ export const getRelativePaths = (paths, dropProps) => {
 function findLastPathName(dropProps, testPath) {
 	let longestPrefix = "";
 	let lastpathName = "";
-	for (let { path,name } of dropProps) {
+	for (let { path, name } of dropProps) {
 		if (testPath.startsWith(path) && path.length > longestPrefix.length) {
 			longestPrefix = path;
 			lastpathName = name;
 		}
 	}
-
 	return lastpathName;
+}
+
+async function mockUploadFile(file) {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			resolve("success");
+		}, 50);
+	});
 }

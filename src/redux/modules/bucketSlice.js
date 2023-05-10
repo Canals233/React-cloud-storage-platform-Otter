@@ -18,7 +18,6 @@ const bucketSlice = createSlice({
         },
         renameBucketByBucketId(state, action) {
             const { bucketId, newBucketName } = action.payload;
-         
             state.bucketList = state.bucketList.map((bucket) => {
                 if (bucket.bucketId === bucketId) {
                     return { ...bucket, name: newBucketName };
