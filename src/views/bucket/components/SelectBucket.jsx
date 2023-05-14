@@ -13,7 +13,7 @@ const selectModes = [
 	},
 ];
 
-const SearchBucket = ({
+const SelectBucket = ({
 	searchFunction,
 	showSearchMode = true,
 	searchBarStyle = {},
@@ -113,4 +113,4 @@ const SearchBucket = ({
 	);
 };
 
-export default SearchBucket;
+export default SelectBucket;

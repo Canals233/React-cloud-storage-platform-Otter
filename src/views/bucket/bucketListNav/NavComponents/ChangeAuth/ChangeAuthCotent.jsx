@@ -5,8 +5,8 @@ import { selectAllBucketList } from "@/redux/modules/bucketSlice";
 import { radioTextMap, publicEnableRenderMap,getPublicEnableObject } from "@/views/bucket/api/bucketApi";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import { changeBucketsAuth } from "@/redux/modules/bucketSlice";
-import SearchBucket from "@/views/bucket/components/SearchBucket";
 import showWarningModal from "@/views/bucket/components/ShowWaringModal";
+import SearchInput from "@/views/bucket/components/SearchInput";
 
 const columns = [
 	{
@@ -130,12 +130,14 @@ const ChangeAuthContent = ({
 					>
 						选择存储桶 (共{tableData.length}个)
 					</p>
-					<SearchBucket
+					<SearchInput
 						showSearchMode={false}
+                        showSelect={false}
 						searchBarStyle={{
 							width: 400,
 							marginBottom: 10,
 						}}
+                        trigger="onChange"
 						setResult={setTableData}
 					/>
 

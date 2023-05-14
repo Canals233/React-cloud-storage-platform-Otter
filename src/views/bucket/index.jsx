@@ -6,12 +6,9 @@ import {
 	selectAllBucketList,
 	setBucketList,
 } from "@/redux/modules/bucketSlice";
-import Bucketlist from "./bucketChildren/BucketList/BucketList";
+import Bucketlist from "./bucketTab/BucketList/BucketList";
 import { useGetBucketListMutation } from "@/redux/modules/apiSlice";
-
-//下面的代码记得放在BucketList里面，现在是因为Tabs的渲染问题在另一个文件写热更新不了才这样写
-
-//上面的代码记得放在BucketList里面，现在是因为Tabs的渲染问题在另一个文件写热更新不了才这样写
+import StatisticsTab from "./bucketTab/Statistics/StatisticsTab";
 
 const BucketListPage = () => {
 	const dispatch = useDispatch();
@@ -26,7 +23,7 @@ const BucketListPage = () => {
 
 	const items = [
 		{ label: "存储列表", key: "item-1", children: <Bucketlist /> }, // 务必填写 key
-		{ label: "数据统计", key: "item-2", children: "内容 2" },
+		{ label: "数据统计", key: "item-2", children: <StatisticsTab /> },
 	];
 
 	return (
@@ -36,7 +33,7 @@ const BucketListPage = () => {
 				ghost={false}
 				style={{ padding: "2px 12px" }}
 			/>
-			<div>
+			<div >
 				<Tabs items={items} tabBarStyle={{ marginBottom: 24 }} />
 			</div>
 		</>

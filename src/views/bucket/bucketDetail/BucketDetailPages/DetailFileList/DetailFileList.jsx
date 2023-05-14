@@ -105,7 +105,7 @@ const DetailNav = () => {
 			<Button>清空存储桶</Button>
 			<Dropdown
 				menu={{
-					actionDropdownItems,
+					items:actionDropdownItems,
 				}}
 			>
 				<Button>

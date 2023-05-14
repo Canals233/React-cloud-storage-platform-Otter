@@ -8,20 +8,17 @@ const Bucketlist = () => {
 	const [bucketList, setBucketList] = useState([]);
 	let newBucketData = useSelector(selectAllBucketList);
 	useEffect(() => {
-	
 		setBucketList(
 			[...newBucketData].sort((a, b) => a.name.localeCompare(b.name))
 		);
 	}, [newBucketData]);
 
 	return (
-		<div
-			style={{
-				maxWidth: "1368px",
-				margin: "0 auto",
-				padding: "0 0.75rem",
-			}}
-		>
+		<div style={{
+            width:1368,
+            margin:"0 auto",
+            padding:"0 24px"
+        }}>
 			<div
 				style={{
 					marginBottom: "1.25rem",

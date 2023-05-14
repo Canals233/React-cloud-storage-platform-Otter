@@ -2,12 +2,12 @@ import { Button, Col, Row, Space } from "antd";
 import {  useState } from "react";
 import ChangeAuthModal from "./NavComponents/ChangeAuth/ChangeAuthModal";
 
-import SearchBucket from "../components/SearchBucket";
 import {
 	
 	BucketCreateProvider,
 } from "./provider/BucketCreateProvider";
 import CreateBucketContent from "./NavComponents/CreateBucket/CreateBucketContent";
+import SearchInput from "../components/SearchInput";
 
 //用了provider，需要尽量保证数据不变
 
@@ -47,7 +47,7 @@ const BucketlistNav = ({ setResult }) => {
 				</Col>
 				<Col>
 					<Space size={8}>
-						<SearchBucket setResult={setResult} />
+						<SearchInput setResult={setResult} />
 					</Space>
 				</Col>
 			</Row>
