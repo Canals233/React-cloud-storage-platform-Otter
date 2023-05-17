@@ -1,5 +1,5 @@
-import { Card, Table, message } from "antd";
-import Column from "antd/lib/table/Column";
+import {  Table, message } from "antd";
+
 import BucketlistCardActions from "./CardComponents/BucketListCardActions";
 import { PopHover } from "@/views/bucket/components/PopInfo";
 
@@ -11,7 +11,7 @@ import { setAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
 import { useGetBucketListMutation } from "@/redux/modules/apiSlice";
 import { useEffect } from "react";
 import { formatTimestamp } from "@/utils/util";
-import { setBucketList } from "@/redux/modules/bucketSlice";
+
 
 const publicEnableFilterArray = [
 	{ text: "公开读写", value: "publicReadWrite" },
@@ -43,22 +43,82 @@ const BucketlistCard = ({ TableData }) => {
 			})
 		);
 	};
+    const BucketListColumns = [
+		{
+			title: (
+				<>
+					存储桶名称{" "}
+					<PopHover content={popContent} placement={"right"} />
+				</>
+			),
+			dataIndex: "name",
+			key: "name",
+			sorter: (a, b) => {
+				if (a.name === b.name) return 0;
+				return a.name > b.name ? 1 : -1;
+			},
+			render: (text, record) => {
+				return (
+					<a
+						onClick={() =>
+							handleBucketClick(record.name, record.files)
+						}
+					>
+						{text}
+					</a>
+				);
+			},
+		},
+		{
+			title: "访问权限",
+			dataIndex: ["publicWriteEnable", "publicReadEnable"],
+			key: "publicEnable",
+			filters: publicEnableFilterArray,
+			onFilter: onPublicEnableFilter,
+			render: (_, record) => {
+				return publicEnableRenderMap(
+					record.publicWriteEnable,
+					record.publicReadEnable
+				);
+			},
+		},
+		{
+			title: "创建时间",
+			dataIndex: "time",
+			key: "time",
+			sorter: (a, b) => {
+				if (a.createTime === b.createTime) return 0;
+				return a.createTime > b.createTime ? 1 : -1;
+			},
+			render: (_, record) => {
+				return <span>{formatTimestamp(record.createTime)}</span>;
+			},
+		},
+		{
+			title: "操作",
+			key: "action",
+			render: (_, record) => {
+				return <BucketlistCardActions bucketId={record.bucketId} />;
+			},
+		},
+	];
 	const [getBucketList, data] = useGetBucketListMutation();
 
 	const { data: getBucketListResult, isLoading, isError, isSuccess } = data;
 	const currentListData = getBucketListResult?.data.map((item) => {
-        return {
-            ...item,
-            tags:[],
-        }
-    });
+		return {
+			...item,
+			tags: [],
+		};
+	});
+
+	
+
 	useEffect(() => {
 		// getBucketList();
-        // 本地测试用
+		// 本地测试用
 	}, []);
 
-
-    
 	console.log(data, "get res");
 	if (isLoading) {
 		message.loading("正在加载", 0);
@@ -82,73 +142,8 @@ const BucketlistCard = ({ TableData }) => {
 				dataSource={TableData}
 				rowKey={"bucketId"}
 				loading={isLoading}
-			>
-				<Column
-					title={
-						<>
-							存储桶名称{" "}
-							<PopHover
-								content={popContent}
-								placement={"right"}
-							/>
-						</>
-					}
-					dataIndex="name"
-					key="name"
-					sorter={(a, b) => {
-						if (a.name === b.name) return 0;
-						return a.name > b.name ? 1 : -1;
-					}}
-					render={(text, record) => {
-						return (
-							<a
-								onClick={() =>
-									handleBucketClick(record.name, record.files)
-								}
-							>
-								{text}
-							</a>
-						);
-					}}
-				></Column>
-				<Column
-					title="访问权限"
-					dataIndex={["publicWriteEnable", "publicReadEnable"]}
-					key="publicEnable"
-					filters={publicEnableFilterArray}
-					onFilter={onPublicEnableFilter}
-					//过滤逻辑是text映射value，再传到onfilter去筛选
-					render={(_, record) => {
-						return publicEnableRenderMap(
-							record.publicWriteEnable,
-							record.publicReadEnable
-						);
-					}}
-				/>
-				<Column
-					title="创建时间"
-					dataIndex="time"
-					key="time"
-					sorter={(a, b) => {
-						if (a.createTime === b.createTime) return 0;
-						return a.createTime > b.createTime ? 1 : -1;
-					}}
-					render={(_, record) => {
-						return (
-							<span>{formatTimestamp(record.createTime)}</span>
-						);
-					}}
-				/>
-				<Column
-					title="操作"
-					key="action"
-					render={(_, record) => {
-						return (
-							<BucketlistCardActions bucketId={record.bucketId} />
-						);
-					}}
-				/>
-			</Table>
+				columns={BucketListColumns}
+			></Table>
 		</>
 	);
 };

@@ -123,7 +123,7 @@ function SearchInput({
 					style={{
 						width: "15rem",
 						...searchBarStyle,
-						zIndex: 2,
+						zIndex: 2000,
 					}}
 					onChange={handleSearchChange}
 					onSearch={handleSearchResult}

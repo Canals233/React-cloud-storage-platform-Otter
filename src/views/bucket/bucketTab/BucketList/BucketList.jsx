@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { selectAllBucketList } from "../../../../redux/modules/bucketSlice";
 import BucketlistCard from "../../bucketListCard/BucketListCard";
 import BucketlistNav from "../../bucketListNav/BucketListNav";
@@ -15,9 +15,10 @@ const Bucketlist = () => {
 
 	return (
 		<div style={{
-            width:1368,
-            margin:"0 auto",
-            padding:"0 24px"
+            maxWidth: 1368,
+            minWidth: 1024,
+            margin: "0 auto",
+            padding: "0 24px",
         }}>
 			<div
 				style={{

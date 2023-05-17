@@ -1,0 +1,113 @@
+import React from "react";
+import { useEcharts } from "@/hooks/useEcharts";
+import { Card, Radio, Row } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
+import CalendarWithButtons from "@/components/CalendarWithButtons/CalendarWithButtons";
+import "./LineChart.less";
+
+const buttonArray = [
+	<Radio.Button value="thismonth">本月</Radio.Button>,
+	<Radio.Button value="week">近7天</Radio.Button>,
+	// <Radio.Button value="fifteen">近15天</Radio.Button>,
+	<Radio.Button value="month">近30天</Radio.Button>,
+];
+
+const LineChartCard = ({ option, data, costomChartStyle }) => {
+	const [echartsRef] = useEcharts(option, data);
+	return (
+		<Card className="linechart-card">
+			<Row className="linechart-nav" justify={"space-between"}>
+				请求数
+				<DownloadOutlined />
+			</Row>
+			<Row  className="linechart-calendar" justify={"center"} >
+				<CalendarWithButtons  radioButtons={buttonArray} />
+			</Row>
+			<div
+                className="linechart-content"
+				style={{
+					height: "400px",
+                    marginTop:-20,
+                    zIndex:2,
+                    width:"110%",
+					...costomChartStyle,
+				}}
+				ref={echartsRef}
+				
+			/>
+		</Card>
+	);
+};
+
+const LineChartGroups = () => {
+	const option = {
+		legend: {},
+		tooltip: {},
+		dataset: {
+			dimensions: ["date", "写请求数", "读请求数"],
+			source: [
+				{ date: "2023-04-17", 写请求数: 32, 读请求数: 55 },
+				{ date: "2023-04-18", 写请求数: 42, 读请求数: 67 },
+				{ date: "2023-04-19", 写请求数: 52, 读请求数: 63 },
+				{ date: "2023-04-20", 写请求数: 62, 读请求数: 71 },
+				{ date: "2023-04-21", 写请求数: 72, 读请求数: 87 },
+				{ date: "2023-04-22", 写请求数: 82, 读请求数: 79 },
+				{ date: "2023-04-23", 写请求数: 92, 读请求数: 73 },
+				{ date: "2023-04-24", 写请求数: 83, 读请求数: 89 },
+				{ date: "2023-04-25", 写请求数: 71, 读请求数: 82 },
+				{ date: "2023-04-26", 写请求数: 62, 读请求数: 76 },
+				{ date: "2023-04-27", 写请求数: 54, 读请求数: 68 },
+				{ date: "2023-04-28", 写请求数: 42, 读请求数: 64 },
+				{ date: "2023-04-29", 写请求数: 32, 读请求数: 59 },
+				{ date: "2023-04-30", 写请求数: 63, 读请求数: 83 },
+				{ date: "2023-05-01", 写请求数: 43, 读请求数: 85 },
+				{ date: "2023-05-02", 写请求数: 83, 读请求数: 73 },
+				{ date: "2023-05-03", 写请求数: 86, 读请求数: 65 },
+				{ date: "2023-05-04", 写请求数: 72, 读请求数: 53 },
+				{ date: "2023-05-05", 写请求数: 62, 读请求数: 52 },
+				{ date: "2023-05-06", 写请求数: 54, 读请求数: 41 },
+				{ date: "2023-05-07", 写请求数: 45, 读请求数: 32 },
+				{ date: "2023-05-08", 写请求数: 63, 读请求数: 45 },
+				{ date: "2023-05-09", 写请求数: 84, 读请求数: 58 },
+				{ date: "2023-05-10", 写请求数: 95, 读请求数: 67 },
+				{ date: "2023-05-11", 写请求数: 87, 读请求数: 79 },
+				{ date: "2023-05-12", 写请求数: 72, 读请求数: 83 },
+				{ date: "2023-05-13", 写请求数: 63, 读请求数: 89 },
+				{ date: "2023-05-14", 写请求数: 54, 读请求数: 91 },
+				{ date: "2023-05-15", 写请求数: 45, 读请求数: 82 },
+				{ date: "2023-05-16", 写请求数: 32, 读请求数: 73 },
+				{ date: "2023-05-17", 写请求数: 63, 读请求数: 65 },
+			],
+		},
+		xAxis: {
+			type: "category",
+			axisLabel: { interval: 1, rotate: 45 },
+			axisPointer: {
+				label: {
+					formatter: function (params) {
+						return "日期： " + params.value;
+					},
+				},
+				show: true,
+			},
+		},
+		yAxis: {
+			type: "value",
+			axisLabel: { formatter: "{value} 次" },
+		},
+		series: [
+			{
+				type: "line",
+			},
+			{ type: "line" },
+		],
+		legend: { bottom: -5 },
+	};
+	return (
+		<>
+			<LineChartCard option={option} />
+		</>
+	);
+};
+
+export default LineChartGroups;
