@@ -3,8 +3,6 @@ import React from "react";
 import NestedCard from "@/components/NestedCard/NestedCard.jsx";
 import LineChartGroups from "./LinechartGroups/LineChartGroups.jsx";
 
-
-
 const cardDataChildren = [
 	{
 		title: "存储桶数量",
@@ -29,7 +27,7 @@ const DataVisualize = () => {
 			<PageHeader
 				title={"使用统计"}
 				ghost={false}
-				style={{ padding: "2px 24px", marginBottom: 24 }}
+				style={{ padding: "2px 24px", marginBottom: 24,borderBottom:"1px solid #ddd" }}
 			/>
 			<div
 				style={{
@@ -39,8 +37,16 @@ const DataVisualize = () => {
 					padding: "0 24px",
 				}}
 			>
-				<NestedCard children={cardDataChildren} />
-                <LineChartGroups/>
+				<div
+					style={{
+						boxShadow: "0px 2px 3px -0.5px #ccc",
+                        marginBottom: 24,
+					}}
+				>
+					<NestedCard children={cardDataChildren} />
+				</div>
+
+				<LineChartGroups />
 			</div>
 		</>
 	);

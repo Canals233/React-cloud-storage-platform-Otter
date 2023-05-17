@@ -105,7 +105,7 @@ const DetailNav = () => {
 			<Button>清空存储桶</Button>
 			<Dropdown
 				menu={{
-					items:actionDropdownItems,
+					items: actionDropdownItems,
 				}}
 			>
 				<Button>
@@ -120,10 +120,10 @@ const DetailNav = () => {
 
 const DetailFileList = () => {
 	let detailTableData = useSelector(selectAllBucketDetail);
-   
+
 	const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
 	const [searchValue, setSearchValue] = React.useState("");
-    
+
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			if (searchValue) {
@@ -138,7 +138,15 @@ const DetailFileList = () => {
 		};
 	}, [searchValue]);
 	return (
-		<Card>
+		<Card
+			style={{
+				maxWidth: 1368,
+				minWidth: 1024,
+				margin: "0 auto",
+				padding: "0 24px",
+				boxShadow: "0px 2px 3px -0.5px #ccc",
+			}}
+		>
 			<DetailNav />
 			<div className="detail-refresh-search">
 				<Button type="primary">刷新</Button>

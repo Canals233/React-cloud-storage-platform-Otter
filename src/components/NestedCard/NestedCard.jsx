@@ -29,7 +29,7 @@ const NestedCard = React.memo(({ children }) => {
 	};
 
 	return (
-		<div style={{ display: "flex" }}>{...DestrustChildren(children)}</div>
+		<div className="nested-card-body" >{...DestrustChildren(children)}</div>
 	);
 });
 

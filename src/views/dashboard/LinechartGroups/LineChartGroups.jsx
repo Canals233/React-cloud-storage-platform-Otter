@@ -12,28 +12,27 @@ const buttonArray = [
 	<Radio.Button value="month">近30天</Radio.Button>,
 ];
 
-const LineChartCard = ({ option, data, costomChartStyle }) => {
+const LineChartCard = ({title, option, data, costomChartStyle }) => {
 	const [echartsRef] = useEcharts(option, data);
 	return (
 		<Card className="linechart-card">
 			<Row className="linechart-nav" justify={"space-between"}>
-				请求数
+				{title}
 				<DownloadOutlined />
 			</Row>
-			<Row  className="linechart-calendar" justify={"center"} >
-				<CalendarWithButtons  radioButtons={buttonArray} />
+			<Row className="linechart-calendar" justify={"center"}>
+				<CalendarWithButtons radioButtons={buttonArray} />
 			</Row>
 			<div
-                className="linechart-content"
+				className="linechart-content"
 				style={{
 					height: "400px",
-                    marginTop:-20,
-                    zIndex:2,
-                    width:"110%",
+					marginTop: -20,
+					zIndex: 2,
+					width: "110%",
 					...costomChartStyle,
 				}}
 				ref={echartsRef}
-				
 			/>
 		</Card>
 	);
@@ -103,9 +102,74 @@ const LineChartGroups = () => {
 		],
 		legend: { bottom: -5 },
 	};
+	const storeoption = {
+		legend: {},
+		tooltip: {},
+		dataset: {
+			dimensions: ["date", "存储用量"],
+			source: [
+				{ date: "2023-04-17", 存储用量: 32 },
+				{ date: "2023-04-18", 存储用量: 32 },
+				{ date: "2023-04-19", 存储用量: 32 },
+				{ date: "2023-04-20", 存储用量: 32 },
+				{ date: "2023-04-21", 存储用量: 32 },
+				{ date: "2023-04-22", 存储用量: 32 },
+				{ date: "2023-04-23", 存储用量: 32 },
+				{ date: "2023-04-24", 存储用量: 42 },
+				{ date: "2023-04-25", 存储用量: 42 },
+				{ date: "2023-04-26", 存储用量: 42 },
+				{ date: "2023-04-27", 存储用量: 42 },
+				{ date: "2023-04-28", 存储用量: 42 },
+				{ date: "2023-04-29", 存储用量: 52 },
+				{ date: "2023-04-30", 存储用量: 52 },
+				{ date: "2023-05-01", 存储用量: 52 },
+				{ date: "2023-05-02", 存储用量: 62 },
+				{ date: "2023-05-03", 存储用量: 62 },
+				{ date: "2023-05-04", 存储用量: 62 },
+				{ date: "2023-05-05", 存储用量: 72 },
+				{ date: "2023-05-06", 存储用量: 72 },
+				{ date: "2023-05-07", 存储用量: 72 },
+				{ date: "2023-05-08", 存储用量: 82 },
+				{ date: "2023-05-09", 存储用量: 82 },
+				{ date: "2023-05-10", 存储用量: 82 },
+				{ date: "2023-05-11", 存储用量: 82 },
+				{ date: "2023-05-12", 存储用量: 92 },
+				{ date: "2023-05-13", 存储用量: 92 },
+				{ date: "2023-05-14", 存储用量: 92 },
+				{ date: "2023-05-15", 存储用量: 92 },
+				{ date: "2023-05-16", 存储用量: 92 },
+				{ date: "2023-05-17", 存储用量: 92 },
+			],
+		},
+		xAxis: {
+			type: "category",
+			axisLabel: { interval: 1, rotate: 45 },
+			axisPointer: {
+				label: {
+					formatter: function (params) {
+						return "日期： " + params.value;
+					},
+				},
+				show: true,
+			},
+		},
+		yAxis: {
+			type: "value",
+			axisLabel: { formatter: "{value} 次" },
+		},
+		series: [
+			{
+				type: "line",
+			},
+		],
+		legend: { bottom: -5 },
+	};
 	return (
 		<>
-			<LineChartCard option={option} />
+			<div justify={"space-between"} className="charts-row">
+				<LineChartCard option={option} title={'请求数'} />
+				<LineChartCard option={storeoption} title={'存储用量'} />
+			</div>
 		</>
 	);
 };

@@ -19,6 +19,7 @@ const Bucketlist = () => {
             minWidth: 1024,
             margin: "0 auto",
             padding: "0 24px",
+            
         }}>
 			<div
 				style={{
@@ -27,8 +28,13 @@ const Bucketlist = () => {
 			>
 				<BucketlistNav setResult={setBucketList} />
 			</div>
-
-			<BucketlistCard TableData={bucketList} />
+            <div style={{
+                boxShadow: "0px 2px 4px -0.5px #ccc",
+                backgroundColor: "#fff",
+            }}>
+            <BucketlistCard TableData={bucketList} />
+            </div>
+			
 		</div>
 	);
 };

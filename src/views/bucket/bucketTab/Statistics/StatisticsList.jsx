@@ -19,8 +19,14 @@ const StatisticsList = () => {
 			>
 				<StatisticsNav />
 			</div>
-
-			<StatisticsListCard />
+			<div
+				style={{
+					boxShadow: "0px 2px 4px -0.5px #ccc",
+					backgroundColor: "#fff",
+				}}
+			>
+				<StatisticsListCard />
+			</div>
 		</div>
 	);
 };
