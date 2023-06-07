@@ -1,26 +1,27 @@
 import { useState } from "react";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, Row, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { loginApi, registerApi } from "@/api/modules/user";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/globalSlice";
-import { useTranslation } from "react-i18next";
+
 import { setTabsList } from "@/redux/modules/tabsSlice";
 import {
-	CarryOutOutlined,
 	LockOutlined,
-	UserAddOutlined,
-	UserOutlined,
+	MailOutlined,
 	CheckCircleFilled,
+	KeyOutlined,
 } from "@ant-design/icons";
-import { messageMap, testPassword } from "./signApis";
+import { messageMap, testEmail, testPassword } from "./signApis";
 import confirm from "antd/lib/modal/confirm";
+import FormButton from "./FormButton";
+import CaptchaButton from "./CaptchaButton";
 
-const userIdValidator = (rule, value, callback) => {
-	if (!value) return "请输入用户名";
-	if (value && (value.length < 6 || value.length > 16)) {
-		callback("用户名长度必须在6到16之间");
+const emailValidator = (rule, value, callback) => {
+	if (!value) return "请输入邮箱";
+	if (!testEmail(value)) {
+		callback("请输入正确的邮箱");
 	}
 };
 const passwordValidator = (rule, value, cb) => {
@@ -31,42 +32,44 @@ const passwordValidator = (rule, value, cb) => {
 };
 
 const SignForm = (props) => {
-	const { t } = useTranslation();
 	const { setToken, setTabsList } = props;
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState(false);
+	const [formType, setFormType] = useState(0);
+	const [emailCode, setEmailCode] = useState("");
 
-    
-const enablelocalTest = () => {
-	setToken("1"); //测试用
-	setTabsList([]);
-	message.success("登录成功！");
-	navigate(HOME_URL);
-};
+	const enablelocalTest = () => {
+		setToken("1"); //测试用
+		setTabsList([]);
+		message.success("登录成功！");
+		navigate(HOME_URL);
+	};
 
 	// 登录
 	const onLogin = async () => {
-		enablelocalTest(); //上线记得删掉
-		return;
+		// enablelocalTest(); //上线记得删掉
+		// return;
 
 		const loginForm = form.getFieldsValue();
-		if (!loginForm.userId || !loginForm.password) return;
+		if (!loginForm.email || !loginForm.password) return;
 		try {
 			setLoading(true);
-			const { data } = await loginApi(loginForm);
-			console.log(data, "loginres");
-			if (data.result === false) {
-				message.error(messageMap(data.errorMsg));
+			const res = await loginApi("/from-email", loginForm);
+			console.log(res, "loginres");
+
+			if (res.code === 0) {
+				message.error(res.msg);
 				return;
 			}
-			setToken(data?.token);
+			setToken(res.data?.token);
 			setTabsList([]);
 			message.success("登录成功！");
 			navigate(HOME_URL);
 		} finally {
 			setLoading(false);
 			form.resetFields();
+            setEmailCode("");
 		}
 	};
 
@@ -84,27 +87,70 @@ const enablelocalTest = () => {
 	};
 
 	const onRegister = async () => {
-		const registerForm = form.getFieldsValue();
-		if (!registerForm.userId || !registerForm.password) return;
-		if (registerForm.userId.length < 6 || registerForm.userId.length > 16)
+		const { email, password } = form.getFieldsValue();
+		if (
+			!email ||
+			!password ||
+			emailCode.length !== 6 ||
+			!testEmail(email) ||
+			!testPassword(password)
+		)
 			return;
-		if (!testPassword(registerForm.password)) return;
+
 		try {
 			setLoading(true);
-			const { data } = await registerApi(registerForm);
-			console.log(data, "registerres");
-			if (data.result === false) {
-				message.error(messageMap(data.errorMsg));
-				return;
-			}
+			const authCodeRes = await registerApi("/auth-email-code", {
+				email: email,
+				emailCode: emailCode,
+			});
+			console.log(authCodeRes, "authCodeRes");
+			let ticket = authCodeRes.data.ticket;
+			const registerRes = await registerApi(
+				"/new-account",
+				{
+					ticket: ticket,
+				},
+				{
+					password: password,
+				}
+			);
+			console.log(registerRes, "registerRes");
+			// return;
 			setTabsList([]);
-
 			showConfirm();
 			// form.resetFields();
 			// navigate(HOME_URL);
+		} catch (error) {
+			message.error("请检查验证码");
+			console.log(error, "注册失败");
 		} finally {
 			setLoading(false);
+            form.resetFields();
+            setEmailCode("");
 		}
+	};
+
+	const onGetCaptcha = async () => {
+		const email = form.getFieldValue("email");
+		if (!email || !testEmail(email)) {
+			message.error("请输入正确的邮箱");
+			return;
+		}
+		let msg = "";
+		try {
+			const res = await registerApi("/send-email-code", { email: email });
+			console.log(res, "sendEmailCode");
+			if (res.code == 0) {
+				message.error(res.msg);
+				return;
+			}
+			message.success("验证码已发送，请注意查收");
+			msg = "success";
+		} catch (error) {
+			console.log(error, "发送错误");
+			msg = "error";
+		}
+		return msg;
 	};
 
 	return (
@@ -117,17 +163,35 @@ const enablelocalTest = () => {
 			autoComplete="off"
 		>
 			<Form.Item
-				name="userId"
+				name="email"
 				rules={[
 					{
-						validator: userIdValidator,
+						validator: emailValidator,
 					},
 				]}
 			>
 				<Input
-					placeholder="测试用户名：admin0"
-					prefix={<UserOutlined />}
+					placeholder="测试邮箱：1552043941@qq.com"
+					prefix={<MailOutlined />}
 				/>
+			</Form.Item>
+			<Form.Item
+				name="emailCode"
+				className="form-code-row"
+				style={{
+					display: formType === 1 ? "block" : "none",
+				}}
+				initialValue={""}
+			>
+				<Input
+					className="form-code-input"
+					placeholder="请输入验证码"
+					maxLength={6}
+					prefix={<KeyOutlined />}
+					value={emailCode}
+					onChange={(e) => setEmailCode(e.target.value)}
+				/>
+				<CaptchaButton getCaptcha={onGetCaptcha} />
 			</Form.Item>
 			<Form.Item
 				name="password"
@@ -143,25 +207,15 @@ const enablelocalTest = () => {
 					prefix={<LockOutlined />}
 				/>
 			</Form.Item>
-			<Form.Item className="login-btn">
-				<Button
-					type="primary"
-					onClick={() => {
-						onLogin();
-					}}
+
+			<Form.Item className="login-btn-row">
+				<FormButton
+					formType={formType}
+					setFormType={setFormType}
 					loading={loading}
-					icon={<CarryOutOutlined />}
-				>
-					{t("login.confirm")}
-				</Button>
-				<Button
-					onClick={() => {
-						onRegister();
-					}}
-					icon={<UserAddOutlined />}
-				>
-					{t("login.register")}
-				</Button>
+					onLogin={onLogin}
+					onRegister={onRegister}
+				/>
 			</Form.Item>
 		</Form>
 	);

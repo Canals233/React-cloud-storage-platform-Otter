@@ -1,7 +1,7 @@
 import { PageHeader } from "antd";
 import React from "react";
 import NestedCard from "@/components/NestedCard/NestedCard.jsx";
-import LineChartGroups from "./LinechartGroups/LineChartGroups.jsx";
+import LineChartRow from "./components/LineChartRow/LineChartRow";
 
 const cardDataChildren = [
 	{
@@ -27,7 +27,11 @@ const DataVisualize = () => {
 			<PageHeader
 				title={"使用统计"}
 				ghost={false}
-				style={{ padding: "2px 24px", marginBottom: 24,borderBottom:"1px solid #ddd" }}
+				style={{
+					padding: "2px 24px",
+					marginBottom: 24,
+					borderBottom: "1px solid #ddd",
+				}}
 			/>
 			<div
 				style={{
@@ -40,13 +44,13 @@ const DataVisualize = () => {
 				<div
 					style={{
 						boxShadow: "0px 2px 3px -0.5px #ccc",
-                        marginBottom: 24,
+						marginBottom: 24,
 					}}
 				>
 					<NestedCard children={cardDataChildren} />
 				</div>
 
-				<LineChartGroups />
+				<LineChartRow />
 			</div>
 		</>
 	);

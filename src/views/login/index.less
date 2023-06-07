@@ -67,19 +67,31 @@
 					color: #bfbfbf;
 				}
 			}
-			.login-btn {
+			.form-code-row {
+				display: flex;
+				width: 100%;
+				white-space: nowrap;
+				.form-code-input {
+					width: 65%;
+				}
+				.form-code-btn {
+					width: 35%;
+					border: 0;
+					padding: 6px 15px;
+				}
+			}
+			.login-btn-row {
 				width: 100%;
 				margin-top: 10px;
 				white-space: nowrap;
-				.ant-form-item-control-input-content {
-					display: flex;
-					justify-content: space-between;
-					.ant-btn {
-						width: 180px;
-						span {
-							font-size: 14px;
-						}
-					}
+				.form-button {
+					width: 100%;
+				}
+				.form-subtext {
+					margin-top: 10px;
+					text-align: center;
+					color: blue;
+					cursor: pointer;
 				}
 			}
 		}

@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
 
 import { updateCollapse } from "@/redux/modules/menuSlice";
-import { getAuthorButtons } from "@/api/modules/user";
 import LayoutMenu from "./components/Menu";
 import LayoutHeader from "./components/Header";
 import LayoutTabs from "./components/Tabs";

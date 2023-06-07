@@ -31,18 +31,18 @@ const BucketlistCardActions = ({ bucketId }) => {
 	const closeTagModal = () => {
 		setTagModalOpen(false);
 	};
-	const onTagsClick = () => {
-		setTagModalOpen(true);
-	};
+	// const onTagsClick = () => {
+	// 	setTagModalOpen(true);
+	// };
 
-	const handleTagsChange = (value) => {
-		setTags(value);
-	};
-	const onTagsOK = () => {
-		dispatch(updateBucketTagsByBucketId({ bucketId, tags }));
-		message.info(`${currentBucket.name}的标签更新成功`);
-		closeTagModal();
-	};
+	// const handleTagsChange = (value) => {
+	// 	setTags(value);
+	// };
+	// const onTagsOK = () => {
+	// 	dispatch(updateBucketTagsByBucketId({ bucketId, tags }));
+	// 	message.info(`${currentBucket.name}的标签更新成功`);
+	// 	closeTagModal();
+	// };
 
 	const onRenameClick = () => {
 		setNewBucketName("");
@@ -73,14 +73,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 		setNewBucketName(newValue);
 	};
 
-	const items = [
-		{ label: <a onClick={onTagsClick}>标签</a>, key: "item-1" }, // 菜单项务必填写 key
-		{
-			label: <a>清空数据</a>,
-			key: "item-2",
-		},
-		{ label: <a>删除</a>, key: "item-3" },
-	];
+
 
 	const onBucketDelete = () => {
 		Modal.confirm({
@@ -107,7 +100,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 
 	return (
 		<>
-			<Modal
+			{/* <Modal
 				open={tagModalOpen}
 				title={"存储桶标签"}
 				onCancel={closeTagModal}
@@ -124,7 +117,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 					onChange={handleTagsChange}
 					value={tags}
 				/>
-			</Modal>
+			</Modal> */}
 			<Modal
 				open={renameModalOpen}
 				title={
@@ -151,32 +144,17 @@ const BucketlistCardActions = ({ bucketId }) => {
 				/>
 			</Modal>
 
-			{/* <Space size="small">
-				<a>信息监控</a>
-				<a>数据管理</a>
-				<Dropdown
-					menu={{
-						items,
-					}}
-					trigger={["click"]}
-				>
-					<a onClick={(e) => e.preventDefault()}>
-						<Space>
-							更多
-							<DownOutlined />
-						</Space>
-					</a>
-				</Dropdown>
-			</Space> */}
+		
 			<Space size={"small"}>
-				<a onClick={onTagsClick}>
+				{/* <a onClick={onTagsClick}>
 					更改标签{" "}
 					<PopHover
 						content={
 							"标签设定暂只在本次登录有效，持久化在加急开发中"
 						}
 					/>
-				</a>
+				</a> */}
+               
 				<a onClick={onRenameClick}>重命名</a>
 				<a onClick={onBucketDelete}>删除存储桶</a>
 			</Space>

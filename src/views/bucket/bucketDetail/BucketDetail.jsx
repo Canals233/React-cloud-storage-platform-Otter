@@ -3,6 +3,7 @@ import {
 	AppstoreOutlined,
 	MailOutlined,
 	ArrowLeftOutlined,
+	PieChartOutlined,
 } from "@ant-design/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +13,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
 import DetailFileList from "./BucketDetailPages/DetailFileList/DetailFileList";
 import BucketConfigs from "./BucketDetailPages/BucketConfigs/BucketConfigs";
+import DataOverview from "./BucketDetailPages/DataOverview/DataOverview";
 
 function getItem(label, key, icon, children, type) {
 	return {
@@ -23,9 +25,10 @@ function getItem(label, key, icon, children, type) {
 	};
 }
 const items = [
+	getItem("数据概览", "dataOverview", <PieChartOutlined />),
 	getItem("文件列表", "file", <MailOutlined />),
 	getItem("基本配置", "configs", <AppstoreOutlined />, [
-		getItem("标签管理", "tagsConfig"),
+		getItem("基本信息", "bucketInfoConfig"),
 		getItem("权限管理", "publicEnableConfig"),
 	]),
 ];
@@ -42,15 +45,21 @@ const BucketDetail = () => {
 	const searchParams = new URLSearchParams(location.search);
 	const currentBucket = useSelector(selectBucketListByName(bucketName));
 	const type = searchParams.get("type");
-    const anchorType = searchParams.get("anchorType");
+	const anchorType = searchParams.get("anchorType");
 
 	const BucketDetailOutlet = () => {
 		if (type === "file") {
 			return <DetailFileList />;
-		} else if (type === "tagsConfig" || type === "publicEnableConfig") {
-			return <BucketConfigs anchorType={anchorType}/>;
-		} 
-		else {
+		}
+        else if(type === "dataOverview"){
+            return  <DataOverview/>
+        }
+        else if (
+			type === "bucketInfoConfigConfig" ||
+			type === "publicEnableConfig"
+		) {
+			return <BucketConfigs anchorType={anchorType} />;
+		} else {
 			return <div>文件列表</div>;
 		}
 	};
@@ -82,10 +91,7 @@ const BucketDetail = () => {
 
 	return (
 		<div className="detail-content">
-			<div
-            className="side-menu"
-				
-			>
+			<div className="side-menu">
 				<div className="back-btn" onClick={onBackClick}>
 					<ArrowLeftOutlined className="back-icon" />
 					<span className="back-text">返回列表</span>
