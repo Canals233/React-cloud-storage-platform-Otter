@@ -27,6 +27,7 @@ export const loginApi = (subport, queryObject, configs = {}) => {
  *
  * @param {string} subport
  * @param {object} queryObject
+ * @param {object} params
  * @param {object} configs
  * @returns
  */
@@ -41,6 +42,7 @@ export const registerApi = (subport, queryObject, params, configs = {}) => {
  *
  * @param {string} subport
  * @param {object} queryObject
+ * @param {object} params
  * @param {object} configs
  * @returns
  */

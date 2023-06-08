@@ -13,22 +13,16 @@ import {
 	CheckCircleFilled,
 	KeyOutlined,
 } from "@ant-design/icons";
-import { messageMap, testEmail, testPassword } from "./signApis";
+import { messageMap, testEmail, testPassword } from "@/utils/accountApis";
 import confirm from "antd/lib/modal/confirm";
 import FormButton from "./FormButton";
 import CaptchaButton from "./CaptchaButton";
 import { setEmail } from "@/redux/modules/globalSlice";
 
-const emailValidator = (rule, value, callback) => {
-	if (!value) return "请输入邮箱";
+const emailValidator = (rule, value) => {
+	if (!value) return Promise.reject("请输入邮箱");
 	if (!testEmail(value)) {
-		callback("请输入正确的邮箱");
-	}
-};
-const passwordValidator = (rule, value, cb) => {
-	if (!value) return cb("请输入密码");
-	if (!testPassword(value)) {
-		cb("至少包含1个大写字母,1个小写字母和1个数字,长度在6-16位");
+		Promise.reject("请输入正确的邮箱");
 	}
 };
 
@@ -46,6 +40,27 @@ const SignForm = () => {
 		dispatch(setTabsList([]));
 		message.success("登录成功！");
 		navigate(HOME_URL);
+	};
+
+	const emailCodeValidator = (rule, value) => {
+		if (!emailCode) return Promise.reject("请输入验证码");
+		else if (emailCode.length !== 6)
+			return Promise.reject("验证码长度为6位");
+	};
+	const passwordValidator = (rule, value) => {
+		if (!value) return Promise.reject("请输入密码");
+		else if (!testPassword(value)) {
+			return Promise.reject(
+				"至少包含1个大写字母,1个小写字母和1个数字,长度在6-16位"
+			);
+		} else if ( formType===1 && value !== form.getFieldValue("confirmPassword"))
+			return Promise.reject("两次输入的密码不匹配!");
+	};
+	const confirmPasswordValidator = (rule, value) => {
+		if (!value || value === form.getFieldValue("password")) {
+			return Promise.resolve();
+		}
+		return Promise.reject("两次输入的密码不匹配!");
 	};
 
 	// 登录
@@ -90,11 +105,13 @@ const SignForm = () => {
 	};
 
 	const onRegister = async () => {
-		const { email, password } = form.getFieldsValue();
+		const { email, password, confirmPassword } = form.getFieldsValue();
 		if (
 			!email ||
 			!password ||
+			!confirmPassword ||
 			emailCode.length !== 6 ||
+			password !== confirmPassword ||
 			!testEmail(email) ||
 			!testPassword(password)
 		)
@@ -126,7 +143,7 @@ const SignForm = () => {
 			console.log(error, "注册失败");
 		} finally {
 			setLoading(false);
-			form.resetFields();
+            form.resetFields(["confirmPassword"])
 			setEmailCode("");
 		}
 	};
@@ -182,7 +199,16 @@ const SignForm = () => {
 				style={{
 					display: formType === 1 ? "block" : "none",
 				}}
-				initialValue={""}
+				rules={[
+					{
+						validator: (rule, value) => {
+							if (!emailCode)
+								return Promise.reject("请输入验证码");
+							else if (emailCode.length !== 6)
+								return Promise.reject("验证码长度为6位");
+						},
+					},
+				]}
 			>
 				<Input
 					className="form-code-input"
@@ -190,7 +216,10 @@ const SignForm = () => {
 					maxLength={6}
 					prefix={<KeyOutlined />}
 					value={emailCode}
-					onChange={(e) => setEmailCode(e.target.value)}
+					onChange={(e) => {
+						setEmailCode(e.target.value);
+						form.validateFields(["emailCode"]);
+					}}
 				/>
 				<CaptchaButton getCaptcha={onGetCaptcha} />
 			</Form.Item>
@@ -203,9 +232,35 @@ const SignForm = () => {
 				]}
 			>
 				<Input.Password
+					maxLength={16}
 					autoComplete="new-password"
 					placeholder="测试密码：Admin0"
 					prefix={<LockOutlined />}
+					onChange={(e) => {
+						form.validateFields(["confirmPassword", "password"]);
+					}}
+				/>
+			</Form.Item>
+
+			<Form.Item
+				name="confirmPassword"
+				dependencies={["password"]}
+				style={{
+					display: formType === 1 ? "block" : "none",
+				}}
+				rules={[
+					{
+						validator: confirmPasswordValidator,
+					},
+				]}
+			>
+				<Input.Password
+					prefix={<LockOutlined />}
+					placeholder="请再次输入密码"
+					maxLength={16}
+					onChange={(e) => {
+						form.validateFields(["password", "confirmPassword"]);
+					}}
 				/>
 			</Form.Item>
 

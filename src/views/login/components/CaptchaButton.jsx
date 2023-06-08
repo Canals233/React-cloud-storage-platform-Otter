@@ -2,7 +2,7 @@ import { Button } from "antd";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
-const CaptchaButton = ({ getCaptcha }) => {
+const CaptchaButton = ({ getCaptcha,style={} }) => {
 	const [count, setCount] = useState(0);
 	const [disabled, setDisabled] = useState(false);
 
@@ -22,6 +22,7 @@ const CaptchaButton = ({ getCaptcha }) => {
 			className="form-code-btn"
 			type="primary"
 			disabled={disabled}
+            style={style}
 			onClick={async () => {
 				const resmsg = await getCaptcha();
 				if (resmsg == "error") return;
