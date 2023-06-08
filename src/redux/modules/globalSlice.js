@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const globalState = {
 	token: "",
-    tokenExpired:false,
+	tokenExpired: false,
 	userInfo: "",
 	assemblySize: "middle",
 	language: "",
-    isElectorn:false,
+	isElectorn: false,
+	email: "",
 	themeConfig: {
 		primary: "#1890ff",
 		isDark: false,
@@ -24,9 +25,9 @@ export const globalSlice = createSlice({
 		setToken: (state, action) => {
 			state.token = action.payload;
 		},
-        setTokenExpired: (state, action) => {
-            state.tokenExpired = action.payload;
-        },
+		setTokenExpired: (state, action) => {
+			state.tokenExpired = action.payload;
+		},
 		setAssemblySize: (state, action) => {
 			state.assemblySize = action.payload;
 		},
@@ -36,15 +37,26 @@ export const globalSlice = createSlice({
 		setThemeConfig: (state, action) => {
 			state.themeConfig = action.payload;
 		},
-        setIsElectorn: (state, action) => {
-            state.isElectorn = action.payload;
-        }
+		setIsElectorn: (state, action) => {
+			state.isElectorn = action.payload;
+		},
+		setEmail: (state, action) => {
+			state.email = action.payload;
+		},
 	},
 });
 
-export const { setToken,setTokenExpired, setAssemblySize, setLanguage, setThemeConfig,setIsElectorn } =
-	globalSlice.actions;
+export const {
+	setToken,
+	setTokenExpired,
+	setAssemblySize,
+	setLanguage,
+	setThemeConfig,
+	setIsElectorn,
+	setEmail,
+} = globalSlice.actions;
 export const getGlobalState = (state) => state.global;
-export  const getIsElectorn = (state) => state.global.isElectorn;
+export const getIsElectorn = (state) => state.global.isElectorn;
+export const getEmail = (state) => state.global.email;
 
 export default globalSlice.reducer;

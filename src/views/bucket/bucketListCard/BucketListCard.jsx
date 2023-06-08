@@ -1,7 +1,7 @@
-import {  Table, message } from "antd";
+import { Table, message } from "antd";
 
 import BucketlistCardActions from "./CardComponents/BucketListCardActions";
-import { PopHover } from "@/views/bucket/components/PopInfo";
+import { PopHover } from "@/components/PopInfo/PopInfo";
 
 import { publicEnableRenderMap } from "@/views/bucket/api/bucketApi.jsx";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ import { setAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
 import { useGetBucketListMutation } from "@/redux/modules/apiSlice";
 import { useEffect } from "react";
 import { formatTimestamp } from "@/utils/util";
-
 
 const publicEnableFilterArray = [
 	{ text: "公开读写", value: "publicReadWrite" },
@@ -43,7 +42,7 @@ const BucketlistCard = ({ TableData }) => {
 			})
 		);
 	};
-    const BucketListColumns = [
+	const BucketListColumns = [
 		{
 			title: (
 				<>
@@ -111,8 +110,6 @@ const BucketlistCard = ({ TableData }) => {
 			tags: [],
 		};
 	});
-
-	
 
 	useEffect(() => {
 		// getBucketList();

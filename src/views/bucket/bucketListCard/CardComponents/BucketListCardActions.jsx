@@ -9,7 +9,7 @@ import {
 	renameBucketByBucketId,
 } from "@/redux/modules/bucketSlice";
 import { deleteBucketApi } from "@/api/modules/bucket";
-import { PopHover } from "../../components/PopInfo";
+
 import {
 	useDeleteBucketMutation,
 	useRenameBucketMutation,

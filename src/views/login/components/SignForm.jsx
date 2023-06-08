@@ -5,7 +5,7 @@ import { loginApi, registerApi } from "@/api/modules/user";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/globalSlice";
-
+import { useDispatch } from "react-redux";
 import { setTabsList } from "@/redux/modules/tabsSlice";
 import {
 	LockOutlined,
@@ -17,6 +17,7 @@ import { messageMap, testEmail, testPassword } from "./signApis";
 import confirm from "antd/lib/modal/confirm";
 import FormButton from "./FormButton";
 import CaptchaButton from "./CaptchaButton";
+import { setEmail } from "@/redux/modules/globalSlice";
 
 const emailValidator = (rule, value, callback) => {
 	if (!value) return "请输入邮箱";
@@ -31,8 +32,9 @@ const passwordValidator = (rule, value, cb) => {
 	}
 };
 
-const SignForm = (props) => {
-	const { setToken, setTabsList } = props;
+const SignForm = () => {
+	const dispatch = useDispatch();
+
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState(false);
@@ -40,8 +42,8 @@ const SignForm = (props) => {
 	const [emailCode, setEmailCode] = useState("");
 
 	const enablelocalTest = () => {
-		setToken("1"); //测试用
-		setTabsList([]);
+		dispatch(setToken("1")); //测试用
+		dispatch(setTabsList([]));
 		message.success("登录成功！");
 		navigate(HOME_URL);
 	};
@@ -62,14 +64,15 @@ const SignForm = (props) => {
 				message.error(res.msg);
 				return;
 			}
-			setToken(res.data?.token);
-			setTabsList([]);
+			dispatch(setToken(res.data?.token));
+			dispatch(setTabsList([]));
 			message.success("登录成功！");
+			dispatch(setEmail(loginForm.email));
 			navigate(HOME_URL);
 		} finally {
 			setLoading(false);
 			form.resetFields();
-            setEmailCode("");
+			setEmailCode("");
 		}
 	};
 
@@ -115,18 +118,16 @@ const SignForm = (props) => {
 				}
 			);
 			console.log(registerRes, "registerRes");
-			// return;
-			setTabsList([]);
+
+			dispatch(setTabsList([]));
 			showConfirm();
-			// form.resetFields();
-			// navigate(HOME_URL);
 		} catch (error) {
 			message.error("请检查验证码");
 			console.log(error, "注册失败");
 		} finally {
 			setLoading(false);
-            form.resetFields();
-            setEmailCode("");
+			form.resetFields();
+			setEmailCode("");
 		}
 	};
 
@@ -220,5 +221,5 @@ const SignForm = (props) => {
 		</Form>
 	);
 };
-const mapDispatchToProps = { setToken, setTabsList };
-export default connect(null, mapDispatchToProps)(SignForm);
+
+export default SignForm;

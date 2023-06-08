@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { BucketCreateContext } from "../../provider/BucketCreateProvider";
 import { publicEnableRenderMap } from "@/views/bucket/api/bucketApi";
-import { PopHover } from "@/views/bucket/components/PopInfo";
+import { PopHover } from "@/components/PopInfo/PopInfo";
 const listStyle = {
 	key: {
 		width: "100px",

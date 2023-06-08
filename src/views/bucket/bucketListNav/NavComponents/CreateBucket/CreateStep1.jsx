@@ -7,7 +7,7 @@ import { radioTextMap,getPublicEnableObject, getPublicEnableString } from "@/vie
 import { BucketCreateContext } from "../../provider/BucketCreateProvider";
 import AuthRadio from "@/views/bucket/components/AuthRadio";
 import showWarningModal from "@/views/bucket/components/ShowWaringModal";
-import { PopHover } from "@/views/bucket/components/PopInfo";
+import { PopHover } from "@/components/PopInfo/PopInfo";
 
 
 const popContent = <div>属性基加密是小水濑云科技的特色功能</div>;
