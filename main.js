@@ -1,6 +1,13 @@
 // const { default: installExtension, REDUX_DEVTOOLS} = require('electron-devtools-installer');
 
-const { app, BrowserWindow, globalShortcut } = require("electron");
+const COS = require("cos-js-sdk-v5");
+const {
+	app,
+	BrowserWindow,
+	globalShortcut,
+	ipcMain,
+	shell,
+} = require("electron");
 const path = require("path");
 const url = require("url");
 
@@ -37,7 +44,7 @@ app.whenReady().then(() => {
 	// installExtension(REDUX_DEVTOOLS)
 	// 	.then((name) => console.log(`Added Extension:  ${name}`))
 	// 	.catch((err) => console.log("An error occurred: ", err));
-    // 安装Redux Toolkit的
+	// 安装Redux Toolkit的
 	if (process.env.NODE_ENV === "development") {
 		globalShortcut.register("CommandOrControl+Shift+i", function () {
 			BrowserWindow.getFocusedWindow().webContents.openDevTools();
@@ -47,6 +54,29 @@ app.whenReady().then(() => {
 		if (BrowserWindow.getAllWindows().length === 0) {
 			createWindow();
 		}
+	});
+	ipcMain.on("download-file", (event, key) => {
+		const cos = new COS({});
+
+		cos.getObjectUrl(
+			{
+				Bucket: "YOUR_BUCKET_NAME",
+				Region: "YOUR_BUCKET_REGION",
+				Key: key,
+			},
+			function (err, data) {
+				if (err) {
+					event.reply("download-error", err.message);
+				} else {
+					var downloadUrl =
+						data.Url +
+						(data.Url.indexOf("?") > -1 ? "&" : "?") +
+						"response-content-disposition=attachment";
+
+					shell.openExternal(downloadUrl);
+				}
+			}
+		);
 	});
 });
 

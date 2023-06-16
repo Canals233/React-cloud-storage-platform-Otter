@@ -65,9 +65,8 @@ const SignForm = () => {
 
 	// 登录
 	const onLogin = async () => {
-		// enablelocalTest(); //上线记得删掉
-		// return;
-
+		return enablelocalTest(); //上线记得删掉
+		
 		const loginForm = form.getFieldsValue();
 		if (!loginForm.email || !loginForm.password) return;
 		try {

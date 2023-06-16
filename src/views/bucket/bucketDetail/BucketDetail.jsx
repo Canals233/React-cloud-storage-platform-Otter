@@ -27,10 +27,10 @@ function getItem(label, key, icon, children, type) {
 const items = [
 	getItem("数据概览", "dataOverview", <PieChartOutlined />),
 	getItem("文件列表", "file", <MailOutlined />),
-	getItem("基本配置", "configs", <AppstoreOutlined />, [
-		getItem("基本信息", "bucketInfoConfig"),
-		getItem("权限管理", "publicEnableConfig"),
-	]),
+	// getItem("基本配置", "configs", <AppstoreOutlined />, [
+	// 	getItem("基本信息", "bucketInfoConfig"),
+	// 	getItem("权限管理", "publicEnableConfig"),
+	// ]),
 ];
 
 const BucketDetail = () => {

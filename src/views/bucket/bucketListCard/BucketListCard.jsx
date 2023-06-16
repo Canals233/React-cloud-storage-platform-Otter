@@ -7,7 +7,7 @@ import { publicEnableRenderMap } from "@/views/bucket/api/bucketApi.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
-import { setAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
+import { setAllDetailDirectory } from "@/redux/modules/bucketDetailSlice";
 import { useGetBucketListMutation } from "@/redux/modules/apiSlice";
 import { useEffect } from "react";
 import { formatTimestamp } from "@/utils/util";
@@ -34,7 +34,7 @@ const BucketlistCard = ({ TableData }) => {
 	const dispatch = useDispatch();
 	const handleBucketClick = (name, bucketDetailFiles) => {
 		navigate(`/bucket/${name}?type=file`);
-		dispatch(setAllBucketDetail(bucketDetailFiles));
+		dispatch(setAllDetailDirectory(bucketDetailFiles));
 		dispatch(
 			setCurrentBreadcrumb({
 				title: [`存储桶列表`, `${name}`],

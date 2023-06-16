@@ -16,9 +16,9 @@ const BucketConfigs = ({ anchorType }) => {
 
 	return (
 		<>
-			<div>BucketConfigs</div>
-			<div ref={bucketInfoConfigref} style={{height:'500px'}} >bucketInfoConfigConfig</div>
-			<div ref={publicEnableConfigref} style={{height:'500px'}}>publicEnableConfig</div>
+			<div>存储桶配置</div>
+			<div ref={bucketInfoConfigref} style={{height:'500px'}} >存储桶信息</div>
+			<div ref={publicEnableConfigref} style={{height:'500px'}}>权限管理</div>
 		</>
 	);
 };

@@ -1,13 +1,32 @@
-import { Button, Card, Dropdown, Popover, Space, Table } from "antd";
+import {
+	Button,
+	Card,
+	Drawer,
+	Dropdown,
+	List,
+	Popover,
+	Space,
+	Table,
+} from "antd";
 import Search from "antd/lib/input/Search";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import "./DetailFileList.less";
-import { DownOutlined, FolderOutlined } from "@ant-design/icons";
-import { selectAllBucketDetail } from "@/redux/modules/bucketDetailSlice";
+import {
+	DownOutlined,
+	FolderOutlined,
+	FolderFilled,
+	CheckCircleTwoTone,
+} from "@ant-design/icons";
+import { bucketDetailSelector } from "@/redux/modules/bucketDetailSlice";
 import UploadFileAction from "./DetailFileNavActions/UploadFiles";
+import COS from "cos-js-sdk-v5";
+import {
+	StandardDirectory,
+	downloadFile,
+} from "./DetailFileUtils/DetailFileUtils";
 
 const columns = [
 	{
@@ -19,7 +38,7 @@ const columns = [
 			return a.name > b.name ? 1 : -1;
 		},
 		render: (text, record) => {
-			if (record.type === "folder") {
+			if (record.type === "directory") {
 				return (
 					<a>
 						<FolderOutlined />
@@ -55,7 +74,13 @@ const columns = [
 		render: (text, record) => (
 			<Space size="small">
 				<a>重命名</a>
-				<a>下载</a>
+				<a
+					onClick={() => {
+						downloadFile(record.name);
+					}}
+				>
+					下载
+				</a>
 				<a>删除</a>
 			</Space>
 		),
@@ -98,32 +123,49 @@ const DetailSearch = ({ searchValue, setSearchValue }) => {
 	);
 };
 
-const DetailNav = () => {
+const DetailNavAndDrawer = ({ controlDrawer, setDetailTableData }) => {
+	const [currentFileDirectory, setCurrentFileDirectory] = useState(
+		new StandardDirectory()
+	); //当前文件目录
+	useEffect(() => {
+		if (currentFileDirectory.isEmpty()) {
+			return;
+		}
+		const cos = new COS({});
+		currentFileDirectory.recursiveUploadFiles(cos, setDetailTableData);
+	}, [currentFileDirectory]);
+
 	return (
-		<Space className="action-btns">
-			<UploadFileAction />
-			<Button>清空存储桶</Button>
-			<Dropdown
-				menu={{
-					items: actionDropdownItems,
-				}}
-			>
-				<Button>
-					更多操作
-					<DownOutlined />
+		<>
+			<Space className="action-btns">
+				<UploadFileAction
+					setCurrentFileDirectory={setCurrentFileDirectory}
+				/>
+				<Button>清空存储桶</Button>
+				<Dropdown
+					menu={{
+						items: actionDropdownItems,
+					}}
+				>
+					<Button>
+						更多操作
+						<DownOutlined />
+					</Button>
+				</Dropdown>
+				<Button onClick={controlDrawer} type="primary">
+					任务概览
 				</Button>
-			</Dropdown>
-			<Button type="primary">任务概览</Button>
-		</Space>
+			</Space>
+		</>
 	);
 };
 
 const DetailFileList = () => {
-	let detailTableData = useSelector(selectAllBucketDetail);
-
+	// let detailTableData = useSelector(bucketDetailSelector);
+	const [detailTableData, setDetailTableData] = useState([]); //当前文件目录
 	const [selectedRowKeys, setSelectedRowKeys] = React.useState([]);
 	const [searchValue, setSearchValue] = React.useState("");
-
+	const [open, setOpen] = useState(false);
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			if (searchValue) {
@@ -137,40 +179,94 @@ const DetailFileList = () => {
 			clearTimeout(timer);
 		};
 	}, [searchValue]);
-	return (
-		<Card
-			style={{
-				maxWidth: 1368,
-				minWidth: 1024,
-				margin: "0 auto",
-				padding: "0 24px",
-				boxShadow: "0px 2px 3px -0.5px #ccc",
-			}}
-		>
-			<DetailNav />
-			<div className="detail-refresh-search">
-				<Button type="primary">刷新</Button>
-				<DetailSearch
-					searchValue={searchValue}
-					setSearchValue={setSearchValue}
-				/>
-			</div>
 
-			<div className="detail-list-content">
-				<Table
-					dataSource={detailTableData}
-					columns={columns}
-					rowSelection={{
-						type: "checkbox",
-						onChange: (selectedRowKeys) => {
-							setSelectedRowKeys(selectedRowKeys);
-						},
-						selectedRowKeys,
+	const controlDrawer = () => {
+		setOpen(!open);
+	};
+	const onClose = () => {
+		setOpen(false);
+	};
+
+	return (
+		<>
+			<Drawer
+				title="任务管理"
+				placement="right"
+				onClose={onClose}
+				open={open}
+				mask={false}
+			>
+				<p
+					style={{
+						fontWeight: "bold",
 					}}
-					rowKey="name" //为了方便，使用了文件名作为key
-				></Table>
-			</div>
-		</Card>
+				>
+					刷新或关闭系统将取消所有任务，并清除任务记录。
+				</p>
+				<List
+					itemLayout="horizontal"
+					dataSource={detailTableData}
+					renderItem={(item) => (
+						<List.Item>
+							<List.Item.Meta
+								avatar={
+									<CheckCircleTwoTone twoToneColor="#52c41a" />
+								}
+								title={
+									<Space>
+										{item.type === "directory" && (
+											<FolderFilled
+												style={{
+													color: "lightblue",
+												}}
+											/>
+										)}
+										{item.name}
+									</Space>
+								}
+								description="任务已完成"
+							/>
+						</List.Item>
+					)}
+				/>
+			</Drawer>
+			<Card
+				style={{
+					maxWidth: 1368,
+					minWidth: 1024,
+					margin: "0 auto",
+					padding: "0 24px",
+					boxShadow: "0px 2px 3px -0.5px #ccc",
+				}}
+			>
+				<DetailNavAndDrawer
+					controlDrawer={controlDrawer}
+					setDetailTableData={setDetailTableData}
+				/>
+				<div className="detail-refresh-search">
+					<Button type="primary">刷新</Button>
+					<DetailSearch
+						searchValue={searchValue}
+						setSearchValue={setSearchValue}
+					/>
+				</div>
+
+				<div className="detail-list-content">
+					<Table
+						dataSource={detailTableData}
+						columns={columns}
+						rowSelection={{
+							type: "checkbox",
+							onChange: (selectedRowKeys) => {
+								setSelectedRowKeys(selectedRowKeys);
+							},
+							selectedRowKeys,
+						}}
+						rowKey="name" //为了方便，使用了文件名作为key
+					></Table>
+				</div>
+			</Card>
+		</>
 	);
 };
 

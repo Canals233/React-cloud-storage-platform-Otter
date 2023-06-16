@@ -16,7 +16,7 @@ import { useRef } from "react";
 
 const bucketUploadDirectory = new StandardDirectory();
 
-const getUploadProps = (setHasFile,forceUpdate, args) => {
+const getUploadProps = (setHasFile, forceUpdate, args) => {
 	return {
 		name: "file",
 		multiple: true,
@@ -39,9 +39,9 @@ const getUploadProps = (setHasFile,forceUpdate, args) => {
 					file //同一个对象的引用，性能问题不是很大
 				);
 			}
-            setHasFile(true);
-			forceUpdate()
-           
+			setHasFile(true);
+			forceUpdate();
+
 			return false;
 		},
 		...args,
@@ -190,8 +190,8 @@ const FilesTableContent = ({ setHasFile }) => {
 				</a>
 			),
 		},
-	];  
-    const [, forceUpdate] = useReducer((x) => x + 1, 0);
+	];
+	const [, forceUpdate] = useReducer((x) => x + 1, 0);
 	const handleDeleteFile = (record) => {
 		bucketUploadDirectory.deleteFileOrDirectoryByRecord(record);
 		forceUpdate();
@@ -225,10 +225,10 @@ const EmptyContent = () => {
 	);
 };
 
-export default function UploadFileAction  ()  {
+export default function UploadFileAction({setCurrentFileDirectory}) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [hasFile, setHasFile] = useState(false);
-    const [, forceUpdate] = useReducer((x) => x + 1, 0);
+	const [, forceUpdate] = useReducer((x) => x + 1, 0);
 	const isElectron = useSelector(getIsElectorn);
 
 	const resetFiles = () => {
@@ -242,6 +242,7 @@ export default function UploadFileAction  ()  {
 	};
 	const handleOk = () => {
 		setIsModalOpen(false);
+        setCurrentFileDirectory(new StandardDirectory(bucketUploadDirectory))
 		resetFiles();
 	};
 	const handleCancel = () => {
@@ -268,20 +269,27 @@ export default function UploadFileAction  ()  {
 				footer={null}
 			>
 				<Space>
-					<Upload {...getUploadProps(setHasFile,forceUpdate)}>
+					<Upload {...getUploadProps(setHasFile, forceUpdate)}>
 						<Button type="primary">上传文件</Button>
 					</Upload>
-					<Upload {...getUploadProps(setHasFile,forceUpdate)} directory>
+					<Upload
+						{...getUploadProps(setHasFile, forceUpdate)}
+						directory
+					>
 						<Button>上传文件夹</Button>
 					</Upload>
 					<span className="upload-to-text">上传至</span>
 					<span className="upload-path">{bucketPath}/</span>
-                    
 				</Space>
 				<p className="upload-info">
 					若上传路径中存在同名文件，上传将覆盖原有文件。 <br />
 				</p>
-                <p className="upload-size">当前上传总大小: <span className="sizetext">{formatFileSize(bucketUploadDirectory.size)}</span></p>
+				<p className="upload-size">
+					当前上传总大小:{" "}
+					<span className="sizetext">
+						{formatFileSize(bucketUploadDirectory.size)}
+					</span>
+				</p>
 				<MyDragger
 					hasFile={hasFile}
 					setHasFile={setHasFile}
@@ -304,6 +312,4 @@ export default function UploadFileAction  ()  {
 			</Modal>
 		</>
 	);
-};
-
-
+}
