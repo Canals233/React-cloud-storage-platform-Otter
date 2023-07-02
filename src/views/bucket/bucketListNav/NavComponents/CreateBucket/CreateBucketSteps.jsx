@@ -39,18 +39,18 @@ const CreateBucketSteps = () => {
 	};
 	const finish = async () => {
 		try {
-			const res = await createBucket({
-				bucketName: bucket.name + "-" + testUserID,
-				publicWriteEnable: bucket.publicWriteEnable,
-				publicReadEnable: bucket.publicReadEnable,
-			});
-			console.log(res);
-            if(res.error){
-                throw res.error.message
-            }
-            if(res.data.data.result){
-                message.success(`存储桶 ${bucket.name}-${testUserID}创建成功`)
-            }
+			// const res = await createBucket({
+			// 	bucketName: bucket.name + "-" + testUserID,
+			// 	publicWriteEnable: bucket.publicWriteEnable,
+			// 	publicReadEnable: bucket.publicReadEnable,
+			// });
+			// console.log(res);
+            // if(res.error){
+            //     throw res.error.message
+            // }
+            // if(res.data.data.result){
+            //     message.success(`存储桶 ${bucket.name}-${testUserID}创建成功`)
+            // }
 
 			const formattedDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
 			dispatch(
@@ -61,6 +61,7 @@ const CreateBucketSteps = () => {
 					bucketId: nanoid(),
 				})
 			);
+            message.success(`存储桶 ${bucket.name}-${testUserID}创建成功`)
 		} catch (error) {
 			message.error(error);
 			

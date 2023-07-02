@@ -31,13 +31,13 @@ const bucketKVMapFunction = (item, index, userID) => {
 					</span>
 				</div>
 			);
-		case "encrypt":
-			return (
-				<div key={index}>
-					<span style={listStyle.key}>{"服务端加密"}</span>
-					<span>{"属性基加密"}</span>
-				</div>
-			);
+		// case "encrypt":
+		// 	return (
+		// 		<div key={index}>
+		// 			<span style={listStyle.key}>{"服务端加密"}</span>
+		// 			<span>{"属性基加密"}</span>
+		// 		</div>
+		// 	);
 		case "name":
 			return (
 				<div key={index}>
@@ -47,7 +47,7 @@ const bucketKVMapFunction = (item, index, userID) => {
 					<span>{item[1] + "-" + "staticUser"}</span>
 				</div>
 			);
-		case "tags":
+		// case "tags":
 			return (
 				<div key={index}>
 					<span style={listStyle.key}>{"标签"}</span>

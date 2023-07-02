@@ -37,9 +37,9 @@ export default defineConfig({
         open: true,
 		proxy: {
 			"/api": {
-				// target: "https://121.199.44.151:4001", // HTTPS并且用IP直接访问
+				
                 secure: false,//跳过证书检查
-                target:'http://121.199.44.151:4001',
+                target:'',
 				changeOrigin: true,
                 
 				rewrite: (path) => path.replace(/^\/api/, ""),

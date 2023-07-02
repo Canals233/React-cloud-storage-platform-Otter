@@ -22,7 +22,7 @@ export const mockBucketlist = [
 
 	{
 		bucketId: "3",
-		name: "canals",
+		name: "testuser",
 		publicWriteEnable: true,
 		publicReadEnable: true,
 		time: "2023-03-08 16:28:21",

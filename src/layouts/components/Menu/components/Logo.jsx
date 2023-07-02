@@ -7,7 +7,7 @@ const Logo = () => {
 	return (
 		<div className="logo-box">
 			<img src={logo} alt="logo" className="logo-img" />
-			{!isCollapse ? <h2 className="logo-text">小水濑云科技</h2> : null}
+			{!isCollapse ? <h2 className="logo-text">小水獭云科技</h2> : null}
 		</div>
 	);
 };

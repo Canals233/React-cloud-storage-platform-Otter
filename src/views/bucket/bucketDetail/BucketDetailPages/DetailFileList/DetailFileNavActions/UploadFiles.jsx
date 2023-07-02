@@ -29,6 +29,7 @@ const getUploadProps = (setHasFile, forceUpdate, args) => {
 			// console.log("uploaded file", file);
 			if (!file.webkitRelativePath) {
 				bucketUploadDirectory.pushFile(file);
+                bucketUploadDirectory.size += file.size;
 			} else {
 				const pathArray = file.webkitRelativePath.split("/"); //这个方法里访问到的webkitRelativePath没有前缀/，可以不用slice1
 				// console.log(pathArray, "cur path");
@@ -53,10 +54,12 @@ const RecursivelyCreateDirectory = (
 	currentDirectory, //可以认为当前在这一层的文件夹中进行操作
 	originalFile //传入的是引用
 ) => {
+   
 	currentDirectory.size += originalFile.size; //文件不会被重新访问，所以可以直接在这里加上文件大小
 	if (pathArray.length <= 1) {
 		//访问到了最后的文件，推入当前文件夹的文件列表中
 		currentDirectory.pushFile(originalFile);
+       
 		return;
 	}
 	//仍然有子文件夹，继续递归

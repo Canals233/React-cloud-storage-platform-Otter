@@ -131,7 +131,9 @@ const DetailNavAndDrawer = ({ controlDrawer, setDetailTableData }) => {
 		if (currentFileDirectory.isEmpty()) {
 			return;
 		}
-		const cos = new COS({});
+		const cos = new COS({
+         
+        });
 		currentFileDirectory.recursiveUploadFiles(cos, setDetailTableData);
 	}, [currentFileDirectory]);
 

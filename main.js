@@ -30,7 +30,7 @@ function createWindow() {
 	// 加载 React 应用
 	if (process.env.NODE_ENV === "development") {
 		win.loadURL("http://localhost:5173");
-
+        win.webContents.reload() 
 		win.webContents.openDevTools();
 	} else {
 		console.log("in prod", __dirname);

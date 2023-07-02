@@ -10,7 +10,7 @@ import showWarningModal from "@/views/bucket/components/ShowWaringModal";
 import { PopHover } from "@/components/PopInfo/PopInfo";
 
 
-const popContent = <div>属性基加密是小水濑云科技的特色功能</div>;
+const popContent = <div>属性基加密是小水獭云科技的特色功能</div>;
 
 const CreateStep1 = ({ userID }) => {
 	const { bucket, setBucket, setCreateDisabled } = useContext(BucketCreateContext);
@@ -92,7 +92,7 @@ const CreateStep1 = ({ userID }) => {
 					handleRadioChange={handleRadioChange}
 				/>
 			</Form.Item>
-			<Form.Item label="存储桶标签" style={{ marginLeft: ".75rem" }}>
+			{/* <Form.Item label="存储桶标签" style={{ marginLeft: ".75rem" }}>
 				<Select
 					mode="tags"
 					style={{
@@ -102,8 +102,8 @@ const CreateStep1 = ({ userID }) => {
 					onChange={handleTagsChange}
 					value={bucket.tags}
 				/>
-			</Form.Item>
-			<Form.Item label="服务端加密" style={{ marginLeft: ".75rem" }}>
+			</Form.Item> */}
+			{/* <Form.Item label="服务端加密" style={{ marginLeft: ".75rem" }}>
 				<Radio checked={true}>
 					属性基加密
 					<PopHover
@@ -113,7 +113,7 @@ const CreateStep1 = ({ userID }) => {
 						}}
 					/>
 				</Radio>
-			</Form.Item>
+			</Form.Item> */}
 		</Form>
 	);
 };

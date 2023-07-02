@@ -6,7 +6,7 @@ import { getOpenKeys, handleRouter, searchRoute } from "@/utils/util";
 import { setCurrentBreadcrumb } from "@/redux/modules/breadcrumbSlice";
 import { setAuthRouter } from "@/redux/modules/authSlice";
 
-import {  useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Icons from "@ant-design/icons";
 import Logo from "./components/Logo";
 import "./index.less";
@@ -48,12 +48,30 @@ const deepLoopFloat = (menuList, newArr = []) => {
 };
 // 获取菜单列表并处理成 antd menu 需要的格式，本地直接用，没延时
 
+const rawMenuList = [
+	{
+		icon: "HomeOutlined",
+		title: "概览",
+		path: "/home",
+	},
+	{
+		icon: "DatabaseOutlined",
+		title: "存储桶列表",
+		path: "/bucket",
+	},
+	{
+		icon: "FundOutlined",
+		title: "可视化统计",
+		path: "/dashboard",
+	},
+];
+
 const LayoutMenu = (props) => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const [selectedKeys, setSelectedKeys] = useState([pathname]);
 	const [openKeys, setOpenKeys] = useState([]);
-	const menuData = useSelector(getMenuList);
+
 	const isCollapse = useSelector(getIsCollapse);
 
 	useEffect(() => {
@@ -70,10 +88,9 @@ const LayoutMenu = (props) => {
 		setOpenKeys([latestOpenKey]);
 	};
 
-	dispatch(setAuthRouter(handleRouter(menuData)));
-	const menuList = useMemo(() => {
-		return deepLoopFloat(menuData);
-	}, menuData);
+	dispatch(setAuthRouter(handleRouter(rawMenuList)));
+	const menuList = deepLoopFloat(rawMenuList);
+	console.log(menuList);
 
 	// 点击当前菜单跳转页面
 	const navigate = useNavigate();

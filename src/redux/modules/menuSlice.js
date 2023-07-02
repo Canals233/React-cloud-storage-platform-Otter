@@ -1,6 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import menuData from "@/mock/menu.json";
+const menuData = [
+	{
+		icon: "HomeOutlined",
+		title: "概览",
+		path: "/home",
+	},
+	{
+		icon: "DatabaseOutlined",
+		title: "存储桶列表",
+		path: "/bucket",
+	},
+	{
+		icon: "FundOutlined",
+		title: "可视化统计",
+		path: "/dashboard",
+	},
+];
 
 const menuSlice = createSlice({
 	name: "menu",
@@ -12,13 +28,11 @@ const menuSlice = createSlice({
 		updateCollapse: (state, action) => {
 			state.isCollapse = action.payload;
 		},
-		
 	},
-	
 });
 
 export const getIsCollapse = (state) => state.menu.isCollapse;
 export const getMenuList = (state) => state.menu.menuList;
-export const { updateCollapse} = menuSlice.actions;
+export const { updateCollapse } = menuSlice.actions;
 
 export default menuSlice.reducer;

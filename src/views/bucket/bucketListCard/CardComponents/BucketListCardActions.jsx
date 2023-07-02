@@ -77,7 +77,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 
 	const onBucketDelete = () => {
 		Modal.confirm({
-			title: "删除存储桶",
+			title: "删除",
 			icon: <ExclamationCircleFilled />,
 			content: "请再次确认是否删除该存储桶",
 			okText: "确定删除",
@@ -156,7 +156,7 @@ const BucketlistCardActions = ({ bucketId }) => {
 				</a> */}
                
 				<a onClick={onRenameClick}>重命名</a>
-				<a onClick={onBucketDelete}>删除存储桶</a>
+				<a onClick={onBucketDelete}>删除</a>
 			</Space>
 		</>
 	);

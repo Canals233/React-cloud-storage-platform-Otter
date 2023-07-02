@@ -199,7 +199,9 @@ function findLastPathName(dropProps, testPath) {
 }
 
 export const downloadFile = (key) => {
-	const cos = new COS({});
+	const cos = new COS({
+     
+    });
 
 	if (window.process && window.process.type === "renderer") {
 		// 在渲染进程中
@@ -210,7 +212,7 @@ export const downloadFile = (key) => {
 
 		cos.getObjectUrl(
 			{
-				Bucket: "c4-test-1256012308" /* 填写自己的 bucket，必须字段 */,
+				Bucket: "" /* 填写自己的 bucket，必须字段 */,
 				Region: "ap-nanjing" /* 存储桶所在地域，必须字段 */,
 				Key: key /* 存储在桶里的对象键（例如1.jpg，a/b/test.txt），必须字段 */,
 			},

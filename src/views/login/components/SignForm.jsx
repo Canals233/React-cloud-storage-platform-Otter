@@ -38,6 +38,7 @@ const SignForm = () => {
 	const enablelocalTest = () => {
 		dispatch(setToken("1")); //测试用
 		dispatch(setTabsList([]));
+		dispatch(setEmail("test@test.com"));
 		message.success("登录成功！");
 		navigate(HOME_URL);
 	};
@@ -53,7 +54,10 @@ const SignForm = () => {
 			return Promise.reject(
 				"至少包含1个大写字母,1个小写字母和1个数字,长度在6-16位"
 			);
-		} else if ( formType===1 && value !== form.getFieldValue("confirmPassword"))
+		} else if (
+			formType === 1 &&
+			value !== form.getFieldValue("confirmPassword")
+		)
 			return Promise.reject("两次输入的密码不匹配!");
 	};
 	const confirmPasswordValidator = (rule, value) => {
@@ -65,10 +69,12 @@ const SignForm = () => {
 
 	// 登录
 	const onLogin = async () => {
-		return enablelocalTest(); //上线记得删掉
-		
 		const loginForm = form.getFieldsValue();
 		if (!loginForm.email || !loginForm.password) return;
+		if (loginForm.email === "test@test.com") {
+			enablelocalTest();
+			return;
+		}
 		try {
 			setLoading(true);
 			const res = await loginApi("/from-email", loginForm);
@@ -118,22 +124,32 @@ const SignForm = () => {
 
 		try {
 			setLoading(true);
-			const authCodeRes = await registerApi("/auth-email-code", {
-				email: email,
-				emailCode: emailCode,
-			});
-			console.log(authCodeRes, "authCodeRes");
-			let ticket = authCodeRes.data.ticket;
-			const registerRes = await registerApi(
-				"/new-account",
-				{
-					ticket: ticket,
-				},
-				{
-					password: password,
-				}
-			);
-			console.log(registerRes, "registerRes");
+			if (email === "test@test.com") {
+				
+				dispatch(setTabsList([]));
+				showConfirm();
+				setLoading(false);
+				form.resetFields(["confirmPassword"]);
+				setEmailCode("");
+				return;
+			} else {
+				const authCodeRes = await registerApi("/auth-email-code", {
+					email: email,
+					emailCode: emailCode,
+				});
+				console.log(authCodeRes, "authCodeRes");
+				let ticket = authCodeRes.data.ticket;
+				const registerRes = await registerApi(
+					"/new-account",
+					{
+						ticket: ticket,
+					},
+					{
+						password: password,
+					}
+				);
+				console.log(registerRes, "registerRes");
+			}
 
 			dispatch(setTabsList([]));
 			showConfirm();
@@ -142,17 +158,18 @@ const SignForm = () => {
 			console.log(error, "注册失败");
 		} finally {
 			setLoading(false);
-            form.resetFields(["confirmPassword"])
+			form.resetFields(["confirmPassword"]);
 			setEmailCode("");
 		}
 	};
 
 	const onGetCaptcha = async () => {
-		const email = form.getFieldValue("email");
+		let email = form.getFieldValue("email");
 		if (!email || !testEmail(email)) {
 			message.error("请输入正确的邮箱");
 			return;
 		}
+		
 		let msg = "";
 		try {
 			const res = await registerApi("/send-email-code", { email: email });
@@ -188,7 +205,7 @@ const SignForm = () => {
 				]}
 			>
 				<Input
-					placeholder="测试邮箱：1552043941@qq.com"
+					placeholder="测试邮箱：test@test.com"
 					prefix={<MailOutlined />}
 				/>
 			</Form.Item>

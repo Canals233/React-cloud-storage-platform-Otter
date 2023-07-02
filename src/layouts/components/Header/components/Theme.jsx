@@ -70,7 +70,7 @@ const Theme = () => {
 					<SettingOutlined />
 					界面设置
 				</Divider>
-				<div className="theme-item">
+				{/* <div className="theme-item">
 					<span>折叠菜单</span>
 					<Switch
 						checked={isCollapse}
@@ -78,7 +78,7 @@ const Theme = () => {
 							updateCollapse(e);
 						}}
 					/>
-				</div>
+				</div> */}
 				<div className="theme-item">
 					<span>面包屑导航</span>
 					<Switch
@@ -88,7 +88,7 @@ const Theme = () => {
 						}}
 					/>
 				</div>
-				<div className="theme-item">
+				{/* <div className="theme-item">
 					<span>标签栏</span>
 					<Switch
 						checked={!tabs}
@@ -96,7 +96,7 @@ const Theme = () => {
 							onChange(e, "tabs");
 						}}
 					/>
-				</div>
+				</div> */}
 				<div className="theme-item">
 					<span>页脚</span>
 					<Switch

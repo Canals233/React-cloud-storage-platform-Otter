@@ -79,6 +79,7 @@ const PasswordModal = (props) => {
 		) {
 			return;
 		}
+       
 		const authCodeRes = await helpApi("/auth-email-code", {
 			email: email,
 			emailCode: emailCode,
