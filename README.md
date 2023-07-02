@@ -20,6 +20,9 @@ GitHub：https://github.com/Canals233/React-cloud-storage-platform-Otter
 
 前端如何真正实现上传整个文件夹，而不是简单地展开成多文件？https://juejin.cn/post/7231108358426165303
 
+### 视频功能演示
+https://www.bilibili.com/video/BV1Q14y1d79U
+
 ### 个人主页
 
 Github：https://github.com/Canals233
@@ -80,7 +83,8 @@ npm  run make
 
 **总架构图**
 
-![image-20230702221418272](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20230702221418272.png)
+![VFS树](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/57b91ec9-2629-47b4-b66d-5d9ad2d5570d)
+
 
 - 登录注册模块：通过可表单实现用户输入的实时性校验，输入和警告提示，实现注册登录数据的批处理统一化提交。可调用后端提供的验证码接口进行认证
 
@@ -105,47 +109,48 @@ npm  run make
 ## 六、项目截图
 
 登录表单
+![登录](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/6f754887-f416-46aa-b08f-50cc83e3a18c)
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg)
 
 注册表单与注册错误提示
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg)
+![注册两个表单](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/c62e6470-2657-489a-a8cd-a87a6a0e6d40)
+
 
  存储桶列表页面
 
-​    ![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg)
+​![存储桶列表](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/96c76831-16dc-408f-92d7-cdec3bc29908)
+
 
 权限管理窗口
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg)
+![权限管理](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/838a3719-338d-405e-92f5-cdc56d8e614c)
+
 
 创建存储桶
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg)![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg)
-
+![创建第一步](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/788ff87e-9339-4b29-9236-67abe6e223a7)
+![创建2](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/352f8ad5-770d-4c1c-97da-96ee31d861eb)
 
 
 排序并进行选择后的文件列表页面
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg)
+![文件列表](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/3151a5af-09ed-46bb-913e-95c9fb860303)
 
 任务队列
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg)
+![任务队列](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/c96d4ff4-3003-4abd-ad67-c67e8101352d)
 
  下载结果
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg)
-
-
+![点击下载的结果](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/879efb85-56a7-4428-9c49-d25ebced542b)
 
  数据概览页面
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg)
-
-
+![概览](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/7b3adfae-c869-4424-b15a-055e25bce2e1)
 
 数据统计页面
+![数据统计](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/548e23df-37a5-404a-9854-5a8fa0d108dc)
+存储桶内独立数据
 
-![img](file:///C:/Users/DELL/AppData/Local/Temp/msohtmlclip1/01/clip_image022.jpg)‘
+![独立存储桶数据](https://github.com/Canals233/React-cloud-storage-platform-Otter/assets/55939284/1f44d59b-a187-4ce2-ad6f-0ae8527c6bd0)
