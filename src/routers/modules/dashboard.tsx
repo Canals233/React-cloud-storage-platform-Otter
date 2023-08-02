@@ -5,7 +5,6 @@ import { LayoutIndex } from "@/routers/constant";
 const dashboardRouter = [
     {
         element: <LayoutIndex />,
-     
         children: [
             {
                 path: "/dashboard",

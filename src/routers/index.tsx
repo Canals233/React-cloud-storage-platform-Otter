@@ -1,15 +1,15 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 import Login from "@/views/login/index";
 // * 导入所有router
-const metaRouters = import.meta.globEager("./modules/*.jsx");
+const metaRouters = import.meta.globEager("./modules/*.tsx");
 // * 处理路由
-export const routerArray = [];
+export const routerArray:RouteObject[] = [];
 // console.log(metaRouters,'metaRouters')
 Object.keys(metaRouters).forEach(item => {
     // console.log(metaRouters[item],'item')
-    Object.keys(metaRouters[item]).forEach((key) => {
-        // console.log(...metaRouters[item][key],'arr')
-        routerArray.push(...metaRouters[item][key]);
+    Object.keys(metaRouters[item] as Record<string,any>).forEach((key) => {
+        const routers:RouteObject[] = (metaRouters[item] as Record<string,any>)[key];
+        routerArray.push(...routers);
     });
 });
 export const rootRouter = [

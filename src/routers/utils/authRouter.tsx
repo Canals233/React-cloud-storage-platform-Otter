@@ -1,17 +1,17 @@
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, } from "react-router-dom";
 import { AxiosCanceler } from "@/api/helper/axiosCancel";
 import { searchRoute } from "@/utils/util";
 import { rootRouter } from "@/routers/index";
 import { HOME_URL } from "@/config/config";
 import { store } from "@/redux/index";
 import { message } from "antd";
-import { set } from "lodash";
+
 import { setTokenExpired } from "@/redux/modules/globalSlice";
 const axiosCanceler = new AxiosCanceler();
 /**
  * @description 路由守卫组件
  * */
-const AuthRouter = (props) => {
+const AuthRouter = (props: { children: any; }) => {
     const { pathname } = useLocation();
     const route = searchRoute(pathname, rootRouter);
     // * 在跳转路由之前，清除所有的请求
@@ -31,7 +31,7 @@ const AuthRouter = (props) => {
     }
         
     // * Dynamic Router(动态路由，根据后端返回的菜单数据生成的一维数组)
-    const dynamicRouter = store.getState().auth.authRouter;
+    const dynamicRouter:string[] = store.getState().auth.authRouter;
     // * Static Router(静态路由，必须配置首页地址，否则不能进首页获取菜单、按钮权限等数据)，获取数据的时候会loading，所有配置首页地址也没问题
     const staticRouter = [HOME_URL, "/403"];
     const routerList = dynamicRouter.concat(staticRouter);

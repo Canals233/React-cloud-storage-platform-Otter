@@ -1,5 +1,4 @@
-import React from "react";
-import lazyLoad from "@/routers/utils/lazyLoad";
+
 import { LayoutIndex } from "@/routers/constant";
 import Bucket from "@/views/bucket";
 import BucketDetail from "../../views/bucket/bucketDetail/BucketDetail";
