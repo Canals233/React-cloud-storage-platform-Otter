@@ -25,7 +25,7 @@ import App from "@/App";
 // );
 // import ReactDOM from "react-dom/client";
 // react 18 创建（会导致 antd 菜单折叠时闪烁，等待官方修复）
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	// * react严格模式
 	// <React.StrictMode>
 	<Provider store={store}>

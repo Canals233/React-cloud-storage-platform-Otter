@@ -1,39 +1,53 @@
 import { message } from "antd";
+
+enum StatusCode {
+    BadRequest = 400,
+    Unauthorized = 401,
+    Forbidden = 403,
+    NotFound = 404,
+    MethodNotAllowed = 405,
+    RequestTimeout = 408,
+    InternalServerError = 500,
+    BadGateway = 502,
+    ServiceUnavailable = 503,
+    GatewayTimeout = 504,
+}
+
 /**
  * @description: 校验网络请求状态码
- * @param {Number} status
+ * @param {StatusCode} status
  * @return void
  */
-export const checkStatus = (status) => {
+export const checkStatus = (status: StatusCode) => {
     switch (status) {
-        case 400:
+        case StatusCode.BadRequest:
             message.error("请求失败！请您稍后重试");
             break;
-        case 401:
+        case StatusCode.Unauthorized:
             message.error("登录失效！请您重新登录");
             break;
-        case 403:
+        case StatusCode.Forbidden:
             message.error("当前账号无权限访问！");
             break;
-        case 404:
+        case StatusCode.NotFound:
             message.error("你所访问的资源不存在！");
             break;
-        case 405:
+        case StatusCode.MethodNotAllowed:
             message.error("请求方式错误！请您稍后重试");
             break;
-        case 408:
+        case StatusCode.RequestTimeout:
             message.error("请求超时！请您稍后重试");
             break;
-        case 500:
+        case StatusCode.InternalServerError:
             message.error("服务异常！");
             break;
-        case 502:
+        case StatusCode.BadGateway:
             message.error("网关错误！");
             break;
-        case 503:
+        case StatusCode.ServiceUnavailable:
             message.error("服务不可用！");
             break;
-        case 504:
+        case StatusCode.GatewayTimeout:
             message.error("网关超时！");
             break;
         default:

@@ -46,7 +46,7 @@ const App = () => {
 		} else {
 			isElectron = false; // Browser
 
-			if (typeof process === "object" && process.type === "renderer") {
+			if (typeof process === "object" && typeof process.versions === "object" && typeof process.versions.electron !== "undefined") {
 				isElectron = true; // Electron
 			} else if (navigator.userAgent.indexOf("Electron") >= 0) {
 				isElectron = true; // Electron
