@@ -31,8 +31,7 @@ const menuSlice = createSlice({
 	},
 });
 
-export const getIsCollapse = (state) => state.menu.isCollapse;
-export const getMenuList = (state) => state.menu.menuList;
+export const getIsCollapse = (state:any) => state.menu.isCollapse;
 export const { updateCollapse } = menuSlice.actions;
 
 export default menuSlice.reducer;

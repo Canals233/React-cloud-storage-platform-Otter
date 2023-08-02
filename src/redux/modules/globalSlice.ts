@@ -55,8 +55,8 @@ export const {
 	setIsElectorn,
 	setEmail,
 } = globalSlice.actions;
-export const getGlobalState = (state) => state.global;
-export const getIsElectorn = (state) => state.global.isElectorn;
-export const getEmail = (state) => state.global.email;
+export const getGlobalState = (state:any) => state.global;
+export const getIsElectorn = (state:any) => state.global.isElectorn;
+export const getEmail = (state:any) => state.global.email;
 
 export default globalSlice.reducer;

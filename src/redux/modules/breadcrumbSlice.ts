@@ -36,7 +36,7 @@ const breadcrumbSlice = createSlice({
 		},
 	},
 });
-export const getCurrentBreadcrumb = (state) =>
+export const getCurrentBreadcrumb = (state:any) =>
 	state.breadcrumb.currentBreadcrumb;
 
 export const { setCurrentBreadcrumb, backToOneBreadcrumb } =

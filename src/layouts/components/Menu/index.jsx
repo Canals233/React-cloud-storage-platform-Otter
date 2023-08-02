@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Icons from "@ant-design/icons";
 import Logo from "./components/Logo";
 import "./index.less";
-import { getMenuList, getIsCollapse } from "@/redux/modules/menuSlice";
+import { getIsCollapse } from "@/redux/modules/menuSlice";
 
 const getItem = (label, key, icon, children, type) => {
 	return {

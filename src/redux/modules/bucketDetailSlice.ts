@@ -15,6 +15,6 @@ const bucketDetailSlice = createSlice({
         }
 	},
 });
-export const bucketDetailSelector = (state) => state.bucketDetail;
+export const bucketDetailSelector = (state:any) => state.bucketDetail;
 export const { setAllDetailDirectory } = bucketDetailSlice.actions;
 export default bucketDetailSlice.reducer;
