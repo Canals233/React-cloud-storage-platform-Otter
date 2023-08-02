@@ -10,7 +10,7 @@ import { AxiosCanceler } from "./helper/axiosCancel";
 import { setToken } from "@/redux/modules/globalSlice";
 import { message } from "antd";
 import { store } from "@/redux";
-type MyRequestMethod = (url: string, params?: any, _object?: any) => any;
+import API from "@/types/api";
 
 const axiosCanceler = new AxiosCanceler();
 const config = {
@@ -22,10 +22,10 @@ const config = {
     withCredentials: true,
 };
 class RequestHttp {
-    get: MyRequestMethod;
-    post: MyRequestMethod;
-    put: MyRequestMethod;
-    delete: MyRequestMethod;
+    get: API.TRequestMethod;
+    post: API.TRequestMethod;
+    put: API.TRequestMethod;
+    delete: API.TRequestMethod;
     service;
     constructor(config: CreateAxiosDefaults<any> | undefined) {
         // 实例化axios

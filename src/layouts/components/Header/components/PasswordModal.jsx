@@ -13,7 +13,7 @@ import {
 
 import { testPassword } from "@/utils/accountApis";
 import CaptchaButton from "@/views/login/components/CaptchaButton";
-import { helpApi } from "@/api/modules/user";
+import { utilAPI } from "@/api/modules/user";
 
 
 
@@ -59,7 +59,7 @@ const PasswordModal = (props) => {
 
 	const onGetCaptcha = async () => {
 		try {
-			const res = await helpApi("/send-email-code", { email: email });
+			const res = await utilAPI("/send-email-code", { email: email });
 			console.log(res, "sendEmailCode");
 			message.success("验证码已发送，请注意查收");
 		} catch (error) {
@@ -80,13 +80,13 @@ const PasswordModal = (props) => {
 			return;
 		}
        
-		const authCodeRes = await helpApi("/auth-email-code", {
+		const authCodeRes = await utilAPI("/auth-email-code", {
 			email: email,
 			emailCode: emailCode,
 		});
 		console.log(authCodeRes, "authCodeRes");
 		let ticket = authCodeRes.data.ticket;
-		const registerRes = await helpApi("/reset-password", {
+		const registerRes = await utilAPI("/reset-password", {
 			ticket: ticket,
 			newPassword: password,
 		});
