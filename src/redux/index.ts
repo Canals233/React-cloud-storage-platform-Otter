@@ -43,4 +43,6 @@ const store = configureStore({
 // 创建持久化 store
 const persistor = persistStore(store);
 
+export type RootState = ReturnType<typeof store.getState>;
+
 export { store, persistor };

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 
 const menuData = [
 	{
@@ -31,7 +32,7 @@ const menuSlice = createSlice({
 	},
 });
 
-export const getIsCollapse = (state:any) => state.menu.isCollapse;
+export const getIsCollapse = (state:RootState) => state.menu.isCollapse;
 export const { updateCollapse } = menuSlice.actions;
 
 export default menuSlice.reducer;

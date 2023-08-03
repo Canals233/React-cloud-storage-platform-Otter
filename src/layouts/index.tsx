@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
 
@@ -17,7 +16,6 @@ const LayoutIndex = () => {
 
 	
 	return (
-		// 这里不用 Layout 组件原因是切换页面时样式会先错乱然后在正常显示，造成页面闪屏效果
 		<Layout className="container">
 			<Sider
 				trigger={null}

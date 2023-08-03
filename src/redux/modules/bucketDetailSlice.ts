@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 
 
 
@@ -15,6 +16,6 @@ const bucketDetailSlice = createSlice({
         }
 	},
 });
-export const bucketDetailSelector = (state:any) => state.bucketDetail;
+export const bucketDetailSelector = (state:RootState) => state.bucketDetail;
 export const { setAllDetailDirectory } = bucketDetailSlice.actions;
 export default bucketDetailSlice.reducer;

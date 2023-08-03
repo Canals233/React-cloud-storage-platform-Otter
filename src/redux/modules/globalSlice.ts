@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 
 const globalState = {
 	token: "",
@@ -55,8 +56,9 @@ export const {
 	setIsElectorn,
 	setEmail,
 } = globalSlice.actions;
-export const getGlobalState = (state:any) => state.global;
-export const getIsElectorn = (state:any) => state.global.isElectorn;
-export const getEmail = (state:any) => state.global.email;
+export const getGlobalState = (state:RootState) => state.global;
+export const getIsElectorn = (state:RootState) => state.global.isElectorn;
+export const getEmail = (state:RootState) => state.global.email;
+export const getThemeConfig = (state:RootState) => state.global.themeConfig;
 
 export default globalSlice.reducer;

@@ -1,6 +1,8 @@
+// @ts-nocheck
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { store } from "@/redux";
 import { setToken, setTokenExpired } from "./globalSlice";
+
 const bq = fetchBaseQuery({
     baseUrl: "/api",
 

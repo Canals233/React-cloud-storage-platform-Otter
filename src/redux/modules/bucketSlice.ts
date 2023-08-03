@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 
 interface Bucket {
     bucketId: string;
@@ -59,13 +60,13 @@ const bucketSlice = createSlice({
     },
 });
 
-export const selectAllBucketList = (state: any) => state.bucket.bucketList;
+export const selectAllBucketList = (state:RootState) => state.bucket.bucketList;
 export const selectBucketListByName =
-    (bucketName: string | undefined) => (state: any) =>
+    (bucketName: string | undefined) => (state:RootState) =>
         state.bucket.bucketList.filter(
             (bucket: Bucket) => bucket.name === bucketName
         )[0];
-export const selectBucketByBucketId = (bucketId: any) => (state: any) =>
+export const selectBucketByBucketId = (bucketId:string) => (state:RootState) =>
     state.bucket.bucketList.filter(
         (bucket: Bucket) => bucket.bucketId === bucketId
     )[0];

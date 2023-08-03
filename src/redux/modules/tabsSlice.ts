@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { HOME_URL } from "@/config/config";
+import { RootState } from "..";
 const tabsState = {
 	// tabsActive 其实没啥用，使用 pathname 就可以了😂
 	tabsActive: HOME_URL,
@@ -18,6 +19,8 @@ export const tabsSlice = createSlice({
 		},
 	},
 });
+
+export const getTabsList = (state:RootState) => state.tabs.tabsList;
 
 export const { setTabsList, setTabsActive } = tabsSlice.actions;
 export default tabsSlice.reducer;
